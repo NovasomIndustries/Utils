@@ -1,0 +1,19 @@
+#!/bin/sh
+. ./SourceMe
+cd ../Kernel/${1}
+make mrproper
+make imx_novasoms_defconfig
+[ ! "$?" = "0" ] && return 1
+make -j32 zImage
+[ ! "$?" = "0" ] && return 1
+make -j32 modules
+[ ! "$?" = "0" ] && return 1
+make imx6ul-14x14-evk.dtb
+[ ! "$?" = "0" ] && return 1
+make imx6q-novasomS.dtb
+[ ! "$?" = "0" ] && return 1
+make imx6sdl-novasomP.dtb
+[ ! "$?" = "0" ] && return 1
+make imx6q-novasomP.dtb
+[ ! "$?" = "0" ] && return 1
+return 0

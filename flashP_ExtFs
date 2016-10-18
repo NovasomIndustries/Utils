@@ -1,0 +1,91 @@
+#!/bin/sh
+# ${1} is the device
+# ${2} is pointer to the externa file system dir
+#DISK="/dev/sdb"
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+DISK=${1}
+[ "${1}" = "" ] && DISK="/dev/sdb"
+
+UBOOT_IMG="NOVAsomP/u-boot.img"
+SPL_FILE="NOVAsomP/SPL"
+[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && return 1
+sudo umount ${DISK}* >/dev/null 2>&1
+echo "Writing NOVAsomP uSD"
+sleep 1
+sudo echo -n "Writing u-boot ... "
+sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
+sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
+sync
+
+
+sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+2
+
+
+t
+3
+83
+w
+__EOF__
+
+sleep 1
+echo y | sudo mkfs.vfat -F 16 ${DISK}1 -n BOOT 
+RET=$?
+echo "mkfs.vfat returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.vfat with error $RET"
+	return 1
+fi
+
+echo y | sudo mkfs.ext3 -t ext3 -L P6RootFs ${DISK}2
+RET=$?
+echo "mkfs.ext3 returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.ext3 with error $RET"
+	return 1
+fi
+
+sync
+cp tools/logos/novasomp.bmp .
+rm novasomp.bmp.gz
+gzip novasomp.bmp
+rm -rf tmpmount
+mkdir tmpmount
+sleep 1
+sudo mount ${DISK}1 tmpmount
+[ "$?" != "0" ] && return 1
+sudo rm -rf tmpmount/*
+echo -n "Copying ${UBOOT_IMG} ..."
+sudo cp ${UBOOT_IMG} tmpmount/.
+echo "Done"
+[ "$?" != "0" ] && return 1
+echo -n "Copying imx6q-novasomP.dtb ..."
+sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6q-novasomP.dtb tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying imx6sdl-novasomP.dtb ..."
+sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomP.dtb tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+sudo umount tmpmount
+sync
+
+return 0

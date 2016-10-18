@@ -1,0 +1,204 @@
+#!/bin/sh
+# ${1} is number of user partition
+# ${2} is size of first user partition, if enabled
+# ${3} is size of second user partition, if enabled
+# ${4} is the device
+#DISK="/dev/sdb"
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+DISK=${4}
+[ "${4}" = "" ] && DISK="/dev/sdb"
+
+UBOOT_IMG="NOVAsomS/u-boot.img"
+SPL_FILE="NOVAsomS/SPL"
+[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && return 1
+sudo umount ${DISK}* >/dev/null 2>&1
+echo "Writing NOVAsomP uSD"
+sleep 1
+sudo echo -n "Writing u-boot ... "
+sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
+sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
+sync
+
+[ "${2}" = "" ] && ${2}="16"
+[ "${3}" = "" ] && ${3}="16"
+
+if [ "${1}" = "-" ]; then
+	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+3
+83
+w
+__EOF__
+
+fi
+if [ "${1}" = "1" ]; then
+	sudo fdisk ${DISK} << __EOF__
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+3
+83
+n
+p
+3
+
++${2}M
+t
+3
+83
+w
+__EOF__
+
+fi
+
+if [ "${1}" = "2" ]; then
+	sudo fdisk ${DISK} << __EOF__
+n
+p
+1
+
++192M
+t
+b
+n
+p
+2
+
++16M
+t
+2
+83
+n
+p
+3
+
++${2}M
+t
+3
+83
+
+n
+p
+
++${3}M
+t
+4
+83
+w
+__EOF__
+
+fi
+sync
+sleep 1
+echo y | sudo mkfs.vfat -F 16 ${DISK}1 -n BOOT 
+RET=$?
+echo "mkfs.vfat returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.vfat with error $RET"
+	return 1
+fi
+
+echo y | sudo mkfs.ext3 -t ext3 -L P6Config ${DISK}3
+RET=$?
+echo "mkfs.ext3 returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.ext3 with error $RET"
+	return 1
+fi
+
+if [ "${1}" = "1" ]; then
+	echo y | sudo sudo mkfs.ext3 -t ext3 -L P6user1 ${DISK}2
+	RET=$?
+	echo "mkfs.ext3 returned $RET"
+	if ! [ "$?" = "0" ]; then
+		echo "mkfs.ext3 with error $RET"
+		return 1
+	fi
+fi
+
+if [ "${1}" = "2" ]; then
+	echo y | sudo sudo mkfs.ext3 -t ext3 -L P6user1 ${DISK}4
+	RET=$?
+	echo "mkfs.ext3 returned $RET"
+	if ! [ "$?" = "0" ]; then
+		echo "mkfs.ext3 with error $RET"
+		return 1
+	fi
+	echo y | sudo mkfs.ext3 -t ext3 -L P6user2 ${DISK}4
+	RET=$?
+	echo "mkfs.ext3 returned $RET"
+	if ! [ "$?" = "0" ]; then
+		echo "mkfs.ext3 with error $RET"
+		return 1
+	fi
+fi
+
+sync
+cp tools/logos/novasomp.bmp .
+rm novasomp.bmp.gz
+gzip novasomp.bmp
+rm -rf tmpmount
+mkdir tmpmount
+sleep 1
+sudo mount ${DISK}1 tmpmount
+[ "$?" != "0" ] && return 1
+sudo rm -rf tmpmount/*
+echo -n "Copying ${UBOOT_IMG} ..."
+sudo cp ${UBOOT_IMG} tmpmount/.
+echo "Done"
+[ "$?" != "0" ] && return 1
+echo -n "Copying imx6q-novasomP.dtb ..."
+sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6q-novasomS.dtb tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying imx6sdl-novasomP.dtb ..."
+sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomS.dtb tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying zImage ..."
+sudo cp ../../Deploy/zImage tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying uInitrd ..."
+sudo cp ../../Deploy/uInitrd tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying splash.bmp.gz ..."
+sudo cp novasomp.bmp.gz tmpmount/splash.bmp.gz
+[ "$?" != "0" ] && return 1
+echo "Done"
+sudo umount tmpmount
+sync
+
+return 0

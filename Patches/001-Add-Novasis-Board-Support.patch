@@ -1,0 +1,2732 @@
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/genimage.cfg Gstreamer/board/novasis/imx6ul/genimage.cfg
+--- buildroot-2016.05/board/novasis/imx6ul/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/genimage.cfg	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,41 @@
++# Minimal microSD card image for the Freescale's i.MX6UL EVK board
++#
++# We mimic the .sdcard Freescale's image format for i.MX6UL:
++# * the microSD card must have 1 kB free space at the beginning,
++# * U-Boot is dumped as is,
++# * a FAT partition at offset 8 MB is containing zImage and dtbs,
++# * a single root filesystem partition is required (Ext2 in this case).
++#
++
++image boot.vfat {
++  vfat {
++    files = {
++      "imx6ul-14x14-evk.dtb",
++      "zImage"
++    }
++  }
++  size = 16M
++}
++
++image sdcard.img {
++  hdimage {
++  }
++
++  partition u-boot {
++    in-partition-table = "no"
++    image = "u-boot.imx"
++    offset = 1024
++  }
++
++  partition boot {
++    partition-type = 0xC
++    bootable = "true"
++    image = "boot.vfat"
++    offset = 8M
++  }
++
++  partition rootfs {
++    partition-type = 0x83
++    image = "rootfs.ext2"
++  }
++}
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh Gstreamer/board/novasis/imx6ul/Init/bin/autologin.sh
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/Init/bin/autologin.sh	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,3 @@
++#!/bin/sh
++sleep 2
++/bin/login -f root
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec Gstreamer/board/novasis/imx6ul/Init/bin/get_exec
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/Init/bin/get_exec	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++. /etc/sysconfig/system_vars
++if [ "$1" == "" ]; then
++        echo "Usage `basename $0` <filename>"
++        exit 0
++fi
++cd /tmp
++rm -f `basename ${1}`
++wget http://${REFERENCE_SERVER}/${1}
++chmod 777 `basename ${1}`
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs Gstreamer/board/novasis/imx6ul/Init/bin/update_fs
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/Init/bin/update_fs	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,8 @@
++#!/bin/sh
++get_exec uInitrd       
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/uInitrd /tmp/update_dir/.       
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel Gstreamer/board/novasis/imx6ul/Init/bin/update_kernel
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/Init/bin/update_kernel	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++get_exec zImage
++get_exec novasomp.dtb
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/zImage /tmp/update_dir/.       
++cp /tmp/novasomp.dtb /tmp/update_dir/.
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/imx6ul/Init/etc/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1 @@
++REFERENCE_SERVER=192.168.10.122
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/post-image.sh Gstreamer/board/novasis/imx6ul/post-image.sh
+--- buildroot-2016.05/board/novasis/imx6ul/post-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/post-image.sh	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++echo "###### Creating uInitr ######"
++output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
++pushd ../../Deploy
++rm uInitrd
++ln -s ${BASE_DIR}/images/uInitrd
++popd
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/pre-image.sh Gstreamer/board/novasis/imx6ul/pre-image.sh
+--- buildroot-2016.05/board/novasis/imx6ul/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/pre-image.sh	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++echo "###### Customizing file system ######"
++echo "cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}"
++cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}
++chmod 777 ${TARGET_DIR}/bin/*
++sync
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/readme.txt Gstreamer/board/novasis/imx6ul/readme.txt
+--- buildroot-2016.05/board/novasis/imx6ul/readme.txt	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/imx6ul/readme.txt	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,64 @@
++***************************
++Freescale i.MX6UL EVK board
++***************************
++
++This file documents the Buildroot support for the Freescale i.MX6UL EVK board.
++
++Please read the i.MX6UL Evaluation Kit Quick Start Guide [1] for an
++introduction to the board.
++
++Build
++=====
++
++First, configure Buildroot for your i.MX6UL EVK board:
++
++  make freescale_imx6ulevk_defconfig
++
++Build all components:
++
++  make
++
++You will find in ./output/images/ the following files:
++  - imx6ul-14x14-evk.dtb
++  - rootfs.ext2
++  - rootfs.tar
++  - sdcard.img
++  - u-boot.imx
++  - zImage
++
++Create a bootable microSD card
++==============================
++
++To determine the device associated to the microSD card have a look in the
++/proc/partitions file:
++
++  cat /proc/partitions
++
++Buildroot prepares a bootable "sdcard.img" image in the output/images/
++directory, ready to be dumped on a microSD card. Launch the following
++command as root:
++
++  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
++
++*** WARNING! This will destroy all the card content. Use with care! ***
++
++For details about the medium image layout, see the definition in
++board/freescale/imx6ulevk/genimage.cfg.
++
++Boot the i.MX6UL EVK board
++=========================
++
++To boot your newly created system (refer to the i.MX6UL EVK Quick Start Guide
++[1] for guidance):
++- insert the microSD card in the microSD slot of the board;
++- verify that your i.MX6UL EVK board jumpers and switches are set as mentioned
++  in the i.MX6UL EVK Quick Start Guide [1];
++- put a micro USB cable into the Debug USB Port and connect using a terminal
++  emulator at 115200 bps, 8n1;
++- power on the board.
++
++Enjoy!
++
++References
++==========
++[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/autologin.sh Gstreamer/board/novasis/Init/bin/autologin.sh
+--- buildroot-2016.05/board/novasis/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/bin/autologin.sh	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,2 @@
++#!/bin/sh
++/bin/login -f root
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec Gstreamer/board/novasis/Init/bin/get_exec
+--- buildroot-2016.05/board/novasis/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/bin/get_exec	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++. /etc/sysconfig/system_vars
++if [ "$1" == "" ]; then
++        echo "Usage `basename $0` <filename>"
++        exit 0
++fi
++cd /tmp
++rm -f `basename ${1}`
++wget http://${REFERENCE_SERVER}/${1}
++chmod 777 `basename ${1}`
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs Gstreamer/board/novasis/Init/bin/update_fs
+--- buildroot-2016.05/board/novasis/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/bin/update_fs	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,8 @@
++#!/bin/sh
++get_exec uInitrd       
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/uInitrd /tmp/update_dir/.       
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel Gstreamer/board/novasis/Init/bin/update_kernel
+--- buildroot-2016.05/board/novasis/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/bin/update_kernel	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++get_exec zImage
++get_exec novasomp.dtb
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/zImage /tmp/update_dir/.       
++cp /tmp/novasomp.dtb /tmp/update_dir/.
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/Init/etc/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1 @@
++REFERENCE_SERVER=192.168.10.122
+diff -Naur buildroot-2016.05/board/novasis/Init/root/.asoundrc Gstreamer/board/novasis/Init/root/.asoundrc
+--- buildroot-2016.05/board/novasis/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/Init/root/.asoundrc	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,38 @@
++pcm.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 1
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 1
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh Gstreamer/board/novasis/NOVAsomP/Init/bin/autologin.sh
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/bin/autologin.sh	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,2 @@
++#!/bin/sh
++/bin/login -f root
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Gstreamer/board/novasis/NOVAsomP/Init/bin/get_exec
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/bin/get_exec	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++. /etc/sysconfig/system_vars
++if [ "$1" == "" ]; then
++        echo "Usage `basename $0` <filename>"
++        exit 0
++fi
++cd /tmp
++rm -f `basename ${1}`
++wget http://${REFERENCE_SERVER}/${1}
++chmod 777 `basename ${1}`
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Gstreamer/board/novasis/NOVAsomP/Init/bin/update_fs
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/bin/update_fs	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,8 @@
++#!/bin/sh
++get_exec uInitrd       
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/uInitrd /tmp/update_dir/.       
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Gstreamer/board/novasis/NOVAsomP/Init/bin/update_kernel
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/bin/update_kernel	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++get_exec zImage
++get_exec novasomp.dtb
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/zImage /tmp/update_dir/.       
++cp /tmp/novasomp.dtb /tmp/update_dir/.
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,27 @@
++#######################################################################
++##
++## Corresponding documentation:
++##
++## http://www.lighttpd.net/documentation/access.html
++##
++server.modules += ( "mod_accesslog" )
++
++##
++## Default access log.
++##
++accesslog.filename          = log_root + "/lighttpd-access.log"
++
++##
++## The default format produces CLF compatible output.
++## For available parameters see access.txt 
++##
++#accesslog.format = "%h %l %u %t \"%r\" %b %>s \"%{User-Agent}i\" \"%{Referer}i\""
++
++##
++## If you want to log to syslog you have to unset the 
++## accesslog.use-syslog setting and uncomment the next line.
++##
++#accesslog.use-syslog       = "enable"
++
++#
++#######################################################################
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,15 @@
++server.modules += ( "mod_cgi" )
++
++cgi.assign                 = ( ".pl"  => "/usr/bin/perl",
++                               ".cgi" => "/bin/ash",
++                               ".rb"  => "/usr/bin/ruby",
++                               ".erb" => "/usr/bin/eruby",
++                               ".py"  => "/usr/bin/python",
++                               ".php" => "/usr/bin/php-cgi" )
++
++index-file.names           += ( "index.pl",   "default.pl",
++                               "index.rb",   "default.rb",
++                               "index.erb",  "default.erb",
++                               "index.py",   "default.py",
++                               "index.php",  "default.php" )
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,47 @@
++#######################################################################
++##
++##  Debug options
++## ---------------
++##
++## Enable those options for debugging the behavior
++##
++## The settings can be set per location/vhost.
++## 
++
++## 
++## log-request-handling allows you to track the request
++## handing inside lighttpd. 
++##
++#debug.log-request-handling        = "enable"
++
++## 
++## log all request headers. 
++##
++#debug.log-request-header          = "enable"
++
++## 
++## similar to log-request-header.
++## but only logs if we encountered an error.
++## (return codes 400 and 5xx)
++##
++#debug.log-request-header-on-error = "enable"
++
++## 
++## log the header we send out to the client.
++##
++#debug.log-response-header         = "enable"
++
++## 
++## log if a file wasnt found in the error log.
++##
++#debug.log-file-not-found          = "enable"
++
++## 
++## debug conditionals handling
++##
++#debug.log-condition-handling      = "enable"
++
++#
++#######################################################################
++
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,55 @@
++#######################################################################
++##
++##  Dirlisting Module 
++## ------------------- 
++##
++## See http://www.lighttpd.net/documentation/dirlisting.html
++##
++
++##
++## Enabled Directory listing
++##
++dir-listing.activate      = "disable"
++
++##
++## Hide dot files from the listing?
++## By default they are listed.
++##
++dir-listing.hide-dotfiles = "disable" 
++
++##
++## list of regular expressions. Files that match any of the specified
++## regular expressions will be excluded from directory listings.
++##
++dir-listing.exclude       = ( "~$" )
++
++##
++## set a encoding for the generated directory listing
++##
++## If you file-system is not using ASCII you have to set the encoding of
++## the filenames as they are put into the HTML listing AS IS (with XML
++## encoding)
++##
++dir-listing.encoding = "UTF-8"
++
++##
++## Specify the url to an optional CSS file. 
++##
++#dir-listing.external-css  = "/dirindex.css"
++
++##
++## Include HEADER.txt files above the directory listing. 
++## You can disable showing the HEADER.txt in the listing. 
++##
++dir-listing.hide-header-file = "disable"
++dir-listing.show-header = "disable"
++
++##
++## Include README.txt files above the directory listing. 
++## You can disable showing the README.txt in the listing. 
++##
++dir-listing.hide-readme-file = "disable"
++dir-listing.show-readme = "disable"
++
++##
++#######################################################################
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,78 @@
++#######################################################################
++##
++##  MimeType handling
++## -------------------
++##
++## http://www.lighttpd.net/documentation/configuration.html#mimetypes
++##
++## Use the "Content-Type" extended attribute to obtain mime type if
++## possible
++##
++mimetype.use-xattr        = "disable"
++
++##
++## mimetype mapping
++##
++mimetype.assign             = (
++  ".pdf"          =>      "application/pdf",
++  ".sig"          =>      "application/pgp-signature",
++  ".spl"          =>      "application/futuresplash",
++  ".class"        =>      "application/octet-stream",
++  ".ps"           =>      "application/postscript",
++  ".torrent"      =>      "application/x-bittorrent",
++  ".dvi"          =>      "application/x-dvi",
++  ".gz"           =>      "application/x-gzip",
++  ".pac"          =>      "application/x-ns-proxy-autoconfig",
++  ".swf"          =>      "application/x-shockwave-flash",
++  ".tar.gz"       =>      "application/x-tgz",
++  ".tgz"          =>      "application/x-tgz",
++  ".tar"          =>      "application/x-tar",
++  ".zip"          =>      "application/zip",
++  ".mp3"          =>      "audio/mpeg",
++  ".m3u"          =>      "audio/x-mpegurl",
++  ".wma"          =>      "audio/x-ms-wma",
++  ".wax"          =>      "audio/x-ms-wax",
++  ".ogg"          =>      "application/ogg",
++  ".wav"          =>      "audio/x-wav",
++  ".gif"          =>      "image/gif",
++  ".jpg"          =>      "image/jpeg",
++  ".jpeg"         =>      "image/jpeg",
++  ".png"          =>      "image/png",
++  ".xbm"          =>      "image/x-xbitmap",
++  ".xpm"          =>      "image/x-xpixmap",
++  ".xwd"          =>      "image/x-xwindowdump",
++  ".css"          =>      "text/css",
++  ".html"         =>      "text/html",
++  ".htm"          =>      "text/html",
++  ".js"           =>      "text/javascript",
++  ".asc"          =>      "text/plain",
++  ".c"            =>      "text/plain",
++  ".cpp"          =>      "text/plain",
++  ".log"          =>      "text/plain",
++  ".conf"         =>      "text/plain",
++  ".text"         =>      "text/plain",
++  ".txt"          =>      "text/plain",
++  ".spec"         =>      "text/plain",
++  ".dtd"          =>      "text/xml",
++  ".xml"          =>      "text/xml",
++  ".mpeg"         =>      "video/mpeg",
++  ".mpg"          =>      "video/mpeg",
++  ".mov"          =>      "video/quicktime",
++  ".qt"           =>      "video/quicktime",
++  ".avi"          =>      "video/x-msvideo",
++  ".asf"          =>      "video/x-ms-asf",
++  ".asx"          =>      "video/x-ms-asf",
++  ".wmv"          =>      "video/x-ms-wmv",
++  ".bz2"          =>      "application/x-bzip",
++  ".tbz"          =>      "application/x-bzip-compressed-tar",
++  ".tar.bz2"      =>      "application/x-bzip-compressed-tar",
++  ".rpm"          =>      "application/x-rpm",
++  ".json"         =>      "application/json",
++  # make the default mime type application/octet-stream.
++  ""              =>      "application/octet-stream",
++ )
++
++
++#
++#######################################################################
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,460 @@
++#######################################################################
++##
++## /etc/lighttpd/lighttpd.conf
++##
++## check /etc/lighttpd/conf.d/*.conf for the configuration of modules.
++##
++#######################################################################
++
++#######################################################################
++##
++## Some Variable definition which will make chrooting easier.
++##
++## if you add a variable here. Add the corresponding variable in the
++## chroot example aswell.
++##
++var.log_root    = "/var/log"
++var.server_root = "/tmp/www"
++var.state_dir   = "/var/run"
++var.home_dir    = "/var/lib/lighttpd"
++var.conf_dir    = "/etc/lighttpd"
++
++## 
++## run the server chrooted.
++## 
++## This requires root permissions during startup.
++##
++## If you run Chrooted set the the variables to directories relative to
++## the chroot dir.
++##
++## example chroot configuration:
++## 
++#var.log_root    = "/logs"
++#var.server_root = "/"
++#var.state_dir   = "/run"
++#var.home_dir    = "/lib/lighttpd"
++#var.vhosts_dir  = "/vhosts"
++#var.conf_dir    = "/etc"
++#
++#server.chroot   = "/srv/www"
++
++##
++## Some additional variables to make the configuration easier
++##
++
++##
++## Base directory for all virtual hosts
++##
++## used in:
++## conf.d/evhost.conf
++## conf.d/simple_vhost.conf
++## vhosts.d/vhosts.template
++##
++var.vhosts_dir  = server_root + "/vhosts"
++
++##
++## Cache for mod_compress
++##
++## used in:
++## conf.d/compress.conf
++##
++var.cache_dir   = "/var/cache/lighttpd"
++
++##
++## Base directory for sockets.
++##
++## used in:
++## conf.d/fastcgi.conf
++## conf.d/scgi.conf
++##
++var.socket_dir  = home_dir + "/sockets"
++
++##
++#######################################################################
++
++#######################################################################
++##
++## Load the modules.
++include "modules.conf"
++
++##
++#######################################################################
++
++#######################################################################
++##
++##  Basic Configuration
++## ---------------------
++##
++server.port = 8080
++
++##
++## Use IPv6?
++##
++# server.use-ipv6 = "enable"
++
++##
++## bind to a specific IP
++##
++#server.bind = "localhost"
++
++##
++## Run as a different username/groupname.
++## This requires root permissions during startup. 
++##
++# server.username  = "lighttpd"
++# server.groupname = "lighttpd"
++
++## 
++## enable core files.
++##
++#server.core-files = "disable"
++
++##
++## Document root
++##
++server.document-root = server_root
++
++##
++## The value for the "Server:" response field.
++##
++## It would be nice to keep it at "lighttpd".
++##
++#server.tag = "lighttpd"
++
++##
++## store a pid file
++##
++server.pid-file = state_dir + "/lighttpd.pid"
++
++##
++#######################################################################
++
++#######################################################################
++##
++##  Logging Options
++## ------------------
++##
++## all logging options can be overwritten per vhost.
++##
++## Path to the error log file
++##
++server.errorlog             = log_root + "/lighttpd-error.log"
++
++##
++## If you want to log to syslog you have to unset the 
++## server.errorlog setting and uncomment the next line.
++##
++#server.errorlog-use-syslog = "enable"
++
++##
++## Access log config
++## 
++include "conf.d/access_log.conf"
++
++##
++## The debug options are moved into their own file.
++## see conf.d/debug.conf for various options for request debugging.
++##
++include "conf.d/debug.conf"
++
++##
++## CGI exec
++## 
++include "conf.d/cgi.conf"
++##
++#######################################################################
++
++#######################################################################
++##
++##  Tuning/Performance
++## --------------------
++##
++## corresponding documentation:
++## http://www.lighttpd.net/documentation/performance.html
++##
++## set the event-handler (read the performance section in the manual)
++##
++## possible options on linux are:
++##
++## select
++## poll
++## linux-sysepoll
++##
++## linux-sysepoll is recommended on kernel 2.6.
++##
++server.event-handler = "linux-sysepoll"
++
++##
++## The basic network interface for all platforms at the syscalls read()
++## and write(). Every modern OS provides its own syscall to help network
++## servers transfer files as fast as possible 
++##
++## linux-sendfile - is recommended for small files.
++## writev         - is recommended for sending many large files
++##
++server.network-backend = "writev"
++
++##
++## As lighttpd is a single-threaded server, its main resource limit is
++## the number of file descriptors, which is set to 1024 by default (on
++## most systems).
++##
++## If you are running a high-traffic site you might want to increase this
++## limit by setting server.max-fds.
++##
++## Changing this setting requires root permissions on startup. see
++## server.username/server.groupname.
++##
++## By default lighttpd would not change the operation system default.
++## But setting it to 2048 is a better default for busy servers.
++##
++server.max-fds = 2048
++
++##
++## Stat() call caching.
++##
++## lighttpd can utilize FAM/Gamin to cache stat call.
++##
++## possible values are:
++## disable, simple or fam.
++##
++server.stat-cache-engine = "simple"
++
++##
++## Fine tuning for the request handling
++##
++## max-connections == max-fds/2 (maybe /3)
++## means the other file handles are used for fastcgi/files
++##
++server.max-connections = 1024
++
++##
++## How many seconds to keep a keep-alive connection open,
++## until we consider it idle. 
++##
++## Default: 5
++##
++#server.max-keep-alive-idle = 5
++
++##
++## How many keep-alive requests until closing the connection.
++##
++## Default: 16
++##
++#server.max-keep-alive-requests = 16
++
++##
++## Maximum size of a request in kilobytes.
++## By default it is unlimited (0).
++##
++## Uploads to your server cant be larger than this value.
++##
++#server.max-request-size = 0
++
++##
++## Time to read from a socket before we consider it idle.
++##
++## Default: 60
++##
++#server.max-read-idle = 60
++
++##
++## Time to write to a socket before we consider it idle.
++##
++## Default: 360
++##
++#server.max-write-idle = 360
++
++##
++##  Traffic Shaping 
++## -----------------
++##
++## see /usr/share/doc/lighttpd/traffic-shaping.txt
++##
++## Values are in kilobyte per second.
++##
++## Keep in mind that a limit below 32kB/s might actually limit the
++## traffic to 32kB/s. This is caused by the size of the TCP send
++## buffer. 
++##
++## per server:
++##
++#server.kbytes-per-second = 128
++
++##
++## per connection:
++##
++#connection.kbytes-per-second = 32
++
++##
++#######################################################################
++
++#######################################################################
++##
++##  Filename/File handling
++## ------------------------
++
++##
++## files to check for if .../ is requested
++## index-file.names            = ( "index.php", "index.rb", "index.html",
++##                                 "index.htm", "default.htm" )
++##
++index-file.names += (
++  "index.xhtml", "index.html", "index.htm", "default.htm", "index.php"
++)
++
++##
++## deny access the file-extensions
++##
++## ~    is for backupfiles from vi, emacs, joe, ...
++## .inc is often used for code includes which should in general not be part
++##      of the document-root
++url.access-deny             = ( "~", ".inc" )
++
++##
++## disable range requests for pdf files
++## workaround for a bug in the Acrobat Reader plugin.
++##
++# $HTTP["url"] =~ "\.pdf$" {
++#  server.range-requests = "disable"
++# }
++
++##
++## url handling modules (rewrite, redirect)
++##
++#url.rewrite                = ( "^/$"             => "/server-status" )
++#url.redirect               = ( "^/wishlist/(.+)" => "http://www.example.com/$1" )
++
++##
++## both rewrite/redirect support back reference to regex conditional using %n
++##
++#$HTTP["host"] =~ "^www\.(.*)" {
++#  url.redirect            = ( "^/(.*)" => "http://%1/$1" )
++#}
++
++##
++## which extensions should not be handle via static-file transfer
++##
++## .php, .pl, .fcgi are most often handled by mod_fastcgi or mod_cgi
++##
++static-file.exclude-extensions = ( ".php", ".pl", ".fcgi", ".scgi" )
++
++##
++## error-handler for status 404
++##
++#server.error-handler-404   = "/error-handler.html"
++#server.error-handler-404   = "/error-handler.php"
++
++##
++## Format: <errorfile-prefix><status-code>.html
++## -> ..../status-404.html for 'File not found'
++##
++#server.errorfile-prefix    = "/srv/www/htdocs/errors/status-"
++
++##
++## mimetype mapping
++##
++include "conf.d/mime.conf"
++
++##
++## directory listing configuration
++##
++include "conf.d/dirlisting.conf"
++
++##
++## Should lighttpd follow symlinks?
++## 
++server.follow-symlink = "enable"
++
++##
++## force all filenames to be lowercase?
++##
++#server.force-lowercase-filenames = "disable"
++
++##
++## defaults to /var/tmp as we assume it is a local harddisk
++##
++server.upload-dirs = ( "/var/tmp" )
++
++##
++#######################################################################
++
++
++#######################################################################
++##
++##  SSL Support
++## ------------- 
++##
++## To enable SSL for the whole server you have to provide a valid
++## certificate and have to enable the SSL engine.::
++##
++##   ssl.engine = "enable"
++##   ssl.pemfile = "/path/to/server.pem"
++##
++## The HTTPS protocol does not allow you to use name-based virtual
++## hosting with SSL. If you want to run multiple SSL servers with
++## one lighttpd instance you must use IP-based virtual hosting: ::
++##
++## Mitigate CVE-2009-3555 by disabling client triggered renegotation
++## This is enabled by default.
++##
++## IMPORTANT: this setting can only be used in the global scope.
++## It does *not* work inside conditionals
++##
++#   ssl.disable-client-renegotiation = "enable"
++##
++##   $SERVER["socket"] == "10.0.0.1:443" {
++##     ssl.engine                  = "enable"
++##     ssl.pemfile                 = "/etc/ssl/private/www.example.com.pem"
++##     #
++##     # (Following SSL/TLS Deployment Best Practices 1.3 / 17 September 2013 from:
++##     # https://www.ssllabs.com/projects/best-practices/index.html)
++##     # - BEAST is considered mitigaed on client side now, and new weaknesses have been found in RC4,
++##     #   so it is strongly advised to disable RC4 ciphers (HIGH doesn't include RC4)
++##     # - It is recommended to disable 3DES too (although disabling RC4 and 3DES breaks IE6+8 on Windows XP,
++##     #   so you might want to support 3DES for now - just remove the '!3DES' parts below).
++##     # - The examples below prefer ciphersuites with "Forward Secrecy" (and ECDHE over DHE (alias EDH)), remove '+kEDH +kRSA'
++##     #   if you don't want that.
++##     # - SRP and PSK are not supported anyway, excluding those ('!kSRP !kPSK') just keeps the list smaller (easier to review)
++##     # Check your cipher list with: openssl ciphers -v '...' (use single quotes as your shell won't like ! in double quotes)
++##     #
++##     # If you know you have RSA keys (standard), you can use:
++##     ssl.cipher-list             = "aRSA+HIGH !3DES +kEDH +kRSA !kSRP !kPSK"
++##     # The more generic version (without the restriction to RSA keys) is
++##     # ssl.cipher-list           = "HIGH !aNULL !3DES +kEDH +kRSA !kSRP !kPSK"
++##     #
++##     # Make the server prefer the order of the server side cipher suite instead of the client suite.
++##     # This option is enabled by default, but only used if ssl.cipher-list is set.
++##     #
++##     # ssl.honor-cipher-order = "enable"
++##     #
++##     server.name                 = "www.example.com"
++##
++##     server.document-root        = "/srv/www/vhosts/example.com/www/"
++##   }
++##
++
++## If you have a .crt and a .key file, cat them together into a
++## single PEM file:
++## $ cat /etc/ssl/private/lighttpd.key /etc/ssl/certs/lighttpd.crt \
++##   > /etc/ssl/private/lighttpd.pem
++##
++#ssl.pemfile = "/etc/ssl/private/lighttpd.pem"
++
++##
++## optionally pass the CA certificate here.
++##
++##
++#ssl.ca-file = ""
++
++##
++#######################################################################
++
++#######################################################################
++##
++## custom includes like vhosts.
++##
++#include "conf.d/config.conf"
++#include_shell "cat /etc/lighttpd/vhosts.d/*.conf"
++##
++#######################################################################
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,172 @@
++#######################################################################
++##
++##  Modules to load
++## -----------------
++##
++## at least mod_access and mod_accesslog should be loaded
++## all other module should only be loaded if really neccesary
++##
++## - saves some time
++## - saves memory
++##
++## the default module set contains:
++##
++## "mod_indexfile", "mod_dirlisting", "mod_staticfile"
++##
++## you dont have to include those modules in your list
++##
++## Modules, which are pulled in via conf.d/*.conf
++##
++## NOTE: the order of modules is important.
++##
++## - mod_accesslog     -> conf.d/access_log.conf
++## - mod_compress      -> conf.d/compress.conf
++## - mod_status        -> conf.d/status.conf
++## - mod_webdav        -> conf.d/webdav.conf
++## - mod_cml           -> conf.d/cml.conf
++## - mod_evhost        -> conf.d/evhost.conf
++## - mod_simple_vhost  -> conf.d/simple_vhost.conf
++## - mod_mysql_vhost   -> conf.d/mysql_vhost.conf
++## - mod_trigger_b4_dl -> conf.d/trigger_b4_dl.conf
++## - mod_userdir       -> conf.d/userdir.conf
++## - mod_rrdtool       -> conf.d/rrdtool.conf
++## - mod_ssi           -> conf.d/ssi.conf
++## - mod_cgi           -> conf.d/cgi.conf
++## - mod_scgi          -> conf.d/scgi.conf
++## - mod_fastcgi       -> conf.d/fastcgi.conf
++## - mod_proxy         -> conf.d/proxy.conf
++## - mod_secdownload   -> conf.d/secdownload.conf
++## - mod_expire        -> conf.d/expire.conf
++##
++
++server.modules = (
++  "mod_access",
++#  "mod_alias",
++#  "mod_auth",
++#  "mod_evasive",
++#  "mod_redirect",
++#  "mod_rewrite",
++#  "mod_setenv",
++#  "mod_usertrack",
++)
++
++##
++#######################################################################
++
++#######################################################################
++##
++##  Config for various Modules
++##
++
++##
++## mod_ssi
++##
++#include "conf.d/ssi.conf"
++
++##
++## mod_status
++##
++#include "conf.d/status.conf"
++
++##
++## mod_webdav
++##
++#include "conf.d/webdav.conf"
++
++##
++## mod_compress
++##
++#include "conf.d/compress.conf"
++
++##
++## mod_userdir
++##
++#include "conf.d/userdir.conf"
++
++##
++## mod_magnet
++##
++#include "conf.d/magnet.conf"
++
++##
++## mod_cml
++##
++#include "conf.d/cml.conf"
++
++##
++## mod_rrdtool
++##
++#include "conf.d/rrdtool.conf"
++
++##
++## mod_proxy
++##
++#include "conf.d/proxy.conf"
++
++##
++## mod_expire
++##
++#include "conf.d/expire.conf"
++
++##
++## mod_secdownload
++##
++#include "conf.d/secdownload.conf"
++
++##
++#######################################################################
++
++#######################################################################
++##
++## CGI modules
++##
++
++##
++## SCGI (mod_scgi)
++##
++#include "conf.d/scgi.conf"
++
++##
++## FastCGI (mod_fastcgi)
++##
++#include "conf.d/fastcgi.conf"
++
++##
++## plain old CGI (mod_cgi)
++##
++#include "conf.d/cgi.conf"
++
++##
++#######################################################################
++
++#######################################################################
++##
++## VHost Modules
++##
++##  Only load ONE of them!
++## ========================
++##
++
++##
++## You can use conditionals for vhosts aswell.
++## 
++## see http://www.lighttpd.net/documentation/configuration.html
++##
++
++##
++## mod_evhost
++##
++#include "conf.d/evhost.conf"
++
++##
++## mod_simple_vhost
++##
++#include "conf.d/simple_vhost.conf"
++
++##
++## mod_mysql_vhost
++##
++#include "conf.d/mysql_vhost.conf"
++
++##
++#######################################################################
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,133 @@
++#	$OpenBSD: sshd_config,v 1.93 2014/01/10 05:59:19 djm Exp $
++
++# This is the sshd server system-wide configuration file.  See
++# sshd_config(5) for more information.
++
++# This sshd was compiled with PATH=/usr/bin:/bin:/usr/sbin:/sbin
++
++# The strategy used for options in the default sshd_config shipped with
++# OpenSSH is to specify options with their default value where
++# possible, but leave them commented.  Uncommented options override the
++# default value.
++
++#Port 22
++#AddressFamily any
++#ListenAddress 0.0.0.0
++#ListenAddress ::
++
++# The default requires explicit activation of protocol 1
++#Protocol 2
++
++# HostKey for protocol version 1
++#HostKey /etc/ssh/ssh_host_key
++# HostKeys for protocol version 2
++#HostKey /etc/ssh/ssh_host_rsa_key
++#HostKey /etc/ssh/ssh_host_dsa_key
++#HostKey /etc/ssh/ssh_host_ecdsa_key
++#HostKey /etc/ssh/ssh_host_ed25519_key
++
++# Lifetime and size of ephemeral version 1 server key
++#KeyRegenerationInterval 1h
++#ServerKeyBits 1024
++
++# Ciphers and keying
++#RekeyLimit default none
++
++# Logging
++# obsoletes QuietMode and FascistLogging
++#SyslogFacility AUTH
++#LogLevel INFO
++
++# Authentication:
++
++#LoginGraceTime 2m
++#PermitRootLogin yes
++#StrictModes yes
++#MaxAuthTries 6
++#MaxSessions 10
++
++#RSAAuthentication yes
++#PubkeyAuthentication yes
++
++# The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
++# but this is overridden so installations will only check .ssh/authorized_keys
++AuthorizedKeysFile	.ssh/authorized_keys
++
++#AuthorizedPrincipalsFile none
++
++#AuthorizedKeysCommand none
++#AuthorizedKeysCommandUser nobody
++
++# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
++#RhostsRSAAuthentication no
++# similar for protocol version 2
++#HostbasedAuthentication no
++# Change to yes if you don't trust ~/.ssh/known_hosts for
++# RhostsRSAAuthentication and HostbasedAuthentication
++#IgnoreUserKnownHosts no
++# Don't read the user's ~/.rhosts and ~/.shosts files
++#IgnoreRhosts yes
++
++# To disable tunneled clear text passwords, change to no here!
++#PasswordAuthentication yes
++#PermitEmptyPasswords no
++
++# Change to no to disable s/key passwords
++#ChallengeResponseAuthentication yes
++
++# Kerberos options
++#KerberosAuthentication no
++#KerberosOrLocalPasswd yes
++#KerberosTicketCleanup yes
++#KerberosGetAFSToken no
++
++# GSSAPI options
++#GSSAPIAuthentication no
++#GSSAPICleanupCredentials yes
++
++# Set this to 'yes' to enable PAM authentication, account processing,
++# and session processing. If this is enabled, PAM authentication will
++# be allowed through the ChallengeResponseAuthentication and
++# PasswordAuthentication.  Depending on your PAM configuration,
++# PAM authentication via ChallengeResponseAuthentication may bypass
++# the setting of "PermitRootLogin without-password".
++# If you just want the PAM account and session checks to run without
++# PAM authentication, then enable this but set PasswordAuthentication
++# and ChallengeResponseAuthentication to 'no'.
++#UsePAM no
++
++#AllowAgentForwarding yes
++#AllowTcpForwarding yes
++#GatewayPorts no
++#X11Forwarding no
++#X11DisplayOffset 10
++#X11UseLocalhost yes
++#PermitTTY yes
++#PrintMotd yes
++#PrintLastLog yes
++#TCPKeepAlive yes
++#UseLogin no
++UsePrivilegeSeparation sandbox		# Default for new installations.
++#PermitUserEnvironment no
++#Compression delayed
++#ClientAliveInterval 0
++#ClientAliveCountMax 3
++#UseDNS yes
++#PidFile /var/run/sshd.pid
++#MaxStartups 10:30:100
++#PermitTunnel no
++#ChrootDirectory none
++#VersionAddendum none
++
++# no default banner path
++#Banner none
++
++# override default of no subsystems
++Subsystem	sftp	/usr/libexec/sftp-server
++
++# Example of overriding settings on a per-user basis
++#Match User anoncvs
++#	X11Forwarding no
++#	AllowTcpForwarding no
++#	PermitTTY no
++#	ForceCommand cvs server
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,38 @@
++pcm.imxspdif {
++	type hw
++	card 0
++	channels 2
++}
++ctl.imxspdif {
++	type hw
++	card 0
++	channels 2
++}
++pcm.imxhdmisoc {
++	type hw
++	card 1
++	channels 2
++}
++ctl.imxhdmisoc {
++	type hw
++	card 1
++	channels 2
++}
++pcm.copy {
++	type plug
++	slave {
++		pcm hw
++	}
++	route_policy copy
++}
++pcm.!default {
++        type hw
++        card 0
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 0
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,38 @@
++pcm.imxspdif {
++	type hw
++	card 0
++	channels 2
++}
++ctl.imxspdif {
++	type hw
++	card 0
++	channels 2
++}
++pcm.imxhdmisoc {
++	type hw
++	card 1
++	channels 2
++}
++ctl.imxhdmisoc {
++	type hw
++	card 1
++	channels 2
++}
++pcm.copy {
++	type plug
++	slave {
++		pcm hw
++	}
++	route_policy copy
++}
++pcm.!default {
++        type hw
++        card 1
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 1
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++ctl.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++pcm.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++ctl.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++pcm.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++ctl.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++pcm.copy {
++	type plug
++	slave {
++		pcm hw
++	}
++	route_policy copy
++}
++pcm.!default {
++        type hw
++        card 0
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 0
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++ctl.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++pcm.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++ctl.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++pcm.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++ctl.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++pcm.copy {
++	type plug
++	slave {
++		pcm hw
++	}
++	route_policy copy
++}
++pcm.!default {
++        type hw
++        card 2
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 2
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++ctl.sgtl5000audio {
++	type hw
++	card 0
++	channels 2
++}
++pcm.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++ctl.imxspdif {
++	type hw
++	card 1
++	channels 2
++}
++pcm.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++ctl.imxhdmisoc {
++	type hw
++	card 2
++	channels 2
++}
++pcm.copy {
++	type plug
++	slave {
++		pcm hw
++	}
++	route_policy copy
++}
++pcm.!default {
++        type hw
++        card 1
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 1
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1 @@
++CHROMIUM_SERVER="http://www.novasomindustries.com"
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,3 @@
++echo   stream  tcp     nowait  root    internal
++echo   dgram   udp     wait    root    internal
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,18 @@
++# Wired ethernet
++ETH0_ENABLED=Y
++NET_DEVICE=eth0
++NET_SUFFIX=novasis.it
++# Maybe N or Y
++# NET_USE_DHCP=N
++NET_USE_DHCP=Y
++#The following will be ignored if NET_USE_DHCP=N
++NET_IP_ADDRESS=192.168.10.51
++NET_BROADCAST=192.168.10.51
++NET_MASK=255.255.255.0
++NET_HOSTNAME=Novasom6_Ethernet
++NET_NETWORK=192.168.10.0
++NET_GATEWAY=192.168.10.1
++NET_DNS_LIST=192.168.10.200
++NET_DNS_DOMAIN=-
++NET_ALIAS=248
++NET_HTTPD_PORT=8080
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,6 @@
++server ntp1.inrim.it iburst
++server ntp2.inrim.it iburst
++restrict default kod nomodify notrap nopeer noquery
++restrict -6 default kod nomodify notrap nopeer noquery
++restrict 127.0.0.1
++restrict -6 ::1
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,55 @@
++. /etc/sysconfig/system_vars
++. /etc/sysconfig/network
++[ -f /tmp/root_done ] && exit 0
++
++# this enable the net, if controlled by gpio24
++uname  -r | grep  3.0.101 >/dev/null 2>&1
++if [ "${?}" == "1" ]; then
++	echo 24 > /sys/class/gpio/export
++	echo out > /sys/class/gpio/gpio24/direction
++	usleep 1000
++	echo 1 > /sys/class/gpio/gpio24/value
++fi
++
++[ -d /usr/lib/node_modules ] && ln -s /usr/lib/node_modules
++[ -f /bin/Space ] && rm -f /bin/Space
++[ -f /root/chpasswd_novasis ] && /root/chpasswd_novasis >/dev/null 2>&1
++
++if [ -d /tmp/application_storage ]; then
++	if [ -f /tmp/application_storage/AutoRun.sh ]; then
++		chmod 777 /tmp/application_storage/AutoRun.sh
++		/tmp/application_storage/AutoRun.sh &
++	fi
++fi
++TS=`cat /proc/cmdline | grep ts=`
++if [ "${TS}" == "" ]; then
++        echo "No touch found"
++else
++        if ! [ -f /etc/pointercal ]; then
++		SdlSplashWrite STOP
++		sleep 1
++                /bin/calibrate_touch
++        fi
++fi
++TIMEOUT=15
++if [ -f /usr/bin/startx ]; then
++	while ! [ -f /tmp/system_ready ]; do
++        	sleep 1
++		let TIMEOUT=${TIMEOUT}-1
++		if [ "${TIMEOUT}" == "0" ]; then
++			break
++		fi
++	done
++	kill -HUP `pidof X` >/dev/null 2>&1
++	kill -HUP `pidof x11vnc` >/dev/null 2>&1
++	export DISPLAY=":0.0"
++	SdlSplashWrite STOP >/dev/null 2>&1
++	sleep 1
++        /usr/bin/startx &
++        if [ -f /tmp/application_storage/bkgwm.png ]; then 
++                sleep 1                                      
++                fbsetbg -c /tmp/application_storage/bkgwm.png
++        fi    
++fi
++echo "REFERENCE_SERVER set as ${REFERENCE_SERVER}"
++touch /tmp/root_done
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,16 @@
++REFERENCE_SERVER=192.168.10.39
++NTP_ENABLED=Y
++FAST_BOOT_ENABLE=N
++SYSTEM_PASSWORD=novasis
++#Touch screen disabled as no suitable devices found
++TOUCH_ENABLE=N
++#Not initialized as touch is disabled by system
++#The following line is commented out so you can include it easily
++#TOUCH_ENABLE=Y
++TSLIB_TSDEVICE=/dev/input/
++TSLIB_TSEVENTTYPE=INPUT
++TSLIB_CONFFILE=/etc/ts.conf
++TSLIB_CALIBFILE=/etc/pointercal
++STORED_TSLIB_CALIBFILE=/etc/sysconfig/pointercal
++SDL_MOUSEDRV=TSLIB
++SDL_MOUSEDEV=/dev/input/
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,5 @@
++module_raw input
++module pthres pmin=1
++module variance delta=30
++module dejitter delta=100
++module linear
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,15 @@
++#Wireless
++WLAN_ENABLED=N
++WLAN_USE_DHCP=N
++WLAN_DEVICE=wlan0
++WLAN_SUFFIX=novasis.it
++#The following will be ignored if WLAN_USE_DHCP=OFF
++WLAN_IP_ADDRESS=192.168.10.199
++WLAN_BROADCAST=192.168.10.199
++WLAN_MASK=255.255.255.0
++WLAN_HOSTNAME=Novasom6_Wlan
++WLAN_NETWORK=192.168.10.0
++WLAN_GATEWAY=192.168.10.1
++WLAN_DNS_LIST=192.168.10.200
++WLAN_DNS_DOMAIN=-
++WLAN_MAC=1E:72:49:ED:F7:54
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,8 @@
++ctrl_interface=/var/run/wpa_supplicant
++ap_scan=1
++update_config=1
++network={
++        ssid="NI_LIMBIATE"
++        #psk="Limbiatex01"
++        psk=f7c4e1d4621a987370715588c3e654f85a26c6df592998321a47f7cbec1dffe5
++}
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,44 @@
++#!/bin/sh
++# AUTHENTICATION
++
++# PARSE QUERY STRING
++[ "$REQUEST_METHOD" = "POST" ] && read QUERY_STRING
++saveIFS=$IFS
++IFS='&'
++set -- $QUERY_STRING
++
++# CHECK CREDENTIALS
++if [ "$1" == "username=novasis" ]; then
++	if [ "$2" == "password=novasis" ]; then
++# AUTHENTICATION SUCCESS 
++            echo "<meta http-equiv=\"refresh\" content=\"1; url=/cgi-bin/main_menu.cgi\"/>"
++	fi
++else
++# AUTHENTICATION FAILURE
++    echo "<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8">"
++
++    echo "<html>"
++    echo "<head>"
++    echo "	<center><h3>AUTHENTICATION PAGE</h3></center>"
++    echo "</head>"
++    echo "<body>"
++    echo "<br>"
++    echo "	<form action=\"auth.cgi\" method=\"POST\">"
++    echo "	        USERNAME: <input type=\"text\" name=\"username\">&nbsp;&nbsp;default: novasis"
++    echo "              <br>"
++    echo "              <br>"
++    echo "	        PASSWORD: &nbsp;<input type=\"password\" name=\"password\">&nbsp;&nbsp;default: novasis"
++    echo "              <br>"
++    echo "              <br>" 
++    echo "	        <button type=\"submit\" value=\"LOGIN\">LOGIN</button>"	
++    echo "      </form>" 
++    echo "</body>"
++    echo "</html>"
++
++    echo "<p>AUTHENTICATION FAILURE TRY AGAIN</p>"
++
++fi
++
++
++
++exit 0
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,6 @@
++#!/bin/sh
++# DO REBOOT
++
++echo "SYSTEM REBOOT... refresh page after reboot <ip>:<port>"
++
++reboot
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,21 @@
++#!/bin/sh
++
++# HEADER    
++echo "<meta http-equiv=\"Content-Type\" content=\"text/html; CHARSET=utf-8\">"
++
++echo "<html>"
++echo "<head>"
++echo "      <center><h3>MAIN MENU</h3></center>"
++echo " </head>"
++echo " <body>"
++echo "     <br>"
++
++echo "     <br>"
++echo "     <br>"
++echo "     <center><a href=\"settings.cgi\"><input type=\"button\" value=\"SETTINGS\"></center></a>"
++echo "     <br>"
++echo "     <br>"
++echo "     <center><a href=\"do_reboot.cgi\"><input type=\"button\" value=\"REBOOT\"></center></a>"
++
++echo "</body>"
++echo "</html>"
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,153 @@
++#!/bin/sh
++
++echo "<meta http-equiv=\"Content-Type\" content=\"text/html; CHARSET=utf-8\">"
++
++echo "<html>"
++echo "<head>"
++echo "      <center><h3>SETTINGS</h3></center>"
++echo "</head>"
++echo "<body>"
++echo "      <br>"
++
++# PARSE QUERY STRING
++if [ "$REQUEST_METHOD" == "POST" ];then
++	read QUERY_STRING
++	saveIFS=$IFS
++	IFS='&'
++	set -- $QUERY_STRING
++	cd /tmp
++
++# NETWORK SETTINGS
++	echo $2 | grep "DHCP" > /dev/null
++	if [ "$?" == "0" ];then
++		echo "# Wired ethernet" > /tmp/network
++	        echo "ETH0_ENABLED=Y" >> /tmp/network
++        	echo "NET_DEVICE=eth0" >> /tmp/network
++        	echo "NET_SUFFIX=novasis.it" >> /tmp/network
++	        echo "# Maybe N or Y" >> /tmp/network
++	        echo "# NET_USE_DHCP=N" >> /tmp/network
++	        echo "NET_USE_DHCP=Y" >> /tmp/network
++		echo "#The following will be ignored if NET_USE_DHCP=N" >> /tmp/network
++	#        echo "NET_IP_ADDRESS=192.168.10.51" >> /tmp/network
++	else
++	        echo "# Wired ethernet" > /tmp/network
++	        echo "ETH0_ENABLED=Y" >> /tmp/network
++	        echo "NET_DEVICE=eth0" >> /tmp/network
++	        echo "NET_SUFFIX=novasis.it" >> /tmp/network
++	        echo "# Maybe N or Y" >> /tmp/network
++	        echo "# NET_USE_DHCP=N" >> /tmp/network
++	        echo "NET_USE_DHCP=N" >> /tmp/network
++		echo $1 | sed s/new_ip=//g > /tmp/new_ip
++       		NEWIP=`cat /tmp/new_ip`
++		echo "#The following will be ignored if NET_USE_DHCP=N" >> /tmp/network
++	        echo "NET_IP_ADDRESS=$NEWIP" >> /tmp/network
++	fi
++
++	echo $3 | sed s/new_mask=//g > /tmp/new_mask
++	NEWMASK=`cat /tmp/new_mask`
++
++	echo $4 | sed s/new_hostname=//g > /tmp/new_hostname
++	NEWHOSTNAME=`cat /tmp/new_hostname`
++
++	echo $5 | sed s/new_gateway=//g > /tmp/new_gateway
++	NEWGATEWAY=`cat /tmp/new_gateway`
++
++	echo $6 | sed s/new_dns=//g > /tmp/new_dns
++	NEWDNS=`cat /tmp/new_dns`
++
++	echo $7 | sed s/new_alias=//g > /tmp/new_alias
++	NEWALIAS=`cat /tmp/new_alias`
++
++	echo $8 | sed s/new_reference_server=//g > /tmp/new_reference_server
++	NEWREFERENCE_SERVER=`cat /tmp/new_reference_server`
++
++	echo $9 | sed 's/new_chromium_var=//g' | sed 's/%3A/:/g' | sed 's/%2F/\//g' > /tmp/new_chromium_var
++	NEWCHROMIUM_SERVER=`cat /tmp/new_chromium_var`
++
++	echo "NET_BROADCAST=192.168.10.51" >> /tmp/network
++	echo "NET_MASK=$NEWMASK" >> /tmp/network
++	echo "NET_HOSTNAME=$NEWHOSTNAME" >> /tmp/network
++	echo "NET_NETWORK=192.168.10.0" >> /tmp/network
++	echo "NET_GATEWAY=$NEWGATEWAY" >> /tmp/network
++	echo "NET_DNS_LIST=$NEWDNS" >> /tmp/network
++	echo "NET_DNS_DOMAIN=-" >> /tmp/network
++	echo "NET_ALIAS=$NEWALIAS" >> /tmp/network
++
++	echo "REFERENCE_SERVER=$NEWREFERENCE_SERVER" > /tmp/system_vars
++
++	echo "CHROMIUM_SERVER=$NEWCHROMIUM_SERVER" > /tmp/chromium_var
++
++	mount /dev/mmcblk0p3 /mnt
++	cp /tmp/network /mnt/sysconfig/.
++	cp /tmp/system_vars /mnt/sysconfig/.
++	cp /tmp/system_vars /mnt/sysconfig/.
++	cp /tmp/chromium_var /mnt/sysconfig/.
++	cp /mnt/sysconfig/network /etc/sysconfig/.
++	cp /mnt/sysconfig/system_vars /etc/sysconfig/.
++	cp /mnt/sysconfig/chromium_var /etc/sysconfig/.
++	cd /
++	umount /mnt
++	sync
++fi
++
++. /etc/sysconfig/network
++. /etc/sysconfig/system_vars
++. /etc/sysconfig/chromium_var
++
++# HEADER    
++CURRENT_IP=`ifconfig | grep Bcast | awk '{ print $2 }' | sed 's/addr://g'`
++echo "      <form action=\"settings.cgi\" method=\"POST\">"
++echo "              <br>"
++if [ "${NET_USE_DHCP}" == "Y" ];then
++	echo "              IP: <input type=\"text\" name=\"new_ip\" value="${CURRENT_IP}">"
++	echo "		    DHCP <input type=\"radio\" name=\"dhcp\" value=\"DHCP\" checked/>"
++	echo "              STATIC IP <input type=\"radio\" name=\"dhcp\" value=\"STATIC\"/>"
++else
++	echo "              IP: <input type=\"text\" name=\"new_ip\" value="${NET_IP_ADDRESS}">"
++	echo "		    DHCP <input type=\"radio\" name=\"dhcp\" value=\"DHCP\"/>"
++	echo "              STATIC IP <input type=\"radio\" name=\"dhcp\" value=\"STATIC\" checked/>"
++fi
++echo "              <br>"
++echo "              <br>"
++echo "              MASK: <input type=\"text\" name=\"new_mask\" value="${NET_MASK}">"
++echo "              <br>"
++echo "              <br>"
++echo "              HOSTNAME: <input type=\"text\" name=\"new_hostname\" value="${NET_HOSTNAME}">"
++echo "              <br>"
++echo "              <br>"
++echo "              GATEWAY: <input type=\"text\" name=\"new_gateway\" value="${NET_GATEWAY}">"
++echo "              <br>"
++echo "              <br>"
++echo "              DNS: <input type=\"text\" name=\"new_dns\" value="${NET_DNS_LIST}">"
++echo "              <br>"
++echo "              <br>"
++echo "              ALIAS: <input type=\"text\" name=\"new_alias\" value="${NET_ALIAS}">"
++echo "              <br>"
++echo "              <br>"
++echo "              REFERENCE_SERVER: <input type=\"text\" name=\"new_reference_server\" value="${REFERENCE_SERVER}">"
++echo "              <br>"
++echo "              CHROMIUM_ADDRESS: <input type=\"text\" name=\"new_chromium_var\" size=\"35\" value="${CHROMIUM_SERVER}">"
++echo "              <br>"
++
++ifconfig eth0 | grep "RX packets" > /tmp/net_stats
++ifconfig eth0 | grep "TX packets" >> /tmp/net_stats
++ifconfig eth0 | grep "collisions" >> /tmp/net_stats
++ifconfig eth0 | grep "RX bytes" >> /tmp/net_stats
++
++echo "      	    NETWORK STATS:"
++echo "              <br>"
++echo "              <pre>"
++cat /tmp/net_stats
++echo "              </pre>"
++echo "              <br>"
++
++echo "              <button type=\"submit\" value=\"OK\">OK</button>" 
++echo "              <a href=\"main_menu.cgi\"><input type=\"button\" value=\"BACK\"></a>"
++echo "      </form>"
++
++
++
++echo "<br>"
++echo "</body>"                                                                                          
++echo "</html>"
++exit 0
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,20 @@
++<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8">
++
++<html>
++<head>
++	<center><h3>AUTHENTICATION PAGE</h3></center>
++</head>
++<body>
++<br>
++<br>
++    <form action="cgi-bin/auth.cgi" method="POST">
++        USERNAME: <input type="text" name="username">&nbsp;&nbsp;default: novasis
++        <br>
++        <br>
++	PASSWORD: &nbsp;<input type="password" name="password">&nbsp;&nbsp;default: novasis
++        <br>
++        <br>
++	<button type="submit" value="LOGIN">LOGIN</button>
++    </form> 
++</body>
++</html>
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,55 @@
++#! /bin/sh
++#
++# System-V init script for the openntp daemon
++#
++
++. /etc/sysconfig/network
++. /etc/sysconfig/wireless
++COUNT=0
++/sbin/hwclock -r
++case "$1" in
++  start)
++        echo "Starting ntpd"
++        IP=`ifconfig | grep Mask | awk '{print $2}' | sed 's/addr://g'`
++        if [ "${WLAN_ENABLED}" = "Y" ]; then
++                while [ "$IP" == "" ]; do
++                        echo "Waiting for IP"
++                        sleep 1
++                        IP=`ifconfig ${WLAN_DEVICE} | grep Mask | awk '{print $2}' | sed 's/addr://g'`
++                        let COUNT=$COUNT+1
++                        if [ ${COUNT} -ge 10 ]; then
++                                break
++                        fi
++                done
++                DEVICE=${WLAN_DEVICE}
++        fi
++        if [ "${ETH0_ENABLED}" = "Y" ]; then
++                while [ "$IP" == "" ]; do
++                        echo "Waiting for IP"
++                        sleep 1
++                        IP=`ifconfig ${NET_DEVICE} | grep Mask | awk '{print $2}' | sed 's/addr://g'`
++                        let COUNT=$COUNT+1
++                        if [ ${COUNT} -ge 10 ]; then
++                                break
++                        fi
++                done
++                DEVICE=${NET_DEVICE}
++        fi
++        ntpd -g -I ${DEVICE}
++        /etc/init.d/ntp_support &
++        ;;
++  stop) echo "Stopping ntpd"
++        kill -9 `pidof ntpd`
++        ;;
++  restart) echo "Restarting ntpd"
++        $0 stop
++        sleep 1
++        $0 start
++        ;;
++  *) echo "Usage: $0 {start|stop|restart|reload|force-reload}" >&2
++        exit 1
++        ;;
++esac
++
++exit 0
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,42 @@
++#!/bin/sh
++# called by usr/share/udhcpc/default.script after the dhcp have a valid ip
++
++. /etc/sysconfig/system_vars
++. /etc/sysconfig/network
++. /etc/init.d/func_sdlsplash
++
++#PROGRESS=`cat /tmp/progress`
++for i in /etc/init.d/afterlease_S??* ;do
++	[ ! -f "$i" ] && continue
++	$i start
++	if [ -p /tmp/SdlSplash_fifo ]; then
++		DAEMON_NAME=`echo $i | sed 's/afterlease_//g'`
++		set_splash_text "Setting ${DAEMON_NAME}"
++	fi
++
++done
++
++# Vars for SdlSplash
++ifconfig | grep Bcast | awk '{print $2}' | sed 's/addr://g' > /tmp/my_ip
++# Create the localhost interface
++ifconfig lo up
++# Create an alias interface
++ALIAS=`cat /tmp/my_ip | cut -d"." -f1-3`
++ifconfig ${NET_DEVICE}:service ${ALIAS}.${NET_ALIAS}
++echo ${ALIAS}.${NET_ALIAS} > /tmp/my_alias
++
++echo ${NET_HTTPD_PORT} > /tmp/httpdport
++
++if [ -p /tmp/SdlSplash_fifo ]; then
++	usleep 1000
++	set_splash_progress 100
++	usleep 1000
++	set_splash_text "System Ready"
++	usleep 1000
++	set_single_command "VIEW_SYSINFO"
++	usleep 1000
++	set_single_command "SET_ANIMATION_STOP"
++fi
++sleep 1
++touch /tmp/system_ready
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,21 @@
++#!/bin/sh
++set_splash_progress () {
++        if [ -p /tmp/SdlSplash_fifo ]; then
++                /usr/bin/SdlSplashWrite SET_PROGRESS $1
++        fi
++}
++
++set_splash_text () {
++        if [ -p /tmp/SdlSplash_fifo ]; then
++                /usr/bin/SdlSplashWrite SET_TEXT $1
++        fi
++}
++
++set_single_command () {
++        if [ -p /tmp/SdlSplash_fifo ]; then
++                usleep 100000
++                /usr/bin/SdlSplashWrite $1
++                usleep 100000
++        fi
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,168 @@
++#!/bin/sh
++
++. /etc/init.d/func_sdlsplash
++. /etc/init.d/func_video_audio
++
++WHY_FILE="/tmp/why_defaults"
++UPDATE_PERMANENT_STORAGE="0"
++
++webserver_setup () {
++	if [ -f /usr/sbin/lighttpd ]; then
++        	if ! [ -d /mnt/www ]; then
++        		cp -r /etc/default_init/www /mnt/.
++		else
++			rm -rf /var/www
++			cp -r /mnt/www /tmp/.
++	        fi
++        	if [ -d /mnt/lighttpd ]; then
++			cp -r /mnt/lighttpd /etc/.
++		else
++        		cp -r /etc/default_init/lighttpd /mnt/.
++		fi
++	fi
++}
++
++default_system_vars () {
++	cp -r /etc/default_init/* /mnt/.
++	cp -r /etc/default_init/sysconfig /etc/.
++	cp -r /etc/default_init/lighttpd /etc/.
++	cp /mnt/sysconfig/ntp.conf /etc/.
++	cp /mnt/sysconfig/ts.conf /etc/.
++	cp /mnt/sysconfig/wpa_supplicant.conf /etc/.
++	webserver_setup
++}
++
++default_sysvars () {
++	mkdir -p /mnt/sysconfig
++	default_system_vars
++}
++
++ssh_restore_keys () {
++	if [ -f /usr/sbin/sshd ]; then 
++		if [ -d /etc/sysconfig/ssh ]; then
++			if [ -d /etc/sysconfig/ssl ]; then
++				cp -r /etc/sysconfig/ss* /etc/.
++			fi
++		fi
++	fi
++}
++
++ntp_setup () {
++	if [ -f /etc/sysconfig/ntp.conf ]; then
++		cp /mnt/sysconfig/ntp.conf /etc/.
++	else
++		echo "Load defaults for ntp.conf files missing" >> ${WHY_FILE}
++		UPDATE_PERMANENT_STORAGE="1"
++	fi
++}
++
++inetd_setup () {
++	if [ -f /etc/sysconfig/inetd.conf ]; then
++		cp /mnt/sysconfig/inetd.conf /etc/.
++	else
++		echo "Load defaults for inetd.conf files missing" >> ${WHY_FILE}
++		UPDATE_PERMANENT_STORAGE="1"
++	fi
++}
++
++system_vars_setup () {
++	mount /dev/mmcblk0p3 /mnt
++	if [ -d /mnt/sysconfig ]; then
++		cp -r /mnt/sysconfig /etc/.
++		! [ -f /etc/sysconfig/system_vars ]         && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/system_vars ]         && echo "Load defaults for system_vars missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/network ]             && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/network ]             && echo "Load defaults for network missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/wireless ]            && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/wireless ]            && echo "Load defaults for wireless missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/chromium_var ]        && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/chromium_var ]        && echo "Load defaults for chromium_vars missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/ts.conf ]             && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/ts.conf ]             && echo "Load defaults for ts.conf missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/wpa_supplicant.conf ] && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/wpa_supplicant.conf ] && echo "Load defaults for wpa_supplicant missing" >> ${WHY_FILE}
++		! [ -f /etc/sysconfig/xinitrc ]             && UPDATE_PERMANENT_STORAGE="1"
++		! [ -f /etc/sysconfig/xinitrc ]             && echo "Load defaults for xinitrc missing" >> ${WHY_FILE}
++	else
++		UPDATE_PERMANENT_STORAGE="1"
++		echo "No sysconfig on permanent storage" >> ${WHY_FILE}
++	fi
++	ssh_restore_keys
++	ntp_setup
++	inetd_setup
++	webserver_setup
++	setup_video
++	setup_audio
++
++	[ "${UPDATE_PERMANENT_STORAGE}" == "1" ] && default_sysvars
++
++	. /etc/sysconfig/system_vars
++	. /etc/sysconfig/network
++	. /etc/sysconfig/wireless
++	. /etc/sysconfig/chromium_var
++
++	# Set .profile if exists
++	[ -f /etc/sysconfig/root.profile ] && cp /etc/sysconfig/root.profile /root/.profile
++	# Set .xinitrc if exists
++	[ -f /etc/sysconfig/xinitrc ] && cp /etc/sysconfig/xinitrc /root/.xinitrc
++	
++	if [ -d /etc/X11 ]; then
++		if [ "${TOUCH_ENABLE}" = "N" ]; then	
++			[ -f /etc/sysconfig/xorg.conf_NOTS ] && cp /etc/sysconfig/xorg.conf_NOTS /etc/X11/xorg.conf
++		else
++			[ -f /etc/sysconfig/xorg.conf_TS ] && cp /etc/sysconfig/xorg.conf_TS /etc/X11/xorg.conf
++		fi
++	fi
++	# Set ts.conf and pointercal if they exist
++	[ -f /mnt/sysconfig/ts.conf ] && cp /mnt/sysconfig/ts.conf /etc/.
++	[ -f /etc/sysconfig/pointercal ] && cp /etc/sysconfig/pointercal /etc/.
++	[ -f /etc/sysconfig/wpa_supplicant.conf ] && cp /etc/sysconfig/wpa_supplicant.conf /etc/.
++
++	if [ -d /mnt/application_storage ]; then
++		cp -r /mnt/application_storage /tmp/.
++		chmod -R 777 /tmp/application_storage
++	fi
++
++	if [ -f /etc/sysconfig/additional_startup ]; then
++		cp /mnt/sysconfig/additional_startup /tmp/.
++		chmod 777 /tmp/additional_startup
++		/tmp/additional_startup &
++	fi
++
++	# SdlSplash must be started AFTER the sysvars settings, otherwise env vars are not yet set
++	export ETH0_ENABLED=${ETH0_ENABLED}
++	export NET_USE_DHCP=${NET_USE_DHCP}
++	export NET_MASK=${NET_MASK}
++	export WLAN_ENABLED=${WLAN_ENABLED}
++	export WLAN_USE_DHCP=${WLAN_USE_DHCP}
++	export WLAN_MASK=${WLAN_MASK}
++	# The next lines check for user script.sh in custom_init, copy it in /tmp and executes it
++	# Normally custom_init directory contains additional S* files to be copied in /etc/init.d and then executed from rcS
++	if [ -d /mnt/custom_init ]; then
++		if [ -f /mnt/custom_init/script.sh ]; then
++			cp /mnt/custom_init/script.sh /tmp/.
++			#WARNING : this runs with uSD mounted and before all the scripts
++			# so is a very limited shell and is NOT in background !!!
++			/tmp/script.sh
++		fi
++	fi
++	# The next lines check for user script.sh in custom_startup, copy it in /tmp and executes it
++	# Normally custom_startup directory contains a script ( script.sh ) to be copied in /tmp and then executed in foreground 
++	if [ -d /mnt/custom_startup ]; then
++		if [ -f /mnt/custom_startup/script.sh ]; then
++			#WARNING : this runs with uSD mounted and before all the scripts
++			# so is a very limited shell and is NOT in background !!!
++			cp /mnt/custom_startup/script.sh /tmp/script.sh
++			/tmp/script.sh
++		fi
++	fi
++	if [ "${FAST_BOOT_ENABLE}" == "N" ]; then
++		if [ -f /usr/bin/SdlSplash ]; then
++        		/usr/bin/SdlSplash &
++		fi
++	fi
++	sleep 1
++	umount /mnt
++}
++
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,69 @@
++#!/bin/sh
++setup_video () {
++	if [ -f /usr/sbin/fbset ]; then
++		/usr/sbin/fbset > /etc/fb.modes
++	fi
++}
++
++finder ()
++{
++        ID=-1
++        if [ -d $1 ]; then
++                ID=`cat $1/id`
++        fi
++}
++
++setup_audio () {
++	echo "# Generated from boot peripheral detection" > /root/.asoundrc
++	for i in 0 1 2 3 4 5 6 7; do
++        	finder /proc/asound/card${i}
++	        if ! [ "$ID" = "-1" ]; then
++        	        echo "pcm.${ID} {" >> /root/.asoundrc
++                	echo "  type hw" >> /root/.asoundrc
++	                echo "  card ${i}" >> /root/.asoundrc
++        	        echo "  channels 2" >> /root/.asoundrc
++                	echo "}" >> /root/.asoundrc
++	                echo "ctl.${ID} {" >> /root/.asoundrc
++        	        echo "  type hw" >> /root/.asoundrc
++                	echo "  card ${i}" >> /root/.asoundrc
++	                echo "  channels 2" >> /root/.asoundrc
++        	        echo "}" >> /root/.asoundrc
++	        fi
++	done
++	echo "pcm.copy {" >> /root/.asoundrc
++	echo " type plug" >> /root/.asoundrc
++	echo " slave {" >> /root/.asoundrc
++	echo "  pcm hw" >> /root/.asoundrc
++	echo " }" >> /root/.asoundrc
++	echo " route_policy copy" >> /root/.asoundrc
++	echo "}" >> /root/.asoundrc
++
++	# Todo : specify default device with parameter
++	echo "pcm.!default {" >> /root/.asoundrc
++	echo "  type hw" >> /root/.asoundrc
++	echo "  card 1" >> /root/.asoundrc
++	echo "  channels 2" >> /root/.asoundrc
++	echo "}" >> /root/.asoundrc
++	echo "ctl.!default {" >> /root/.asoundrc
++	echo "  type hw" >> /root/.asoundrc
++	echo "  card 1" >> /root/.asoundrc
++	echo "  channels 2" >> /root/.asoundrc
++	echo "}" >> /root/.asoundrc
++
++	# Gstreamer setup
++	if [ -f /usr/bin/gst-launch ]; then
++		for i in /usr/lib/imx-mm/audio-codec/*; do
++			ln -s $i /usr/lib/`basename $i`
++		done
++		for i in /usr/lib/imx-mm/audio-codec/wrap/*; do
++			ln -s $i /usr/lib/`basename $i`
++		done
++		for i in /usr/lib/imx-mm/video-codec/*; do
++			ln -s $i /usr/lib/`basename $i`
++		done
++		for i in /usr/lib/imx-mm/parser/*; do
++			ln -s $i /usr/lib/`basename $i`
++		done
++	fi
++
++}
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,4 @@
++#!/bin/sh
++sleep 20
++/sbin/hwclock -w
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/rcS
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,40 @@
++#!/bin/sh
++
++. /etc/init.d/func_sdlsplash
++. /etc/init.d/func_sysvars_setup
++. /etc/init.d/func_video_audio
++
++# Start all init scripts in /etc/init.d
++# executing them in numerical order.
++#
++system_vars_setup
++PROGRESS=0
++for i in /etc/init.d/S??* ;do
++	# Ignore dangling symlinks (if any).
++	[ ! -f "$i" ] && continue
++
++	case "$i" in
++		*.sh)
++			# Source shell script for speed.
++			(
++				trap - INT QUIT TSTP
++				set start
++				. $i
++			)
++			;;
++		*)
++			# No sh extension, so fork subprocess.
++			if [ -p /tmp/SdlSplash_fifo ]; then
++				let PROGRESS=${PROGRESS}+10
++				set_splash_progress ${PROGRESS}
++				NAME=`echo $i | grep /etc/init.d/S* | sed 's/\/etc\/init.d\/S//g'`
++				set_splash_text "Setting ${NAME}"
++			fi
++			$i start
++			;;
++	esac
++	if [ -p /tmp/SdlSplash_fifo ]; then
++		set_splash_text "Waiting Network"
++		echo ${PROGRESS} > /tmp/progress
++	fi
++done
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S40network
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,67 @@
++#!/bin/sh
++#
++# Start the network....
++#
++
++. /etc/sysconfig/system_vars
++. /etc/sysconfig/network
++. /etc/init.d/func_sdlsplash
++
++[ "${ETH0_ENABLED}" = "N" ] && exit 0
++
++MAC_FROM_CMDLINE="00:4f:9f:01:00:0e"
++for MACADDR in `cat /proc/cmdline` ; do
++        echo $MACADDR | grep mac_addr > /dev/null
++        [ "$?" == "0" ] && MAC_FROM_CMDLINE=`echo "${MACADDR}" | sed 's/mac_addr=//g'`
++done
++
++if [ -f /etc/sysconfig/mac_addr ];  then
++        . /etc/sysconfig/mac_addr
++fi
++
++case "$1" in
++  start)
++ 	echo "Starting network..."
++	if [ "$NET_USE_DHCP" == "Y" ]; then
++		ifconfig ${NET_DEVICE} hw ether ${MAC_FROM_CMDLINE} up
++		udhcpc -i ${NET_DEVICE} &
++	else
++		echo "search ${NET_SUFFIX}" > /etc/resolv.conf
++		echo "nameserver ${NET_DNS_LIST}" >> /etc/resolv.conf
++		ifconfig ${NET_DEVICE} ${NET_IP_ADDRESS} netmask ${NET_MASK} hw ether ${MAC_FROM_CMDLINE} up >/dev/null 2>&1
++		route add default gw ${NET_GATEWAY} dev ${NET_DEVICE} >/dev/null 2>&1
++		echo "${NET_IP_ADDRESS}" > /tmp/my_ip
++		ifconfig ${NET_DEVICE}:service ${NET_ALIAS}
++		echo ${NET_ALIAS} > /tmp/my_alias
++		echo ${NET_HTTPD_PORT} > /tmp/httpdport
++		if [ -p /tmp/SdlSplash_fifo ]; then
++			set_splash_progress 100
++			set_splash_text "System Ready"
++			usleep 100000
++			set_single_command "VIEW_SYSINFO"
++			set_single_command "SET_ANIMATION_STOP"
++		fi
++	fi
++	if [ -f /usr/sbin/telnetd ]; then
++		telnetd
++	fi
++	if [ -f /usr/sbin/inetd ]; then
++		inetd
++	fi
++	;;
++  stop)
++	echo -n "Stopping network..."
++	/sbin/ifdown -a
++	kill -9 `pidof telnetd`
++	;;
++  restart|reload)
++	"$0" stop
++	"$0" start
++	;;
++  *)
++	echo "Usage: $0 {start|stop|restart}"
++	exit 1
++esac
++
++exit $?
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,6 @@
++#! /bin/sh
++#
++# Empty, used after network is up
++#
++
++exit 0
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,57 @@
++#!/bin/sh
++#
++# sshd        Starts sshd.
++#
++
++# Make sure the ssh-keygen progam exists
++[ -f /usr/bin/ssh-keygen ] || exit 0
++
++mount /dev/mmcblk0p3 /mnt
++if [ -d /mnt/sysconfig/ssh ]; then
++	cp -r /mnt/sysconfig/ss* /etc/.
++else
++	# Create any missing keys
++	/usr/bin/ssh-keygen -A
++	if [ ! -d /mnt/sysconfig ]; then
++		mkdir /mnt/sysconfig
++	fi
++	cp -r /etc/ss* /mnt/sysconfig/.
++fi
++umount /mnt
++
++umask 077
++
++start() {
++	echo -n "Starting sshd: "
++	/usr/sbin/sshd
++	touch /var/lock/sshd
++	echo "OK"
++}
++stop() {
++	echo -n "Stopping sshd: "
++	killall sshd
++	rm -f /var/lock/sshd
++	echo "OK"
++}
++restart() {
++	stop
++	start
++}
++
++case "$1" in
++  start)
++	start
++	;;
++  stop)
++	stop
++	;;
++  restart|reload)
++	restart
++	;;
++  *)
++	echo "Usage: $0 {start|stop|restart}"
++	exit 1
++esac
++
++exit $?
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,38 @@
++#!/bin/sh
++[ ! -f /usr/bin/mysql ] && exit 0
++
++case "$1" in
++	start)
++		if [ ! -d /tmp/mysql ] ; then
++			echo "Creating MySQL system tables..."
++			mysql_install_db --user=mysql --ldata=/tmp/mysql
++		fi
++
++		# We don't use start-stop-daemon because mysqld has
++		# its own wrapper script.
++		echo -n "Starting mysql..."
++		/usr/bin/mysqld_safe --pid-file=/var/run/mysqld.pid  --datadir=/tmp/mysql &
++		usleep 900000
++mysql << _EOF_
++GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'novasis';
++quit
++_EOF_
++
++
++		echo "done."
++		;;
++	stop)
++		echo -n "Stopping mysql..."
++		if test -f /var/run/mysqld.pid ; then
++			kill `cat /var/run/mysqld.pid`
++		fi
++		echo "done."
++		;;
++	restart)
++		$0 stop
++		$0 start
++		;;
++	*)
++		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
++		;;
++esac
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1 @@
++REFERENCE_SERVER=192.168.10.114
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Gstreamer/board/novasis/NOVAsomP/Init/root/.asoundrc
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/Init/root/.asoundrc	2016-10-04 10:11:33.128148999 +0200
+@@ -0,0 +1,38 @@
++pcm.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 1
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 1
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Gstreamer/board/novasis/NOVAsomP/post-image.sh
+--- buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/post-image.sh	2016-10-04 10:11:33.128148999 +0200
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++echo "###### Creating uInitrd for NOVAsomP ######"
++output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "NOVAsomP" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
++pushd ../../Deploy
++rm uInitrd
++ln -s ${BASE_DIR}/images/uInitrd
++popd
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Gstreamer/board/novasis/NOVAsomP/pre-image.sh
+--- buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/pre-image.sh	2016-10-04 10:11:33.128148999 +0200
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++echo "###### Customizing file system ######"
++echo "cp -r board/novasis/NOVAsomP/Init/* ${TARGET_DIR}"
++cp -r board/novasis/NOVAsomP/Init/* ${TARGET_DIR}
++chmod 777 ${TARGET_DIR}/bin/*
++chmod 777 ${TARGET_DIR}/etc/init.d/*
++sync
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Gstreamer/board/novasis/NOVAsomP/readme.txt
+--- buildroot-2016.05/board/novasis/NOVAsomP/readme.txt	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomP/readme.txt	2016-10-04 10:11:33.128148999 +0200
+@@ -0,0 +1,29 @@
++***************************
++Novasis NOVAsomP board
++***************************
++
++This file documents the Buildroot support for the NOVAsomP board.
++
++Please read the Quick Start Guide [1] for an introduction to the board.
++
++Build
++=====
++
++Configure Buildroot for your i.MX6UL EVK board:
++
++  make novasis_novasomp_defconfig
++
++Build all components:
++
++  make
++
++You will find in ./output/images/ the following files:
++  - rootfs.ext2
++  - rootfs.tar
++  - uInitrd
++
++Enjoy!
++
++References
++==========
++[1] http://www.novasis.it/NOVAsomP.html

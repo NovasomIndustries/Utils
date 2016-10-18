@@ -1,0 +1,14 @@
+#!/bin/sh
+BUILDROOT="buildroot-2016.05"
+REFERENCE_FS="Gstreamer"
+#if [ -d buildroot-2016.05 ]; then
+#	rm -rf ${BUILDROOT}
+#fi
+HERE=`pwd`
+cd ../FileSystem
+rm -rf Patches
+tar jxf ${BUILDROOT}.tar.bz2
+diff -Naur ${BUILDROOT}/board ${REFERENCE_FS}/board > ${HERE}/Patches/001-Add-Novasis-Board-Support.patch
+diff -Naur -x gcc ${BUILDROOT}/package ${REFERENCE_FS}/package > ${HERE}/Patches/002-Add-Novasis-Multimedia.patch
+diff -Naur ${BUILDROOT}/package/gcc ${REFERENCE_FS}/package/gcc > ${HERE}/Patches/003-Use-gcc-5-4_patch
+
