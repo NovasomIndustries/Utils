@@ -9,12 +9,23 @@ echo "Device : $1"
 echo "External file system name : $EXTFS_FILENAME"
 echo "External file system directory :  $EXTFS_DIRNAME"
 
+UBOOT_IMG="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/u-boot.img"
+SPL_FILE="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/SPL"
+
+FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
+for i in ${FILES}; do
+        if [ ! -f ${i} ]; then
+                echo "File $i not found. Givin'up"
+		return 1
+        else
+                echo "File $i present"
+        fi
+done
+
 cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
 DISK=${1}
 [ "${1}" = "" ] && DISK="/dev/sdb"
 
-UBOOT_IMG="NOVAsomP/u-boot.img"
-SPL_FILE="NOVAsomP/SPL"
 [ ! -b ${DISK} ] && echo "${DISK} not found"
 [ ! -b ${DISK} ] && return 1
 sudo umount ${DISK}* >/dev/null 2>&1
@@ -85,6 +96,12 @@ sudo cp ${UBOOT_IMG} tmpmount/.
 echo "Done"
 [ "$?" != "0" ] && return 1
 
+FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
+for i in ${FILES}; do
+	if [ ! -f ${i} ]; then
+		echo "File $i not found. Givin'up"
+	fi
+done
 echo -n "Copying dtbs ..."
 sudo cp ${FULL_PATH_PTR}/*.dtb tmpmount/.
 echo "Done"
