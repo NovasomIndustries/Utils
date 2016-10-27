@@ -4,9 +4,12 @@
 # ${3} is size of second user partition, if enabled
 # ${4} is the device
 #DISK="/dev/sdb"
-cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+[ "${2}" = "" ] && ${2}="16"
+[ "${3}" = "" ] && ${3}="16"
+[ "${4}" = "" ] && ${4}="/dev/sdb"
 DISK=${4}
-[ "${4}" = "" ] && DISK="/dev/sdb"
+
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
 
 UBOOT_IMG="NOVAsomP/u-boot.img"
 SPL_FILE="NOVAsomP/SPL"
@@ -19,9 +22,6 @@ sudo echo -n "Writing u-boot ... "
 sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
 sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
 sync
-
-[ "${2}" = "" ] && ${2}="16"
-[ "${3}" = "" ] && ${3}="16"
 
 if [ "${1}" = "-" ]; then
 	sudo fdisk ${DISK} << __EOF__
