@@ -10,6 +10,15 @@ for i in ${DIRS}; do
 	RESULT=`git status | grep modified`
 	if [ "$?" = "0" ]; then
 		echo "${RED}-----> ${BASE} has files modified <-----${NC}"
+		echo -n "Do you want to send changes to git repo ? [Y/n]"
+		read REPLY
+		if [ "${REPLY}" = "Y" ]; then
+			echo -n "Enter the text of the modification : "
+			read TEXTMOD
+			pushd $i
+			gitupdate ${TEXTMOD}
+			popd 
+		fi
 	else
 		echo "${GREEN}${BASE} is in sync${NC}"
 	fi
