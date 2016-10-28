@@ -2,9 +2,13 @@
 PREPEND_PATH="/Devel/NOVAsom_SDK"
 DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed"
 RED='\033[0;31m'
-GREEN='\033[0;32m'
+GREEN='\033[1;32m'
 NC='\033[0m' # No Color
-echo "		Check for modified files"
+echo ""
+echo "********************************"
+echo "**  Check for modified files  **"
+echo "********************************"
+echo ""
 HERE=`pwd`
 for i in ${DIRS}; do
         cd /Devel/NOVAsom_SDK/$i
@@ -22,6 +26,6 @@ for i in ${DIRS}; do
 			cd ${HERE} 
 		fi
 	else
-		echo "${GREEN}${BASE} is in sync${NC}"
+		echo "${GREEN}SYNC${NC} : ${BASE}"
 	fi
 done
