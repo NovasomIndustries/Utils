@@ -32,7 +32,7 @@ for i in ${DIRS}; do
 			COUNTSENT=`expr $COUNTSENT + $INCREMENT`;
 		fi
 	else
-		echo "${GREEN}SYNC${NC} : ${BASE}"
+		echo "${GREEN}SYNC OK${NC} : ${BASE}"
 	fi
 done
 echo ""
