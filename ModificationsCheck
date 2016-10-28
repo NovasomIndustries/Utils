@@ -1,4 +1,5 @@
 #!/bin/sh
+PREPEND_PATH="/Devel/NOVAsom_SDK"
 DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -16,7 +17,7 @@ for i in ${DIRS}; do
 		if [ "${REPLY}" = "Y" ]; then
 			echo -n "Enter the text of the modification : "
 			read TEXTMOD
-			cd $i
+			cd ${PREPEND_PATH}/${i}
 			gitupdate "${TEXTMOD}"
 			cd ${HERE} 
 		fi
