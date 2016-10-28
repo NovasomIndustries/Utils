@@ -1,193 +1,3 @@
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/genimage.cfg Gstreamer/board/novasis/imx6ul/genimage.cfg
---- buildroot-2016.05/board/novasis/imx6ul/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/genimage.cfg	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,41 @@
-+# Minimal microSD card image for the Freescale's i.MX6UL EVK board
-+#
-+# We mimic the .sdcard Freescale's image format for i.MX6UL:
-+# * the microSD card must have 1 kB free space at the beginning,
-+# * U-Boot is dumped as is,
-+# * a FAT partition at offset 8 MB is containing zImage and dtbs,
-+# * a single root filesystem partition is required (Ext2 in this case).
-+#
-+
-+image boot.vfat {
-+  vfat {
-+    files = {
-+      "imx6ul-14x14-evk.dtb",
-+      "zImage"
-+    }
-+  }
-+  size = 16M
-+}
-+
-+image sdcard.img {
-+  hdimage {
-+  }
-+
-+  partition u-boot {
-+    in-partition-table = "no"
-+    image = "u-boot.imx"
-+    offset = 1024
-+  }
-+
-+  partition boot {
-+    partition-type = 0xC
-+    bootable = "true"
-+    image = "boot.vfat"
-+    offset = 8M
-+  }
-+
-+  partition rootfs {
-+    partition-type = 0x83
-+    image = "rootfs.ext2"
-+  }
-+}
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh Gstreamer/board/novasis/imx6ul/Init/bin/autologin.sh
---- buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/Init/bin/autologin.sh	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+sleep 2
-+/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec Gstreamer/board/novasis/imx6ul/Init/bin/get_exec
---- buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/Init/bin/get_exec	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+. /etc/sysconfig/system_vars
-+if [ "$1" == "" ]; then
-+        echo "Usage `basename $0` <filename>"
-+        exit 0
-+fi
-+cd /tmp
-+rm -f `basename ${1}`
-+wget http://${REFERENCE_SERVER}/${1}
-+chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs Gstreamer/board/novasis/imx6ul/Init/bin/update_fs
---- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/Init/bin/update_fs	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+get_exec uInitrd       
-+rm -rf /tmp/update_dir
-+mkdir /tmp/update_dir
-+mount /dev/mmcblk0p1 /tmp/update_dir
-+cp /tmp/uInitrd /tmp/update_dir/.       
-+umount /tmp/update_dir
-+
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel Gstreamer/board/novasis/imx6ul/Init/bin/update_kernel
---- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/Init/bin/update_kernel	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+get_exec zImage
-+get_exec novasomp.dtb
-+rm -rf /tmp/update_dir
-+mkdir /tmp/update_dir
-+mount /dev/mmcblk0p1 /tmp/update_dir
-+cp /tmp/zImage /tmp/update_dir/.       
-+cp /tmp/novasomp.dtb /tmp/update_dir/.
-+umount /tmp/update_dir
-+
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/imx6ul/Init/etc/sysconfig/system_vars
---- buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1 @@
-+REFERENCE_SERVER=192.168.10.122
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/post-image.sh Gstreamer/board/novasis/imx6ul/post-image.sh
---- buildroot-2016.05/board/novasis/imx6ul/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/post-image.sh	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,9 @@
-+#!/bin/bash
-+
-+echo "###### Creating uInitr ######"
-+output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
-+pushd ../../Deploy
-+rm uInitrd
-+ln -s ${BASE_DIR}/images/uInitrd
-+popd
-+exit $?
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/pre-image.sh Gstreamer/board/novasis/imx6ul/pre-image.sh
---- buildroot-2016.05/board/novasis/imx6ul/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/pre-image.sh	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,8 @@
-+#!/bin/bash
-+
-+echo "###### Customizing file system ######"
-+echo "cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}"
-+cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}
-+chmod 777 ${TARGET_DIR}/bin/*
-+sync
-+exit $?
-diff -Naur buildroot-2016.05/board/novasis/imx6ul/readme.txt Gstreamer/board/novasis/imx6ul/readme.txt
---- buildroot-2016.05/board/novasis/imx6ul/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/imx6ul/readme.txt	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,64 @@
-+***************************
-+Freescale i.MX6UL EVK board
-+***************************
-+
-+This file documents the Buildroot support for the Freescale i.MX6UL EVK board.
-+
-+Please read the i.MX6UL Evaluation Kit Quick Start Guide [1] for an
-+introduction to the board.
-+
-+Build
-+=====
-+
-+First, configure Buildroot for your i.MX6UL EVK board:
-+
-+  make freescale_imx6ulevk_defconfig
-+
-+Build all components:
-+
-+  make
-+
-+You will find in ./output/images/ the following files:
-+  - imx6ul-14x14-evk.dtb
-+  - rootfs.ext2
-+  - rootfs.tar
-+  - sdcard.img
-+  - u-boot.imx
-+  - zImage
-+
-+Create a bootable microSD card
-+==============================
-+
-+To determine the device associated to the microSD card have a look in the
-+/proc/partitions file:
-+
-+  cat /proc/partitions
-+
-+Buildroot prepares a bootable "sdcard.img" image in the output/images/
-+directory, ready to be dumped on a microSD card. Launch the following
-+command as root:
-+
-+  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
-+
-+*** WARNING! This will destroy all the card content. Use with care! ***
-+
-+For details about the medium image layout, see the definition in
-+board/freescale/imx6ulevk/genimage.cfg.
-+
-+Boot the i.MX6UL EVK board
-+=========================
-+
-+To boot your newly created system (refer to the i.MX6UL EVK Quick Start Guide
-+[1] for guidance):
-+- insert the microSD card in the microSD slot of the board;
-+- verify that your i.MX6UL EVK board jumpers and switches are set as mentioned
-+  in the i.MX6UL EVK Quick Start Guide [1];
-+- put a micro USB cable into the Debug USB Port and connect using a terminal
-+  emulator at 115200 bps, 8n1;
-+- power on the board.
-+
-+Enjoy!
-+
-+References
-+==========
-+[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
 diff -Naur buildroot-2016.05/board/novasis/Init/bin/autologin.sh Gstreamer/board/novasis/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
 +++ Gstreamer/board/novasis/Init/bin/autologin.sh	2016-10-04 10:11:33.124151000 +0200
@@ -2730,3 +2540,433 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Gstreamer/board/n
 +References
 +==========
 +[1] http://www.novasis.it/NOVAsomP.html
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg Gstreamer/board/novasis/NOVAsomU/genimage.cfg
+--- buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/genimage.cfg	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,41 @@
++# Minimal microSD card image for the Freescale's i.MX6UL EVK board
++#
++# We mimic the .sdcard Freescale's image format for i.MX6UL:
++# * the microSD card must have 1 kB free space at the beginning,
++# * U-Boot is dumped as is,
++# * a FAT partition at offset 8 MB is containing zImage and dtbs,
++# * a single root filesystem partition is required (Ext2 in this case).
++#
++
++image boot.vfat {
++  vfat {
++    files = {
++      "imx6ul-14x14-evk.dtb",
++      "zImage"
++    }
++  }
++  size = 16M
++}
++
++image sdcard.img {
++  hdimage {
++  }
++
++  partition u-boot {
++    in-partition-table = "no"
++    image = "u-boot.imx"
++    offset = 1024
++  }
++
++  partition boot {
++    partition-type = 0xC
++    bootable = "true"
++    image = "boot.vfat"
++    offset = 8M
++  }
++
++  partition rootfs {
++    partition-type = 0x83
++    image = "rootfs.ext2"
++  }
++}
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh Gstreamer/board/novasis/NOVAsomU/Init/bin/autologin.sh
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/bin/autologin.sh	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,3 @@
++#!/bin/sh
++sleep 2
++/bin/login -f root
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec Gstreamer/board/novasis/NOVAsomU/Init/bin/get_exec
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/bin/get_exec	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++. /etc/sysconfig/system_vars
++if [ "$1" == "" ]; then
++        echo "Usage `basename $0` <filename>"
++        exit 0
++fi
++cd /tmp
++rm -f `basename ${1}`
++wget http://${REFERENCE_SERVER}/${1}
++chmod 777 `basename ${1}`
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs Gstreamer/board/novasis/NOVAsomU/Init/bin/update_fs
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/bin/update_fs	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,8 @@
++#!/bin/sh
++get_exec uInitrd       
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/uInitrd /tmp/update_dir/.       
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel Gstreamer/board/novasis/NOVAsomU/Init/bin/update_kernel
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/bin/update_kernel	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,10 @@
++#!/bin/sh
++get_exec zImage
++get_exec novasomp.dtb
++rm -rf /tmp/update_dir
++mkdir /tmp/update_dir
++mount /dev/mmcblk0p1 /tmp/update_dir
++cp /tmp/zImage /tmp/update_dir/.       
++cp /tmp/novasomp.dtb /tmp/update_dir/.
++umount /tmp/update_dir
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab Gstreamer/board/novasis/NOVAsomU/Init/etc/inittab
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/etc/inittab	2016-10-28 11:21:08.935254897 +0200
+@@ -0,0 +1,35 @@
++# /etc/inittab
++#
++# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
++#
++# Note: BusyBox init doesn't support runlevels.  The runlevels field is
++# completely ignored by BusyBox init. If you want runlevels, use
++# sysvinit.
++#
++# Format for each entry: <id>:<runlevels>:<action>:<process>
++#
++# id        == tty to run on, or empty for /dev/console
++# runlevels == ignored
++# action    == one of sysinit, respawn, askfirst, wait, and once
++# process   == program to run
++
++# Startup the system
++::sysinit:/bin/mount -t proc proc /proc
++::sysinit:/bin/mount -o remount,rw /
++::sysinit:/bin/mkdir -p /dev/pts
++::sysinit:/bin/mkdir -p /dev/shm
++::sysinit:/bin/mount -a
++::sysinit:/bin/hostname -F /etc/hostname
++# now run any rc scripts
++::sysinit:/etc/init.d/rcS
++
++# Put a getty on the serial port
++ttymxc0::respawn:/sbin/getty -L -l /bin/autologin.sh -n ttymxc0 115200 vt100 # GENERIC_SERIAL
++
++# Stuff to do for the 3-finger salute
++#::ctrlaltdel:/sbin/reboot
++
++# Stuff to do before rebooting
++::shutdown:/etc/init.d/rcK
++::shutdown:/sbin/swapoff -a
++::shutdown:/bin/umount -a -r
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1 @@
++REFERENCE_SERVER=192.168.10.122
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh Gstreamer/board/novasis/NOVAsomU/post-image.sh
+--- buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/post-image.sh	2016-10-04 10:11:33.120152999 +0200
+@@ -0,0 +1,9 @@
++#!/bin/bash
++
++echo "###### Creating uInitr ######"
++output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
++pushd ../../Deploy
++rm uInitrd
++ln -s ${BASE_DIR}/images/uInitrd
++popd
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh Gstreamer/board/novasis/NOVAsomU/pre-image.sh
+--- buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/pre-image.sh	2016-10-28 11:20:34.211254897 +0200
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++echo "###### Customizing file system ######"
++echo "cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}"
++cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}
++chmod 777 ${TARGET_DIR}/bin/*
++sync
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/readme.txt Gstreamer/board/novasis/NOVAsomU/readme.txt
+--- buildroot-2016.05/board/novasis/NOVAsomU/readme.txt	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/board/novasis/NOVAsomU/readme.txt	2016-10-04 10:11:33.124151000 +0200
+@@ -0,0 +1,64 @@
++***************************
++Freescale i.MX6UL EVK board
++***************************
++
++This file documents the Buildroot support for the Freescale i.MX6UL EVK board.
++
++Please read the i.MX6UL Evaluation Kit Quick Start Guide [1] for an
++introduction to the board.
++
++Build
++=====
++
++First, configure Buildroot for your i.MX6UL EVK board:
++
++  make freescale_imx6ulevk_defconfig
++
++Build all components:
++
++  make
++
++You will find in ./output/images/ the following files:
++  - imx6ul-14x14-evk.dtb
++  - rootfs.ext2
++  - rootfs.tar
++  - sdcard.img
++  - u-boot.imx
++  - zImage
++
++Create a bootable microSD card
++==============================
++
++To determine the device associated to the microSD card have a look in the
++/proc/partitions file:
++
++  cat /proc/partitions
++
++Buildroot prepares a bootable "sdcard.img" image in the output/images/
++directory, ready to be dumped on a microSD card. Launch the following
++command as root:
++
++  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
++
++*** WARNING! This will destroy all the card content. Use with care! ***
++
++For details about the medium image layout, see the definition in
++board/freescale/imx6ulevk/genimage.cfg.
++
++Boot the i.MX6UL EVK board
++=========================
++
++To boot your newly created system (refer to the i.MX6UL EVK Quick Start Guide
++[1] for guidance):
++- insert the microSD card in the microSD slot of the board;
++- verify that your i.MX6UL EVK board jumpers and switches are set as mentioned
++  in the i.MX6UL EVK Quick Start Guide [1];
++- put a micro USB cable into the Debug USB Port and connect using a terminal
++  emulator at 115200 bps, 8n1;
++- power on the board.
++
++Enjoy!
++
++References
++==========
++[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
+diff -Naur -x gcc buildroot-2016.05/configs/novasomp_defconfig Gstreamer/configs/novasomp_defconfig
+--- buildroot-2016.05/configs/novasomp_defconfig	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/configs/novasomp_defconfig	2016-10-28 11:56:30.415254897 +0200
+@@ -0,0 +1,108 @@
++BR2_ARCH_HAS_MMU_OPTIONAL=y
++BR2_arm=y
++BR2_ARCH="arm"
++BR2_ENDIAN="LITTLE"
++BR2_GCC_TARGET_ABI="aapcs-linux"
++BR2_GCC_TARGET_CPU="cortex-a9"
++BR2_GCC_TARGET_FPU="vfpv3-d16"
++BR2_GCC_TARGET_FLOAT_ABI="hard"
++BR2_GCC_TARGET_MODE="arm"
++BR2_BINFMT_SUPPORTS_SHARED=y
++BR2_BINFMT_ELF=y
++BR2_ARM_CPU_HAS_NEON=y
++BR2_ARM_CPU_MAYBE_HAS_NEON=y
++BR2_ARM_CPU_MAYBE_HAS_VFPV2=y
++BR2_ARM_CPU_HAS_VFPV2=y
++BR2_ARM_CPU_MAYBE_HAS_VFPV3=y
++BR2_ARM_CPU_HAS_VFPV3=y
++BR2_ARM_CPU_HAS_ARM=y
++BR2_ARM_CPU_HAS_THUMB2=y
++BR2_ARM_CPU_ARMV7A=y
++BR2_cortex_a9=y
++BR2_ARM_ENABLE_NEON=y
++BR2_ARM_ENABLE_VFP=y
++BR2_ARM_EABIHF=y
++BR2_ARM_FPU_VFPV3D16=y
++BR2_ARM_INSTRUCTIONS_ARM=y
++
++BR2_DL_DIR="/Devel/NOVAsom_SDK/Packages"
++
++BR2_TOOLCHAIN=y
++BR2_TOOLCHAIN_USES_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL=y
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
++BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED=y
++BR2_TOOLCHAIN_EXTERNAL_PATH="/Devel/NOVAsom_SDK/Xcompiler/ArmCompiler/usr"
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="$(ARCH)-linux"
++BR2_TOOLCHAIN_EXTERNAL_PREFIX="$(ARCH)-linux"
++BR2_TOOLCHAIN_EXTERNAL_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL_GCC_5=y
++BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_1=y
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
++BR2_TOOLCHAIN_EXTERNAL_INET_RPC=y
++BR2_TOOLCHAIN_EXTERNAL_CXX=y
++BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS=""
++BR2_TOOLCHAIN_HAS_NATIVE_RPC=y
++BR2_USE_WCHAR=y
++BR2_ENABLE_LOCALE=y
++BR2_INSTALL_LIBSTDCPP=y
++BR2_TOOLCHAIN_HAS_THREADS=y
++BR2_TOOLCHAIN_HAS_THREADS_DEBUG=y
++BR2_TOOLCHAIN_HAS_THREADS_NPTL=y
++BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS=y
++BR2_TOOLCHAIN_HAS_SSP=y
++BR2_ENABLE_LOCALE_PURGE=y
++BR2_ENABLE_LOCALE_WHITELIST="C en_US de fr it"
++BR2_GENERATE_LOCALE=""
++BR2_USE_MMU=y
++BR2_TARGET_OPTIMIZATION=""
++BR2_TARGET_LDFLAGS=""
++
++#
++# System configuration
++#
++BR2_TARGET_GENERIC_ISSUE="Welcome"
++BR2_TARGET_GENERIC_PASSWD_MD5=y
++BR2_TARGET_GENERIC_PASSWD_METHOD="md5"
++BR2_INIT_BUSYBOX=y
++BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
++BR2_ROOTFS_DEVICE_TABLE="system/device_table.txt"
++BR2_ROOTFS_SKELETON_DEFAULT=y
++BR2_TARGET_ENABLE_ROOT_LOGIN=y
++BR2_TARGET_GENERIC_ROOT_PASSWD=""
++BR2_SYSTEM_BIN_SH_BUSYBOX=y
++
++BR2_TARGET_GENERIC_GETTY_PORT="ttymxc2"
++BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP=y
++BR2_TARGET_GENERIC_GETTY_BAUDRATE="0"
++BR2_TARGET_GENERIC_GETTY_TERM="vt100"
++BR2_TARGET_GENERIC_GETTY_OPTIONS="-l /bin/autologin.sh -n"
++BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW=y
++BR2_SYSTEM_DHCP="eth0"
++BR2_ROOTFS_POST_BUILD_SCRIPT="board/novasis/NOVAsomP/pre-image.sh"
++BR2_ROOTFS_POST_IMAGE_SCRIPT="board/novasis/NOVAsomP/post-image.sh"
++
++#
++# Filesystem images
++#
++BR2_TARGET_ROOTFS_EXT2=y
++BR2_TARGET_ROOTFS_EXT2_3=y
++BR2_TARGET_ROOTFS_EXT2_GEN=3
++BR2_TARGET_ROOTFS_EXT2_REV=1
++BR2_TARGET_ROOTFS_EXT2_LABEL=""
++BR2_TARGET_ROOTFS_EXT2_BLOCKS=0
++BR2_TARGET_ROOTFS_EXT2_INODES=0
++BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS=0
++BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES=0
++BR2_TARGET_ROOTFS_EXT2_RESBLKS=0
++BR2_TARGET_ROOTFS_EXT2_GZIP=y
++
++#
++# Host utilities
++#
++BR2_PACKAGE_HOST_E2FSPROGS=y
++BR2_PACKAGE_HOST_GENEXT2FS=y
++BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS=y
++BR2_PACKAGE_HOST_MKE2IMG=y
++BR2_PACKAGE_HOST_UBOOT_TOOLS=y
+diff -Naur -x gcc buildroot-2016.05/configs/novasomu_defconfig Gstreamer/configs/novasomu_defconfig
+--- buildroot-2016.05/configs/novasomu_defconfig	1970-01-01 01:00:00.000000000 +0100
++++ Gstreamer/configs/novasomu_defconfig	2016-10-28 11:58:02.035254897 +0200
+@@ -0,0 +1,85 @@
++# architecture
++BR2_arm=y
++BR2_cortex_a7=y
++
++BR2_DL_DIR="/Devel/NOVAsom_SDK/Packages"
++
++BR2_TOOLCHAIN=y
++BR2_TOOLCHAIN_USES_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL=y
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
++BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED=y
++BR2_TOOLCHAIN_EXTERNAL_PATH="/Devel/NOVAsom_SDK/Xcompiler/ArmCompiler/usr"
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="$(ARCH)-linux"
++BR2_TOOLCHAIN_EXTERNAL_PREFIX="$(ARCH)-linux"
++BR2_TOOLCHAIN_EXTERNAL_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL_GCC_5=y
++BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_1=y
++BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
++BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
++BR2_TOOLCHAIN_EXTERNAL_INET_RPC=y
++BR2_TOOLCHAIN_EXTERNAL_CXX=y
++BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS=""
++BR2_TOOLCHAIN_HAS_NATIVE_RPC=y
++BR2_USE_WCHAR=y
++BR2_ENABLE_LOCALE=y
++BR2_INSTALL_LIBSTDCPP=y
++BR2_TOOLCHAIN_HAS_THREADS=y
++BR2_TOOLCHAIN_HAS_THREADS_DEBUG=y
++BR2_TOOLCHAIN_HAS_THREADS_NPTL=y
++BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS=y
++BR2_TOOLCHAIN_HAS_SSP=y
++BR2_ENABLE_LOCALE_PURGE=y
++BR2_ENABLE_LOCALE_WHITELIST="C en_US de fr it"
++BR2_GENERATE_LOCALE=""
++BR2_USE_MMU=y
++BR2_TARGET_OPTIMIZATION=""
++BR2_TARGET_LDFLAGS=""
++
++#
++# System configuration
++#
++BR2_TARGET_GENERIC_ISSUE="Welcome"
++BR2_TARGET_GENERIC_PASSWD_MD5=y
++BR2_TARGET_GENERIC_PASSWD_METHOD="md5"
++BR2_INIT_BUSYBOX=y
++BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
++BR2_ROOTFS_DEVICE_TABLE="system/device_table.txt"
++BR2_ROOTFS_SKELETON_DEFAULT=y
++BR2_TARGET_ENABLE_ROOT_LOGIN=y
++BR2_TARGET_GENERIC_ROOT_PASSWD=""
++BR2_SYSTEM_BIN_SH_BUSYBOX=y
++
++BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
++BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP=y
++BR2_TARGET_GENERIC_GETTY_BAUDRATE="0"
++BR2_TARGET_GENERIC_GETTY_TERM="vt100"
++BR2_TARGET_GENERIC_GETTY_OPTIONS="-l /bin/autologin.sh -n"
++BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW=y
++BR2_SYSTEM_DHCP="eth0"
++BR2_ROOTFS_POST_BUILD_SCRIPT="board/novasis/NOVAsomU/pre-image.sh"
++BR2_ROOTFS_POST_IMAGE_SCRIPT="board/novasis/NOVAsomU/post-image.sh"
++
++#
++# Filesystem images
++#
++BR2_TARGET_ROOTFS_EXT2=y
++BR2_TARGET_ROOTFS_EXT2_3=y
++BR2_TARGET_ROOTFS_EXT2_GEN=3
++BR2_TARGET_ROOTFS_EXT2_REV=1
++BR2_TARGET_ROOTFS_EXT2_LABEL=""
++BR2_TARGET_ROOTFS_EXT2_BLOCKS=0
++BR2_TARGET_ROOTFS_EXT2_INODES=0
++BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS=0
++BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES=0
++BR2_TARGET_ROOTFS_EXT2_RESBLKS=0
++BR2_TARGET_ROOTFS_EXT2_GZIP=y
++
++#
++# Host utilities
++#
++BR2_PACKAGE_HOST_E2FSPROGS=y
++BR2_PACKAGE_HOST_GENEXT2FS=y
++BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS=y
++BR2_PACKAGE_HOST_MKE2IMG=y
++BR2_PACKAGE_HOST_UBOOT_TOOLS=y

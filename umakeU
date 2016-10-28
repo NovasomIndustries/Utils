@@ -1,0 +1,7 @@
+. ../Utils/SourceMe
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+export KBUILD_OUTPUT=./NOVAsomU
+make distclean
+make mrproper
+make novasomu_defconfig
+make -j32
