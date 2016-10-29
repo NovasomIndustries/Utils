@@ -1,5 +1,5 @@
 # NOVAsom_SDK 1.0.4 Utils
-This repo contains some utilities for the NOVAsom_SDK 1.0.4 Novasom Industries 
+This repo contains the utilities for the NOVAsom_SDK 1.0.4 Novasom Industries 
 project
 
 ## Prerequisities
