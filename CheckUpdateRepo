@@ -37,6 +37,6 @@ for i in ${DIRS}; do
 	fi
 done
 echo ""
-echo "Finished. Found ${COUNTMODS} modification(s) and ${COUNTRECV} files received from remote on ${REPOCOUNT} local repos"
+echo -e "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) and ${RED}${COUNTRECV}${NC} files received from remote on ${GREEN}${REPOCOUNT}${RED} local repos"
 echo ""
 
