@@ -7,9 +7,9 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 echo ""
-echo "********************************"
-echo "**  Check for modified files  **"
-echo "********************************"
+echo "****************************************"
+echo "**  Check for locally modified files  **"
+echo "****************************************"
 echo ""
 HERE=`pwd`
 COUNTMODS=0
