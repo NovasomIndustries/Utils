@@ -8,12 +8,8 @@ for i in ${DIRS}; do
         cd /Devel/NOVAsom_SDK/$i
         BASE=`basename $i`
         echo -n "Check for updates in ${BASE} "
-	#git fetch origin
-	#RES=`git log origin/master ^master | grep NovasomIndustries`
 	git status -uno | grep behind
 	RES=$?
-	#echo $RES
-	#if [ ! "${RES}" = "" ]; then
 	if [ "${RES}" = "0" ]; then
 	echo "**********************************"
 		echo ""
