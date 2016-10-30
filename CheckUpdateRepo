@@ -24,7 +24,6 @@ for i in ${DIRS}; do
 	RES=$?
 	if [ "${RES}" = "0" ]; then
                 COUNTMODS=`expr $COUNTMODS + $INCREMENT`;
-		echo ""
         	echo -e "  ${RED}Updates in ${BASE}${NC}"
 	        echo -n "  Do you want to update ? [Y/n] "
         	read VAR
