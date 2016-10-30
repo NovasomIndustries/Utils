@@ -37,5 +37,5 @@ for i in ${DIRS}; do
 	fi
 done
 echo ""
-echo -e "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTSENT}${NC} files sent to remote from ${GREEN}${REPOCOUNT}${NC} local repos"
+echo -e "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTSENT}${NC} file(s) sent to remote from ${GREEN}${REPOCOUNT}${NC} local repos"
 echo ""
