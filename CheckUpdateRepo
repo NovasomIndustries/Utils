@@ -1,5 +1,9 @@
 #!/bin/sh
 DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+
 for i in ${DIRS}; do
         cd /Devel/NOVAsom_SDK/$i
         BASE=`basename $i`
@@ -8,15 +12,15 @@ for i in ${DIRS}; do
 	RES=`git log origin/master ^master | grep NovasomIndustries`
 	if [ ! "${RES}" = "" ]; then
 		echo ""
-        	echo    "  Updates in ${BASE}"
+        	echo -e "  ${RED}Updates in ${BASE}${NC}"
 	        echo -n "  Do you want to update ? [Y/n] "
         	read VAR
 	        if [ "${VAR}" = "Y" ]; then
         	        git pull origin master
 		else
-			echo "No update"
+			echo -e "${RED}No update${NC}"
 	        fi
 	else
-		echo "<-> Already at the latest version"
+		echo -e "<-> ${GREEN}Already at the latest version${NC}"
 	fi
 done
