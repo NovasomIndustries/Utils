@@ -1,10 +1,12 @@
-#!/bin/dash
+#!/bin/sh
 PREPEND_PATH="/Devel/NOVAsom_SDK"
 DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed CodeBlocks"
 REPOCOUNT=`echo "$DIRS" | awk '{print NF}'`
+
+GREEN='\033[0;32m'
 RED='\033[0;31m'
-GREEN='\033[1;32m'
-NC='\033[0m' # No Color
+NC='\033[0m'
+
 echo ""
 echo "********************************"
 echo "**  Check for modified files  **"
@@ -20,7 +22,7 @@ for i in ${DIRS}; do
 	RESULT=`git status | grep modified`
 	if [ "$?" = "0" ]; then
 		COUNTMODS=`expr $COUNTMODS + $INCREMENT`;
-		echo "${RED}-----> ${BASE} has files modified <-----${NC}"
+		echo -e "${RED}-----> ${BASE} has files modified <-----${NC}"
 		echo -n "Do you want to send changes to git repo [Y/n] ? "
 		read REPLY
 		if [ "${REPLY}" = "Y" ]; then
@@ -32,7 +34,7 @@ for i in ${DIRS}; do
 			COUNTSENT=`expr $COUNTSENT + $INCREMENT`;
 		fi
 	else
-		echo "${GREEN}SYNC OK${NC} : ${BASE}"
+		echo -e "${GREEN}SYNC OK${NC} : ${BASE}"
 	fi
 done
 echo ""
