@@ -21,7 +21,7 @@ for i in ${DIRS}; do
 	RESULT=`git status | grep modified`
 	if [ "$?" = "0" ]; then
 		COUNTMODS=`expr $COUNTMODS + $INCREMENT`;
-		echo -e "${RED}-----> ${BASE} has files modified <-----${NC}"
+		echo "${RED}-----> ${BASE} has files modified <-----${NC}"
 		echo -n "Do you want to send changes to git repo [Y/n] ? "
 		read REPLY
 		if [ "${REPLY}" = "Y" ]; then
@@ -33,9 +33,9 @@ for i in ${DIRS}; do
 			COUNTSENT=`expr $COUNTSENT + $INCREMENT`;
 		fi
 	else
-		echo -e "${GREEN}SYNC OK${NC} : ${BASE}"
+		echo "${GREEN}SYNC OK${NC} : ${BASE}"
 	fi
 done
 echo ""
-echo -e "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTSENT}${NC} file(s) sent to remote from ${GREEN}${REPOCOUNT}${NC} local repos"
+echo "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTSENT}${NC} file(s) sent to remote from ${GREEN}${REPOCOUNT}${NC} local repos"
 echo ""
