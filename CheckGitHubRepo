@@ -1,43 +1,30 @@
 #!/bin/sh
-DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed CodeBlocks"
-REPOCOUNT=`echo "$DIRS" | awk '{print NF}'`
+DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed"
 
-GREEN='\033[0;32m'
-RED='\033[0;31m'
-NC='\033[0m'
-
-COUNTMODS=0
-COUNTRECV=0
-INCREMENT=1
-
-echo ""
-echo "***************************************"
-echo "**  Check for remote modified files  **"
-echo "***************************************"
-echo ""
 for i in ${DIRS}; do
         cd /Devel/NOVAsom_SDK/$i
-        BASE=`basename $i`
-        #echo -n "Check for updates in ${BASE} "
-        git fetch origin  >/dev/null 2>&1
-	git status -uno | grep behind  >/dev/null 2>&1
-	RES=$?
-	if [ "${RES}" = "0" ]; then
-                COUNTMODS=`expr $COUNTMODS + $INCREMENT`;
-        	echo -e "  ${RED}Updates in ${BASE}${NC}"
+        LOCALBASE=`basename $i`
+	UPSTREAM=${1:-'@{u}'}
+	LOCAL=$(git rev-parse @)	
+	REMOTE=$(git rev-parse "$UPSTREAM")
+	BASE=$(git merge-base @ "$UPSTREAM")
+        echo -n "Check for updates in ${LOCALBASE} "
+
+	if [ $LOCAL = $REMOTE ]; then
+		echo "<-> Already at the latest version"
+	elif [ $LOCAL = $BASE ]; then
+		echo ""
+        	echo    "  Updates in ${LOCALBASE}"
 	        echo -n "  Do you want to update ? [Y/n] "
         	read VAR
 	        if [ "${VAR}" = "Y" ]; then
-        	        git pull origin master >/dev/null 2>&1
-                        COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
+        	        git pull origin master
 		else
-			echo -e "${RED}Update skipped${NC}"
+			echo "No update"
 	        fi
+	elif [ $REMOTE = $BASE ]; then
+	    echo "Need to push"
 	else
-		echo -e "${GREEN}SYNC OK${NC} : ${BASE}"
+	    echo "Diverged"
 	fi
 done
-echo ""
-echo -e "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) and ${RED}${COUNTRECV}${NC} file(s) received from remote on ${GREEN}${REPOCOUNT}${NC} local repos"
-echo ""
-
