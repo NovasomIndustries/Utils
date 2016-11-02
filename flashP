@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # ${1} is number of user partition
 # ${2} is size of first user partition, if enabled
 # ${3} is size of second user partition, if enabled
@@ -8,6 +8,11 @@
 [ "${3}" = "" ] && ${3}="16"
 [ "${4}" = "" ] && ${4}="/dev/sdb"
 DISK=${4}
+
+echo "Number of user partition is $1"
+echo "Size of first user partition is $2"
+echo "Size of second user partition is $3"
+echo "The device is $4"
 
 cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
 
@@ -24,6 +29,7 @@ sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
 sync
 
 if [ "${1}" = "-" ]; then
+echo "No user partition"
 	sudo fdisk ${DISK} << __EOF__
 d
 1
@@ -53,7 +59,16 @@ __EOF__
 
 fi
 if [ "${1}" = "1" ]; then
+echo "$1 user partition of $2 size"
 	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
 n
 p
 1
@@ -71,7 +86,7 @@ t
 83
 n
 p
-3
+2
 
 +${2}M
 t
@@ -83,7 +98,16 @@ __EOF__
 fi
 
 if [ "${1}" = "2" ]; then
+echo "$1 user partition of $2 size and $3 size"
 	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
 n
 p
 1
@@ -93,7 +117,7 @@ t
 b
 n
 p
-2
+3
 
 +16M
 t
@@ -101,11 +125,11 @@ t
 83
 n
 p
-3
+2
 
 +${2}M
 t
-3
+2
 83
 
 n
@@ -201,4 +225,4 @@ echo "Done"
 sudo umount tmpmount
 sync
 
-return 0
+exit 0
