@@ -1,12 +1,58 @@
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/autologin.sh Gstreamer/board/novasis/Init/bin/autologin.sh
---- buildroot-2016.05/board/novasis/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/bin/autologin.sh	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,2 @@
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/genimage.cfg Base/board/novasis/imx6ul/genimage.cfg
+--- buildroot-2016.05/board/novasis/imx6ul/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/genimage.cfg	2016-10-04 12:54:36.597966999 +0200
+@@ -0,0 +1,41 @@
++# Minimal microSD card image for the Freescale's i.MX6UL EVK board
++#
++# We mimic the .sdcard Freescale's image format for i.MX6UL:
++# * the microSD card must have 1 kB free space at the beginning,
++# * U-Boot is dumped as is,
++# * a FAT partition at offset 8 MB is containing zImage and dtbs,
++# * a single root filesystem partition is required (Ext2 in this case).
++#
++
++image boot.vfat {
++  vfat {
++    files = {
++      "imx6ul-14x14-evk.dtb",
++      "zImage"
++    }
++  }
++  size = 16M
++}
++
++image sdcard.img {
++  hdimage {
++  }
++
++  partition u-boot {
++    in-partition-table = "no"
++    image = "u-boot.imx"
++    offset = 1024
++  }
++
++  partition boot {
++    partition-type = 0xC
++    bootable = "true"
++    image = "boot.vfat"
++    offset = 8M
++  }
++
++  partition rootfs {
++    partition-type = 0x83
++    image = "rootfs.ext2"
++  }
++}
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh Base/board/novasis/imx6ul/Init/bin/autologin.sh
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/Init/bin/autologin.sh	2016-10-04 12:54:36.597966999 +0200
+@@ -0,0 +1,3 @@
 +#!/bin/sh
++sleep 2
 +/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec Gstreamer/board/novasis/Init/bin/get_exec
---- buildroot-2016.05/board/novasis/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/bin/get_exec	2016-10-04 10:11:33.124151000 +0200
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec Base/board/novasis/imx6ul/Init/bin/get_exec
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/Init/bin/get_exec	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -18,9 +64,9 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec Gstreamer/board/nov
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs Gstreamer/board/novasis/Init/bin/update_fs
---- buildroot-2016.05/board/novasis/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/bin/update_fs	2016-10-04 10:11:33.124151000 +0200
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs Base/board/novasis/imx6ul/Init/bin/update_fs
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/Init/bin/update_fs	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -30,9 +76,9 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs Gstreamer/board/no
 +cp /tmp/uInitrd /tmp/update_dir/.       
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel Gstreamer/board/novasis/Init/bin/update_kernel
---- buildroot-2016.05/board/novasis/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/bin/update_kernel	2016-10-04 10:11:33.124151000 +0200
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel Base/board/novasis/imx6ul/Init/bin/update_kernel
+--- buildroot-2016.05/board/novasis/imx6ul/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/Init/bin/update_kernel	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +get_exec zImage
@@ -44,62 +90,113 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel Gstreamer/boar
 +cp /tmp/novasomp.dtb /tmp/update_dir/.
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/Init/etc/sysconfig/system_vars
---- buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars Base/board/novasis/imx6ul/Init/etc/sysconfig/system_vars
+--- buildroot-2016.05/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/Init/etc/sysconfig/system_vars	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.122
-diff -Naur buildroot-2016.05/board/novasis/Init/root/.asoundrc Gstreamer/board/novasis/Init/root/.asoundrc
---- buildroot-2016.05/board/novasis/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/Init/root/.asoundrc	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,38 @@
-+pcm.imxspdif {
-+        type hw
-+        card 0
-+        channels 2
-+}
-+ctl.imxspdif {
-+        type hw
-+        card 0
-+        channels 2
-+}
-+pcm.imxhdmisoc {
-+        type hw
-+        card 1
-+        channels 2
-+}
-+ctl.imxhdmisoc {
-+        type hw
-+        card 1
-+        channels 2
-+}
-+pcm.copy {
-+        type plug
-+        slave {
-+                pcm hw
-+        }
-+        route_policy copy
-+}
-+pcm.!default {
-+        type hw
-+        card 1
-+        channels 2
-+}
-+ctl.!default {
-+        type hw
-+        card 1
-+        channels 2
-+}
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/post-image.sh Base/board/novasis/imx6ul/post-image.sh
+--- buildroot-2016.05/board/novasis/imx6ul/post-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/post-image.sh	2016-10-04 12:54:36.597966999 +0200
+@@ -0,0 +1,9 @@
++#!/bin/bash
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh Gstreamer/board/novasis/NOVAsomP/Init/bin/autologin.sh
++echo "###### Creating uInitr ######"
++output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
++pushd ../../Deploy
++rm uInitrd
++ln -s ${BASE_DIR}/images/uInitrd
++popd
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/pre-image.sh Base/board/novasis/imx6ul/pre-image.sh
+--- buildroot-2016.05/board/novasis/imx6ul/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/pre-image.sh	2016-10-04 12:54:36.597966999 +0200
+@@ -0,0 +1,8 @@
++#!/bin/bash
++
++echo "###### Customizing file system ######"
++echo "cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}"
++cp -r board/novasis/imx6ul/Init/* ${TARGET_DIR}
++chmod 777 ${TARGET_DIR}/bin/*
++sync
++exit $?
+diff -Naur buildroot-2016.05/board/novasis/imx6ul/readme.txt Base/board/novasis/imx6ul/readme.txt
+--- buildroot-2016.05/board/novasis/imx6ul/readme.txt	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/imx6ul/readme.txt	2016-10-04 12:54:36.597966999 +0200
+@@ -0,0 +1,64 @@
++***************************
++Freescale i.MX6UL EVK board
++***************************
++
++This file documents the Buildroot support for the Freescale i.MX6UL EVK board.
++
++Please read the i.MX6UL Evaluation Kit Quick Start Guide [1] for an
++introduction to the board.
++
++Build
++=====
++
++First, configure Buildroot for your i.MX6UL EVK board:
++
++  make freescale_imx6ulevk_defconfig
++
++Build all components:
++
++  make
++
++You will find in ./output/images/ the following files:
++  - imx6ul-14x14-evk.dtb
++  - rootfs.ext2
++  - rootfs.tar
++  - sdcard.img
++  - u-boot.imx
++  - zImage
++
++Create a bootable microSD card
++==============================
++
++To determine the device associated to the microSD card have a look in the
++/proc/partitions file:
++
++  cat /proc/partitions
++
++Buildroot prepares a bootable "sdcard.img" image in the output/images/
++directory, ready to be dumped on a microSD card. Launch the following
++command as root:
++
++  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
++
++*** WARNING! This will destroy all the card content. Use with care! ***
++
++For details about the medium image layout, see the definition in
++board/freescale/imx6ulevk/genimage.cfg.
++
++Boot the i.MX6UL EVK board
++=========================
++
++To boot your newly created system (refer to the i.MX6UL EVK Quick Start Guide
++[1] for guidance):
++- insert the microSD card in the microSD slot of the board;
++- verify that your i.MX6UL EVK board jumpers and switches are set as mentioned
++  in the i.MX6UL EVK Quick Start Guide [1];
++- put a micro USB cable into the Debug USB Port and connect using a terminal
++  emulator at 115200 bps, 8n1;
++- power on the board.
++
++Enjoy!
++
++References
++==========
++[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh Base/board/novasis/NOVAsomP/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/bin/autologin.sh	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/autologin.sh	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,2 @@
 +#!/bin/sh
 +/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Gstreamer/board/novasis/NOVAsomP/Init/bin/get_exec
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Base/board/novasis/NOVAsomP/Init/bin/get_exec
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/bin/get_exec	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/get_exec	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -111,9 +208,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Gstreamer/
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Gstreamer/board/novasis/NOVAsomP/Init/bin/update_fs
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Base/board/novasis/NOVAsomP/Init/bin/update_fs
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/bin/update_fs	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/update_fs	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -123,9 +220,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Gstreamer
 +cp /tmp/uInitrd /tmp/update_dir/.       
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Gstreamer/board/novasis/NOVAsomP/Init/bin/update_kernel
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Base/board/novasis/NOVAsomP/Init/bin/update_kernel
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/bin/update_kernel	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/update_kernel	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +get_exec zImage
@@ -137,9 +234,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Gstre
 +cp /tmp/novasomp.dtb /tmp/update_dir/.
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/access_log.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,27 @@
 +#######################################################################
 +##
@@ -168,9 +265,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +
 +#
 +#######################################################################
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/cgi.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,15 @@
 +server.modules += ( "mod_cgi" )
 +
@@ -187,9 +284,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +                               "index.py",   "default.py",
 +                               "index.php",  "default.php" )
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/debug.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,47 @@
 +#######################################################################
 +##
@@ -238,9 +335,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +#######################################################################
 +
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/dirlisting.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,55 @@
 +#######################################################################
 +##
@@ -297,9 +394,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +
 +##
 +#######################################################################
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/conf.d/mime.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,78 @@
 +#######################################################################
 +##
@@ -379,9 +476,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +#
 +#######################################################################
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/lighttpd.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,460 @@
 +#######################################################################
 +##
@@ -843,9 +940,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +#include_shell "cat /etc/lighttpd/vhosts.d/*.conf"
 +##
 +#######################################################################
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/lighttpd/modules.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,172 @@
 +#######################################################################
 +##
@@ -1019,9 +1116,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/lightt
 +
 +##
 +#######################################################################
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config Base/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sshd_config	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,133 @@
 +#	$OpenBSD: sshd_config,v 1.93 2014/01/10 05:59:19 djm Exp $
 +
@@ -1156,9 +1253,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sshd_c
 +#	AllowTcpForwarding no
 +#	PermitTTY no
 +#	ForceCommand cvs server
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bhdmi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +	type hw
@@ -1198,9 +1295,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_7Bspdif	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +	type hw
@@ -1240,9 +1337,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_analog	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,48 @@
 +pcm.sgtl5000audio {
 +	type hw
@@ -1292,9 +1389,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_hdmi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,48 @@
 +pcm.sgtl5000audio {
 +	type hw
@@ -1344,9 +1441,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/asoundrc_spdif	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,48 @@
 +pcm.sgtl5000audio {
 +	type hw
@@ -1396,21 +1493,21 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/chromium_var	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1 @@
 +CHROMIUM_SERVER="http://www.novasomindustries.com"
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/inetd.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,3 @@
 +echo   stream  tcp     nowait  root    internal
 +echo   dgram   udp     wait    root    internal
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/network	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,18 @@
 +# Wired ethernet
 +ETH0_ENABLED=Y
@@ -1430,9 +1527,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +NET_DNS_DOMAIN=-
 +NET_ALIAS=248
 +NET_HTTPD_PORT=8080
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ntp.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,6 @@
 +server ntp1.inrim.it iburst
 +server ntp2.inrim.it iburst
@@ -1440,9 +1537,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +restrict -6 default kod nomodify notrap nopeer noquery
 +restrict 127.0.0.1
 +restrict -6 ::1
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/root.profile	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,55 @@
 +. /etc/sysconfig/system_vars
 +. /etc/sysconfig/network
@@ -1499,38 +1596,23 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +fi
 +echo "REFERENCE_SERVER set as ${REFERENCE_SERVER}"
 +touch /tmp/root_done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,16 @@
-+REFERENCE_SERVER=192.168.10.39
-+NTP_ENABLED=Y
-+FAST_BOOT_ENABLE=N
-+SYSTEM_PASSWORD=novasis
-+#Touch screen disabled as no suitable devices found
-+TOUCH_ENABLE=N
-+#Not initialized as touch is disabled by system
-+#The following line is commented out so you can include it easily
-+#TOUCH_ENABLE=Y
-+TSLIB_TSDEVICE=/dev/input/
-+TSLIB_TSEVENTTYPE=INPUT
-+TSLIB_CONFFILE=/etc/ts.conf
-+TSLIB_CALIBFILE=/etc/pointercal
-+STORED_TSLIB_CALIBFILE=/etc/sysconfig/pointercal
-+SDL_MOUSEDRV=TSLIB
-+SDL_MOUSEDEV=/dev/input/
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/system_vars	2016-11-08 10:06:17.736036695 +0100
+@@ -0,0 +1 @@
++REFERENCE_SERVER=192.168.10.132
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/ts.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,5 @@
 +module_raw input
 +module pthres pmin=1
 +module variance delta=30
 +module dejitter delta=100
 +module linear
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wireless	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,15 @@
 +#Wireless
 +WLAN_ENABLED=N
@@ -1547,9 +1629,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +WLAN_DNS_LIST=192.168.10.200
 +WLAN_DNS_DOMAIN=-
 +WLAN_MAC=1E:72:49:ED:F7:54
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/sysconfig/wpa_supplicant.conf	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,8 @@
 +ctrl_interface=/var/run/wpa_supplicant
 +ap_scan=1
@@ -1559,9 +1641,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/syscon
 +        #psk="Limbiatex01"
 +        psk=f7c4e1d4621a987370715588c3e654f85a26c6df592998321a47f7cbec1dffe5
 +}
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/auth.cgi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,44 @@
 +#!/bin/sh
 +# AUTHENTICATION
@@ -1607,9 +1689,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cg
 +
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/do_reboot.cgi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,6 @@
 +#!/bin/sh
 +# DO REBOOT
@@ -1617,9 +1699,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cg
 +echo "SYSTEM REBOOT... refresh page after reboot <ip>:<port>"
 +
 +reboot
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/main_menu.cgi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +
@@ -1642,9 +1724,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cg
 +
 +echo "</body>"
 +echo "</html>"
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/www/cgi-bin/settings.cgi	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,153 @@
 +#!/bin/sh
 +
@@ -1799,9 +1881,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/cg
 +echo "</body>"                                                                                          
 +echo "</html>"
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html Base/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/default_init/www/index.html	2016-10-04 12:54:36.597966999 +0200
 @@ -0,0 +1,20 @@
 +<meta http-equiv="Content-Type" content="text/html; CHARSET=utf-8">
 +
@@ -1823,9 +1905,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/default_init/www/in
 +    </form> 
 +</body>
 +</html>
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,55 @@
 +#! /bin/sh
 +#
@@ -1882,9 +1964,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S
 +
 +exit 0
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,42 @@
 +#!/bin/sh
 +# called by usr/share/udhcpc/default.script after the dhcp have a valid ip
@@ -1928,9 +2010,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_s
 +sleep 1
 +touch /tmp/system_ready
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash Base/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlsplash	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +set_splash_progress () {
@@ -1953,9 +2035,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sdlspla
 +        fi
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup Base/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars_setup	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,168 @@
 +#!/bin/sh
 +
@@ -2125,9 +2207,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_sysvars
 +}
 +
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio Base/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/func_video_audio	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,69 @@
 +#!/bin/sh
 +setup_video () {
@@ -2198,17 +2280,17 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/func_video_a
 +	fi
 +
 +}
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support Base/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/ntp_support	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +sleep 20
 +/sbin/hwclock -w
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/rcS
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Base/board/novasis/NOVAsomP/Init/etc/init.d/rcS
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,40 @@
 +#!/bin/sh
 +
@@ -2250,9 +2332,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Gstreame
 +		echo ${PROGRESS} > /tmp/progress
 +	fi
 +done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S40network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network Base/board/novasis/NOVAsomP/Init/etc/init.d/S40network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,67 @@
 +#!/bin/sh
 +#
@@ -2321,9 +2403,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network G
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Base/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,6 @@
 +#! /bin/sh
 +#
@@ -2331,9 +2413,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Gstre
 +#
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Base/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,57 @@
 +#!/bin/sh
 +#
@@ -2392,9 +2474,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Gstr
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Base/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,38 @@
 +#!/bin/sh
 +[ ! -f /usr/bin/mysql ] && exit 0
@@ -2434,14 +2516,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Gs
 +		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
 +		;;
 +esac
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars Base/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.124151000 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.114
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Gstreamer/board/novasis/NOVAsomP/Init/root/.asoundrc
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Base/board/novasis/NOVAsomP/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/Init/root/.asoundrc	2016-10-04 10:11:33.128148999 +0200
++++ Base/board/novasis/NOVAsomP/Init/root/.asoundrc	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +        type hw
@@ -2481,9 +2563,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Gstreame
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Gstreamer/board/novasis/NOVAsomP/post-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Base/board/novasis/NOVAsomP/post-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/post-image.sh	2016-10-04 10:11:33.128148999 +0200
++++ Base/board/novasis/NOVAsomP/post-image.sh	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -2494,9 +2576,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Gstreamer/boar
 +ln -s ${BASE_DIR}/images/uInitrd
 +popd
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Gstreamer/board/novasis/NOVAsomP/pre-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Base/board/novasis/NOVAsomP/pre-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/pre-image.sh	2016-10-04 10:11:33.128148999 +0200
++++ Base/board/novasis/NOVAsomP/pre-image.sh	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -2507,9 +2589,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Gstreamer/board
 +chmod 777 ${TARGET_DIR}/etc/init.d/*
 +sync
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Gstreamer/board/novasis/NOVAsomP/readme.txt
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Base/board/novasis/NOVAsomP/readme.txt
 --- buildroot-2016.05/board/novasis/NOVAsomP/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomP/readme.txt	2016-10-04 10:11:33.128148999 +0200
++++ Base/board/novasis/NOVAsomP/readme.txt	2016-10-04 12:54:36.601964999 +0200
 @@ -0,0 +1,29 @@
 +***************************
 +Novasis NOVAsomP board
@@ -2540,433 +2622,3 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Gstreamer/board/n
 +References
 +==========
 +[1] http://www.novasis.it/NOVAsomP.html
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg Gstreamer/board/novasis/NOVAsomU/genimage.cfg
---- buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/genimage.cfg	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,41 @@
-+# Minimal microSD card image for the Freescale's i.MX6UL EVK board
-+#
-+# We mimic the .sdcard Freescale's image format for i.MX6UL:
-+# * the microSD card must have 1 kB free space at the beginning,
-+# * U-Boot is dumped as is,
-+# * a FAT partition at offset 8 MB is containing zImage and dtbs,
-+# * a single root filesystem partition is required (Ext2 in this case).
-+#
-+
-+image boot.vfat {
-+  vfat {
-+    files = {
-+      "imx6ul-14x14-evk.dtb",
-+      "zImage"
-+    }
-+  }
-+  size = 16M
-+}
-+
-+image sdcard.img {
-+  hdimage {
-+  }
-+
-+  partition u-boot {
-+    in-partition-table = "no"
-+    image = "u-boot.imx"
-+    offset = 1024
-+  }
-+
-+  partition boot {
-+    partition-type = 0xC
-+    bootable = "true"
-+    image = "boot.vfat"
-+    offset = 8M
-+  }
-+
-+  partition rootfs {
-+    partition-type = 0x83
-+    image = "rootfs.ext2"
-+  }
-+}
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh Gstreamer/board/novasis/NOVAsomU/Init/bin/autologin.sh
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/bin/autologin.sh	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+sleep 2
-+/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec Gstreamer/board/novasis/NOVAsomU/Init/bin/get_exec
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/bin/get_exec	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+. /etc/sysconfig/system_vars
-+if [ "$1" == "" ]; then
-+        echo "Usage `basename $0` <filename>"
-+        exit 0
-+fi
-+cd /tmp
-+rm -f `basename ${1}`
-+wget http://${REFERENCE_SERVER}/${1}
-+chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs Gstreamer/board/novasis/NOVAsomU/Init/bin/update_fs
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/bin/update_fs	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,8 @@
-+#!/bin/sh
-+get_exec uInitrd       
-+rm -rf /tmp/update_dir
-+mkdir /tmp/update_dir
-+mount /dev/mmcblk0p1 /tmp/update_dir
-+cp /tmp/uInitrd /tmp/update_dir/.       
-+umount /tmp/update_dir
-+
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel Gstreamer/board/novasis/NOVAsomU/Init/bin/update_kernel
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/bin/update_kernel	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,10 @@
-+#!/bin/sh
-+get_exec zImage
-+get_exec novasomp.dtb
-+rm -rf /tmp/update_dir
-+mkdir /tmp/update_dir
-+mount /dev/mmcblk0p1 /tmp/update_dir
-+cp /tmp/zImage /tmp/update_dir/.       
-+cp /tmp/novasomp.dtb /tmp/update_dir/.
-+umount /tmp/update_dir
-+
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab Gstreamer/board/novasis/NOVAsomU/Init/etc/inittab
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/etc/inittab	2016-10-28 11:21:08.935254897 +0200
-@@ -0,0 +1,35 @@
-+# /etc/inittab
-+#
-+# Copyright (C) 2001 Erik Andersen <andersen@codepoet.org>
-+#
-+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
-+# completely ignored by BusyBox init. If you want runlevels, use
-+# sysvinit.
-+#
-+# Format for each entry: <id>:<runlevels>:<action>:<process>
-+#
-+# id        == tty to run on, or empty for /dev/console
-+# runlevels == ignored
-+# action    == one of sysinit, respawn, askfirst, wait, and once
-+# process   == program to run
-+
-+# Startup the system
-+::sysinit:/bin/mount -t proc proc /proc
-+::sysinit:/bin/mount -o remount,rw /
-+::sysinit:/bin/mkdir -p /dev/pts
-+::sysinit:/bin/mkdir -p /dev/shm
-+::sysinit:/bin/mount -a
-+::sysinit:/bin/hostname -F /etc/hostname
-+# now run any rc scripts
-+::sysinit:/etc/init.d/rcS
-+
-+# Put a getty on the serial port
-+ttymxc0::respawn:/sbin/getty -L -l /bin/autologin.sh -n ttymxc0 115200 vt100 # GENERIC_SERIAL
-+
-+# Stuff to do for the 3-finger salute
-+#::ctrlaltdel:/sbin/reboot
-+
-+# Stuff to do before rebooting
-+::shutdown:/etc/init.d/rcK
-+::shutdown:/sbin/swapoff -a
-+::shutdown:/bin/umount -a -r
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars Gstreamer/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars
---- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1 @@
-+REFERENCE_SERVER=192.168.10.122
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh Gstreamer/board/novasis/NOVAsomU/post-image.sh
---- buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/post-image.sh	2016-10-04 10:11:33.120152999 +0200
-@@ -0,0 +1,9 @@
-+#!/bin/bash
-+
-+echo "###### Creating uInitr ######"
-+output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
-+pushd ../../Deploy
-+rm uInitrd
-+ln -s ${BASE_DIR}/images/uInitrd
-+popd
-+exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh Gstreamer/board/novasis/NOVAsomU/pre-image.sh
---- buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/pre-image.sh	2016-10-28 11:20:34.211254897 +0200
-@@ -0,0 +1,8 @@
-+#!/bin/bash
-+
-+echo "###### Customizing file system ######"
-+echo "cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}"
-+cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}
-+chmod 777 ${TARGET_DIR}/bin/*
-+sync
-+exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/readme.txt Gstreamer/board/novasis/NOVAsomU/readme.txt
---- buildroot-2016.05/board/novasis/NOVAsomU/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/board/novasis/NOVAsomU/readme.txt	2016-10-04 10:11:33.124151000 +0200
-@@ -0,0 +1,64 @@
-+***************************
-+Freescale i.MX6UL EVK board
-+***************************
-+
-+This file documents the Buildroot support for the Freescale i.MX6UL EVK board.
-+
-+Please read the i.MX6UL Evaluation Kit Quick Start Guide [1] for an
-+introduction to the board.
-+
-+Build
-+=====
-+
-+First, configure Buildroot for your i.MX6UL EVK board:
-+
-+  make freescale_imx6ulevk_defconfig
-+
-+Build all components:
-+
-+  make
-+
-+You will find in ./output/images/ the following files:
-+  - imx6ul-14x14-evk.dtb
-+  - rootfs.ext2
-+  - rootfs.tar
-+  - sdcard.img
-+  - u-boot.imx
-+  - zImage
-+
-+Create a bootable microSD card
-+==============================
-+
-+To determine the device associated to the microSD card have a look in the
-+/proc/partitions file:
-+
-+  cat /proc/partitions
-+
-+Buildroot prepares a bootable "sdcard.img" image in the output/images/
-+directory, ready to be dumped on a microSD card. Launch the following
-+command as root:
-+
-+  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
-+
-+*** WARNING! This will destroy all the card content. Use with care! ***
-+
-+For details about the medium image layout, see the definition in
-+board/freescale/imx6ulevk/genimage.cfg.
-+
-+Boot the i.MX6UL EVK board
-+=========================
-+
-+To boot your newly created system (refer to the i.MX6UL EVK Quick Start Guide
-+[1] for guidance):
-+- insert the microSD card in the microSD slot of the board;
-+- verify that your i.MX6UL EVK board jumpers and switches are set as mentioned
-+  in the i.MX6UL EVK Quick Start Guide [1];
-+- put a micro USB cable into the Debug USB Port and connect using a terminal
-+  emulator at 115200 bps, 8n1;
-+- power on the board.
-+
-+Enjoy!
-+
-+References
-+==========
-+[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
-diff -Naur -x gcc buildroot-2016.05/configs/novasomp_defconfig Gstreamer/configs/novasomp_defconfig
---- buildroot-2016.05/configs/novasomp_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/configs/novasomp_defconfig	2016-10-28 11:56:30.415254897 +0200
-@@ -0,0 +1,108 @@
-+BR2_ARCH_HAS_MMU_OPTIONAL=y
-+BR2_arm=y
-+BR2_ARCH="arm"
-+BR2_ENDIAN="LITTLE"
-+BR2_GCC_TARGET_ABI="aapcs-linux"
-+BR2_GCC_TARGET_CPU="cortex-a9"
-+BR2_GCC_TARGET_FPU="vfpv3-d16"
-+BR2_GCC_TARGET_FLOAT_ABI="hard"
-+BR2_GCC_TARGET_MODE="arm"
-+BR2_BINFMT_SUPPORTS_SHARED=y
-+BR2_BINFMT_ELF=y
-+BR2_ARM_CPU_HAS_NEON=y
-+BR2_ARM_CPU_MAYBE_HAS_NEON=y
-+BR2_ARM_CPU_MAYBE_HAS_VFPV2=y
-+BR2_ARM_CPU_HAS_VFPV2=y
-+BR2_ARM_CPU_MAYBE_HAS_VFPV3=y
-+BR2_ARM_CPU_HAS_VFPV3=y
-+BR2_ARM_CPU_HAS_ARM=y
-+BR2_ARM_CPU_HAS_THUMB2=y
-+BR2_ARM_CPU_ARMV7A=y
-+BR2_cortex_a9=y
-+BR2_ARM_ENABLE_NEON=y
-+BR2_ARM_ENABLE_VFP=y
-+BR2_ARM_EABIHF=y
-+BR2_ARM_FPU_VFPV3D16=y
-+BR2_ARM_INSTRUCTIONS_ARM=y
-+
-+BR2_DL_DIR="/Devel/NOVAsom_SDK/Packages"
-+
-+BR2_TOOLCHAIN=y
-+BR2_TOOLCHAIN_USES_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL=y
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-+BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED=y
-+BR2_TOOLCHAIN_EXTERNAL_PATH="/Devel/NOVAsom_SDK/Xcompiler/ArmCompiler/usr"
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="$(ARCH)-linux"
-+BR2_TOOLCHAIN_EXTERNAL_PREFIX="$(ARCH)-linux"
-+BR2_TOOLCHAIN_EXTERNAL_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL_GCC_5=y
-+BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_1=y
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
-+BR2_TOOLCHAIN_EXTERNAL_INET_RPC=y
-+BR2_TOOLCHAIN_EXTERNAL_CXX=y
-+BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS=""
-+BR2_TOOLCHAIN_HAS_NATIVE_RPC=y
-+BR2_USE_WCHAR=y
-+BR2_ENABLE_LOCALE=y
-+BR2_INSTALL_LIBSTDCPP=y
-+BR2_TOOLCHAIN_HAS_THREADS=y
-+BR2_TOOLCHAIN_HAS_THREADS_DEBUG=y
-+BR2_TOOLCHAIN_HAS_THREADS_NPTL=y
-+BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS=y
-+BR2_TOOLCHAIN_HAS_SSP=y
-+BR2_ENABLE_LOCALE_PURGE=y
-+BR2_ENABLE_LOCALE_WHITELIST="C en_US de fr it"
-+BR2_GENERATE_LOCALE=""
-+BR2_USE_MMU=y
-+BR2_TARGET_OPTIMIZATION=""
-+BR2_TARGET_LDFLAGS=""
-+
-+#
-+# System configuration
-+#
-+BR2_TARGET_GENERIC_ISSUE="Welcome"
-+BR2_TARGET_GENERIC_PASSWD_MD5=y
-+BR2_TARGET_GENERIC_PASSWD_METHOD="md5"
-+BR2_INIT_BUSYBOX=y
-+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
-+BR2_ROOTFS_DEVICE_TABLE="system/device_table.txt"
-+BR2_ROOTFS_SKELETON_DEFAULT=y
-+BR2_TARGET_ENABLE_ROOT_LOGIN=y
-+BR2_TARGET_GENERIC_ROOT_PASSWD=""
-+BR2_SYSTEM_BIN_SH_BUSYBOX=y
-+
-+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc2"
-+BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP=y
-+BR2_TARGET_GENERIC_GETTY_BAUDRATE="0"
-+BR2_TARGET_GENERIC_GETTY_TERM="vt100"
-+BR2_TARGET_GENERIC_GETTY_OPTIONS="-l /bin/autologin.sh -n"
-+BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW=y
-+BR2_SYSTEM_DHCP="eth0"
-+BR2_ROOTFS_POST_BUILD_SCRIPT="board/novasis/NOVAsomP/pre-image.sh"
-+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/novasis/NOVAsomP/post-image.sh"
-+
-+#
-+# Filesystem images
-+#
-+BR2_TARGET_ROOTFS_EXT2=y
-+BR2_TARGET_ROOTFS_EXT2_3=y
-+BR2_TARGET_ROOTFS_EXT2_GEN=3
-+BR2_TARGET_ROOTFS_EXT2_REV=1
-+BR2_TARGET_ROOTFS_EXT2_LABEL=""
-+BR2_TARGET_ROOTFS_EXT2_BLOCKS=0
-+BR2_TARGET_ROOTFS_EXT2_INODES=0
-+BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS=0
-+BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES=0
-+BR2_TARGET_ROOTFS_EXT2_RESBLKS=0
-+BR2_TARGET_ROOTFS_EXT2_GZIP=y
-+
-+#
-+# Host utilities
-+#
-+BR2_PACKAGE_HOST_E2FSPROGS=y
-+BR2_PACKAGE_HOST_GENEXT2FS=y
-+BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS=y
-+BR2_PACKAGE_HOST_MKE2IMG=y
-+BR2_PACKAGE_HOST_UBOOT_TOOLS=y
-diff -Naur -x gcc buildroot-2016.05/configs/novasomu_defconfig Gstreamer/configs/novasomu_defconfig
---- buildroot-2016.05/configs/novasomu_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ Gstreamer/configs/novasomu_defconfig	2016-10-28 11:58:02.035254897 +0200
-@@ -0,0 +1,85 @@
-+# architecture
-+BR2_arm=y
-+BR2_cortex_a7=y
-+
-+BR2_DL_DIR="/Devel/NOVAsom_SDK/Packages"
-+
-+BR2_TOOLCHAIN=y
-+BR2_TOOLCHAIN_USES_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL=y
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-+BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED=y
-+BR2_TOOLCHAIN_EXTERNAL_PATH="/Devel/NOVAsom_SDK/Xcompiler/ArmCompiler/usr"
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="$(ARCH)-linux"
-+BR2_TOOLCHAIN_EXTERNAL_PREFIX="$(ARCH)-linux"
-+BR2_TOOLCHAIN_EXTERNAL_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL_GCC_5=y
-+BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_1=y
-+BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC=y
-+BR2_TOOLCHAIN_EXTERNAL_HAS_SSP=y
-+BR2_TOOLCHAIN_EXTERNAL_INET_RPC=y
-+BR2_TOOLCHAIN_EXTERNAL_CXX=y
-+BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS=""
-+BR2_TOOLCHAIN_HAS_NATIVE_RPC=y
-+BR2_USE_WCHAR=y
-+BR2_ENABLE_LOCALE=y
-+BR2_INSTALL_LIBSTDCPP=y
-+BR2_TOOLCHAIN_HAS_THREADS=y
-+BR2_TOOLCHAIN_HAS_THREADS_DEBUG=y
-+BR2_TOOLCHAIN_HAS_THREADS_NPTL=y
-+BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS=y
-+BR2_TOOLCHAIN_HAS_SSP=y
-+BR2_ENABLE_LOCALE_PURGE=y
-+BR2_ENABLE_LOCALE_WHITELIST="C en_US de fr it"
-+BR2_GENERATE_LOCALE=""
-+BR2_USE_MMU=y
-+BR2_TARGET_OPTIMIZATION=""
-+BR2_TARGET_LDFLAGS=""
-+
-+#
-+# System configuration
-+#
-+BR2_TARGET_GENERIC_ISSUE="Welcome"
-+BR2_TARGET_GENERIC_PASSWD_MD5=y
-+BR2_TARGET_GENERIC_PASSWD_METHOD="md5"
-+BR2_INIT_BUSYBOX=y
-+BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS=y
-+BR2_ROOTFS_DEVICE_TABLE="system/device_table.txt"
-+BR2_ROOTFS_SKELETON_DEFAULT=y
-+BR2_TARGET_ENABLE_ROOT_LOGIN=y
-+BR2_TARGET_GENERIC_ROOT_PASSWD=""
-+BR2_SYSTEM_BIN_SH_BUSYBOX=y
-+
-+BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
-+BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP=y
-+BR2_TARGET_GENERIC_GETTY_BAUDRATE="0"
-+BR2_TARGET_GENERIC_GETTY_TERM="vt100"
-+BR2_TARGET_GENERIC_GETTY_OPTIONS="-l /bin/autologin.sh -n"
-+BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW=y
-+BR2_SYSTEM_DHCP="eth0"
-+BR2_ROOTFS_POST_BUILD_SCRIPT="board/novasis/NOVAsomU/pre-image.sh"
-+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/novasis/NOVAsomU/post-image.sh"
-+
-+#
-+# Filesystem images
-+#
-+BR2_TARGET_ROOTFS_EXT2=y
-+BR2_TARGET_ROOTFS_EXT2_3=y
-+BR2_TARGET_ROOTFS_EXT2_GEN=3
-+BR2_TARGET_ROOTFS_EXT2_REV=1
-+BR2_TARGET_ROOTFS_EXT2_LABEL=""
-+BR2_TARGET_ROOTFS_EXT2_BLOCKS=0
-+BR2_TARGET_ROOTFS_EXT2_INODES=0
-+BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS=0
-+BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES=0
-+BR2_TARGET_ROOTFS_EXT2_RESBLKS=0
-+BR2_TARGET_ROOTFS_EXT2_GZIP=y
-+
-+#
-+# Host utilities
-+#
-+BR2_PACKAGE_HOST_E2FSPROGS=y
-+BR2_PACKAGE_HOST_GENEXT2FS=y
-+BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS=y
-+BR2_PACKAGE_HOST_MKE2IMG=y
-+BR2_PACKAGE_HOST_UBOOT_TOOLS=y

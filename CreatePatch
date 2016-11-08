@@ -1,6 +1,6 @@
 #!/bin/sh
 BUILDROOT="buildroot-2016.05"
-REFERENCE_FS="Gstreamer"
+REFERENCE_FS="Base"
 #if [ -d buildroot-2016.05 ]; then
 #	rm -rf ${BUILDROOT}
 #fi
