@@ -1,9 +1,6 @@
 #!/bin/sh
 BUILDROOT="buildroot-2016.05"
-REFERENCE_FS="Gstreamer"
-#if [ -d buildroot-2016.05 ]; then
-#	rm -rf ${BUILDROOT}
-#fi
+REFERENCE_FS="NewBase"
 HERE=`pwd`
 cd ../FileSystem
 rm -rf Patches
