@@ -1,6 +1,6 @@
-diff -Naur -x gcc buildroot-2016.05/package/Config.in PBase/package/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/Config.in UBase/package/Config.in
 --- buildroot-2016.05/package/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/Config.in	2016-11-09 16:27:19.975829449 +0100
++++ UBase/package/Config.in	2016-11-10 09:39:52.139829449 +0100
 @@ -17,7 +17,7 @@
  	source "package/flite/Config.in"
  	source "package/gmrender-resurrect/Config.in"
@@ -18,9 +18,9 @@ diff -Naur -x gcc buildroot-2016.05/package/Config.in PBase/package/Config.in
  	source "package/libmatroska/Config.in"
  	source "package/libmms/Config.in"
  	source "package/libmpeg2/Config.in"
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/Config.in PBase/package/freescale-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/Config.in UBase/package/freescale-imx/Config.in
 --- buildroot-2016.05/package/freescale-imx/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/Config.in	2016-11-09 16:27:19.975829449 +0100
++++ UBase/package/freescale-imx/Config.in	2016-11-10 09:39:52.139829449 +0100
 @@ -49,11 +49,7 @@
  		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53 || \
  		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
@@ -33,9 +33,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/Config.in PBase/packag
  if (BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51 || BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53)
  source "package/freescale-imx/gpu-amd-bin-mx51/Config.in"
  source "package/freescale-imx/libz160/Config.in"
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/Config.in PBase/package/freescale-imx/firmware-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/Config.in UBase/package/freescale-imx/firmware-imx/Config.in
 --- buildroot-2016.05/package/freescale-imx/firmware-imx/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/firmware-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/firmware-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,10 +0,0 @@
 -config BR2_PACKAGE_FIRMWARE_IMX
 -	bool "firmware-imx"
@@ -47,14 +47,14 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/Config.in
 -
 -	  This library is provided by Freescale as-is and doesn't have
 -	  an upstream.
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.hash PBase/package/freescale-imx/firmware-imx/firmware-imx.hash
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.hash UBase/package/freescale-imx/firmware-imx/firmware-imx.hash
 --- buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/firmware-imx/firmware-imx.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/firmware-imx/firmware-imx.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1 +0,0 @@
 -sha256 fd14c3666eb3c12f4f2665d95caf383bb1d0277bb12e2de28fefc8d1230604f2  firmware-imx-5.3.bin
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.mk PBase/package/freescale-imx/firmware-imx/firmware-imx.mk
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.mk UBase/package/freescale-imx/firmware-imx/firmware-imx.mk
 --- buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-imx.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/firmware-imx/firmware-imx.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/firmware-imx/firmware-imx.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,32 +0,0 @@
 -################################################################################
 -#
@@ -88,16 +88,16 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/firmware-imx/firmware-
 -endef
 -
 -$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash PBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash UBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash
 --- buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,3 +0,0 @@
 -# locally computed
 -sha256	3ea201f91ce9b56455e4983ab1055e8175415fbbf2800dc097d47e78ceefba34  imx-gpu-viv-5.0.11.p7.4-sfp.bin
 -sha256	b80838104f2f2e3b0baf2f1aacdca263c1c92589ce919b3be40aaad23f686b7f  imx-gpu-viv-5.0.11.p7.4-hfp.bin
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk PBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk UBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk
 --- buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk	2016-11-09 16:27:19.979829449 +0100
++++ UBase/package/freescale-imx/imx-gpu-viv/imx-gpu-viv.mk	2016-11-10 09:39:52.143829449 +0100
 @@ -4,7 +4,8 @@
  #
  ################################################################################
@@ -108,9 +108,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-gpu-viv/imx-gpu-vi
  ifeq ($(BR2_ARM_EABIHF),y)
  IMX_GPU_VIV_VERSION = $(IMX_GPU_VIV_BASE_VERSION)-hfp
  else
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch PBase/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch UBase/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch
 --- buildroot-2016.05/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-kobs/0001-Fix-musl-build.patch	1970-01-01 01:00:00.000000000 +0100
 @@ -1,39 +0,0 @@
 -[PATCH] Fix musl build
 -
@@ -151,9 +151,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0001-Fix-musl
 --- 
 -2.5.1
 -
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch PBase/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch UBase/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch
 --- buildroot-2016.05/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-kobs/0002-Fix-build-for-recent-toolchains.patch	1970-01-01 01:00:00.000000000 +0100
 @@ -1,26 +0,0 @@
 -[PATCH] Fix build for recent toolchains
 -
@@ -181,9 +181,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/0002-Fix-buil
 --- 
 -2.6.4
 -
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/Config.in PBase/package/freescale-imx/imx-kobs/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/Config.in UBase/package/freescale-imx/imx-kobs/Config.in
 --- buildroot-2016.05/package/freescale-imx/imx-kobs/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-kobs/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-kobs/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,10 +0,0 @@
 -config BR2_PACKAGE_IMX_KOBS
 -	bool "imx-kobs"
@@ -195,15 +195,15 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/Config.in PBa
 -	  This library is provided by Freescale as-is and doesn't have
 -	  an upstream.
 -
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.hash PBase/package/freescale-imx/imx-kobs/imx-kobs.hash
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.hash UBase/package/freescale-imx/imx-kobs/imx-kobs.hash
 --- buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-kobs/imx-kobs.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-kobs/imx-kobs.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# locally computed
 -sha256	45f729fc2b49556f1ca9df778f52bf5cc749cfe53664c8206daab29991c5f6c1  imx-kobs-5.3.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.mk PBase/package/freescale-imx/imx-kobs/imx-kobs.mk
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.mk UBase/package/freescale-imx/imx-kobs/imx-kobs.mk
 --- buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-kobs/imx-kobs.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-kobs/imx-kobs.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,12 +0,0 @@
 -################################################################################
 -#
@@ -217,9 +217,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-kobs/imx-kobs.mk P
 -IMX_KOBS_LICENSE_FILES = COPYING
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/Config.in PBase/package/freescale-imx/imx-lib/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/Config.in UBase/package/freescale-imx/imx-lib/Config.in
 --- buildroot-2016.05/package/freescale-imx/imx-lib/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-lib/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-lib/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,16 +0,0 @@
 -comment "imx-lib needs an imx-specific Linux kernel to be built"
 -	depends on BR2_arm && !BR2_LINUX_KERNEL
@@ -237,15 +237,15 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/Config.in PBas
 -	  This library is provided by Freescale as-is and doesn't have
 -	  an upstream.
 -
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.hash PBase/package/freescale-imx/imx-lib/imx-lib.hash
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.hash UBase/package/freescale-imx/imx-lib/imx-lib.hash
 --- buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-lib/imx-lib.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-lib/imx-lib.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# locally computed
 -sha256 2b4547ffb1de328cf8997a09a423c6f015d808493efd11a98a5d42c6497e3445  imx-lib-5.1.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.mk PBase/package/freescale-imx/imx-lib/imx-lib.mk
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.mk UBase/package/freescale-imx/imx-lib/imx-lib.mk
 --- buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-lib/imx-lib.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-lib/imx-lib.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,40 +0,0 @@
 -################################################################################
 -#
@@ -287,9 +287,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-lib/imx-lib.mk PBa
 -endef
 -
 -$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/Config.in PBase/package/freescale-imx/imx-vpu/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/Config.in UBase/package/freescale-imx/imx-vpu/Config.in
 --- buildroot-2016.05/package/freescale-imx/imx-vpu/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-vpu/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-vpu/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,17 +0,0 @@
 -comment "imx-vpu needs an i.MX platform with VPU support"
 -	depends on BR2_arm
@@ -308,15 +308,15 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/Config.in PBas
 -
 -	  This library is provided by Freescale as-is and doesn't have
 -	  an upstream.
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.hash PBase/package/freescale-imx/imx-vpu/imx-vpu.hash
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.hash UBase/package/freescale-imx/imx-vpu/imx-vpu.hash
 --- buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-vpu/imx-vpu.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-vpu/imx-vpu.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# Locally computed
 -sha256	f11b91dcdb84bfefd3c88f10a9c1c1bc3420e4bbaadc38b9280fb52f7769eca8  imx-vpu-5.4.32.bin
-diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.mk PBase/package/freescale-imx/imx-vpu/imx-vpu.mk
+diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.mk UBase/package/freescale-imx/imx-vpu/imx-vpu.mk
 --- buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/freescale-imx/imx-vpu/imx-vpu.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/freescale-imx/imx-vpu/imx-vpu.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,39 +0,0 @@
 -################################################################################
 -#
@@ -357,9 +357,9 @@ diff -Naur -x gcc buildroot-2016.05/package/freescale-imx/imx-vpu/imx-vpu.mk PBa
 -endef
 -
 -$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/Config.in PBase/package/gstreamer1/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/Config.in UBase/package/gstreamer1/Config.in
 --- buildroot-2016.05/package/gstreamer1/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,13 +0,0 @@
 -# Gstreamer 1.x & Plugins
 -source "package/gstreamer1/gstreamer1/Config.in"
@@ -374,9 +374,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/Config.in PBase/package/g
 -source "package/gstreamer1/gst1-validate/Config.in"
 -source "package/gstreamer1/gst-omx/Config.in"
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/Config.in PBase/package/gstreamer1/gst1-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/Config.in UBase/package/gstreamer1/gst1-imx/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-imx/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,23 +0,0 @@
 -comment "gst1-imx needs an imx-specific Linux kernel to be built"
 -	depends on BR2_arm && !BR2_LINUX_KERNEL
@@ -401,15 +401,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/Config.in PBase/
 -	  The MP3 plugin is built when BR2_PACKAGE_LIBFSLCODEC is enabled.
 -
 -	  https://github.com/Freescale/gstreamer-imx
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.hash PBase/package/gstreamer1/gst1-imx/gst1-imx.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.hash UBase/package/gstreamer1/gst1-imx/gst1-imx.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-imx/gst1-imx.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-imx/gst1-imx.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# locally computed hash
 -sha256 df34f080e24ac8f1619780aa5ad4e6ab1333f822cd2bf5fcb380b28c97248810  gst1-imx-0.12.0.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.mk PBase/package/gstreamer1/gst1-imx/gst1-imx.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.mk UBase/package/gstreamer1/gst1-imx/gst1-imx.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-imx/gst1-imx.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-imx/gst1-imx.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,70 +0,0 @@
 -################################################################################
 -#
@@ -481,9 +481,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-imx/gst1-imx.mk PBas
 -endef
 -
 -$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/Config.in PBase/package/gstreamer1/gst1-libav/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/Config.in UBase/package/gstreamer1/gst1-libav/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-libav/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-libav/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-libav/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,16 +0,0 @@
 -config BR2_PACKAGE_GST1_LIBAV
 -	bool "gst1-libav"
@@ -501,15 +501,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/Config.in PBas
 -	  selected in the ffmpeg package.
 -
 -	  http://gstreamer.freedesktop.org/
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.hash PBase/package/gstreamer1/gst1-libav/gst1-libav.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.hash UBase/package/gstreamer1/gst1-libav/gst1-libav.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-libav/gst1-libav.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-libav/gst1-libav.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.8.1.tar.xz.sha256sum
 -sha256	44a49108c3531b5ac4f346a2247cd7fbafb0e8ab394394cb6d75a70300b38933  gst-libav-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.mk PBase/package/gstreamer1/gst1-libav/gst1-libav.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.mk UBase/package/gstreamer1/gst1-libav/gst1-libav.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-libav/gst1-libav.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-libav/gst1-libav.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,18 +0,0 @@
 -################################################################################
 -#
@@ -529,9 +529,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-libav/gst1-libav.mk 
 -GST1_LIBAV_LICENSE_FILES = COPYING
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch PBase/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch UBase/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-bad/0001-use-gettext-0.18.patch	1970-01-01 01:00:00.000000000 +0100
 @@ -1,17 +0,0 @@
 -Use newer version of gettext to match current buildroot gettext.
 -
@@ -550,9 +550,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/0001-use
 - 
 - PACKAGE = @PACKAGE@
 - VERSION = @VERSION@
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/Config.in PBase/package/gstreamer1/gst1-plugins-bad/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/Config.in UBase/package/gstreamer1/gst1-plugins-bad/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-bad/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-bad/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,686 +0,0 @@
 -menuconfig BR2_PACKAGE_GST1_PLUGINS_BAD
 -	bool "gst1-plugins-bad"
@@ -1240,15 +1240,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/Config.i
 -	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
 -
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash PBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash UBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.8.1.tar.xz.sha256sum
 -sha256	0bbd58f363734fc0c4a620b2d6fb01d427fdafdbda7b90b4e15d03b751ca40f5  gst-plugins-bad-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk PBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk UBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-bad/gst1-plugins-bad.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,808 +0,0 @@
 -################################################################################
 -#
@@ -2058,9 +2058,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-bad/gst1-plu
 -# # find . -name 'plugin-*.xml' | xargs grep license
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/Config.in PBase/package/gstreamer1/gst1-plugins-base/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/Config.in UBase/package/gstreamer1/gst1-plugins-base/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-base/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-base/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-base/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,160 +0,0 @@
 -menuconfig BR2_PACKAGE_GST1_PLUGINS_BASE
 -	bool "gst1-plugins-base"
@@ -2222,15 +2222,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/Config.
 -	  Vorbis plugin library
 -
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash PBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash UBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.8.1.tar.xz.sha256sum
 -sha256	15a9de985cd265c344e359f5b19347df4021b7611ed2c2d91917cb900f2fad6f  gst-plugins-base-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk PBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk UBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-base/gst1-plugins-base.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,214 +0,0 @@
 -################################################################################
 -#
@@ -2446,9 +2446,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-base/gst1-pl
 -endif
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/Config.in PBase/package/gstreamer1/gst1-plugins-good/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/Config.in UBase/package/gstreamer1/gst1-plugins-good/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-good/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-good/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-good/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,369 +0,0 @@
 -menuconfig BR2_PACKAGE_GST1_PLUGINS_GOOD
 -	bool "gst1-plugins-good"
@@ -2819,15 +2819,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/Config.
 -	  Wavpack lossless/lossy audio format handling
 -
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash PBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash UBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.8.1.tar.xz.sha256sum
 -sha256	2103e17921d67894e82eafdd64fb9b06518599952fd93e625bfbc83ffead0972  gst-plugins-good-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk PBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk UBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-good/gst1-plugins-good.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,428 +0,0 @@
 -################################################################################
 -#
@@ -3257,9 +3257,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-good/gst1-pl
 -endif
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/Config.in PBase/package/gstreamer1/gst1-plugins-ugly/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/Config.in UBase/package/gstreamer1/gst1-plugins-ugly/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-ugly/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-ugly/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,84 +0,0 @@
 -menuconfig BR2_PACKAGE_GST1_PLUGINS_UGLY
 -	bool "gst1-plugins-ugly"
@@ -3345,15 +3345,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/Config.
 -# Note: to get descriptions use the following.
 -# # find . -name 'plugin-*.xml' | xargs grep -m 1 description
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash PBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash UBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.8.1.tar.xz.sha256sum
 -sha256	8e656a9a3be60d7e7ed3fb8e2a22d070b1f54f95d0b22accd876360e659446ce  gst-plugins-ugly-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk PBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk UBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-plugins-ugly/gst1-plugins-ugly.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,115 +0,0 @@
 -################################################################################
 -#
@@ -3470,9 +3470,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-plugins-ugly/gst1-pl
 -# # find . -name 'plugin-*.xml' | xargs grep license
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/Config.in PBase/package/gstreamer1/gst1-validate/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/Config.in UBase/package/gstreamer1/gst1-validate/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst1-validate/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-validate/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-validate/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,16 +0,0 @@
 -config BR2_PACKAGE_GST1_VALIDATE
 -	bool "gst1-validate"
@@ -3490,15 +3490,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/Config.in P
 -
 -comment "gst1-validate depends on python"
 -	depends on !BR2_PACKAGE_PYTHON
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.hash PBase/package/gstreamer1/gst1-validate/gst1-validate.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.hash UBase/package/gstreamer1/gst1-validate/gst1-validate.hash
 --- buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-validate/gst1-validate.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-validate/gst1-validate.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.8.1.tar.xz.sha256sum
 -sha256 a9b208c014cca2dc515599f01fd3a7a294133fd936366e74f439b9bc96a1ccbf  gst-validate-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.mk PBase/package/gstreamer1/gst1-validate/gst1-validate.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.mk UBase/package/gstreamer1/gst1-validate/gst1-validate.mk
 --- buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-validate.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst1-validate/gst1-validate.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst1-validate/gst1-validate.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,22 +0,0 @@
 -################################################################################
 -#
@@ -3522,9 +3522,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst1-validate/gst1-valida
 -	$(if $(BR2_PACKAGE_CAIRO),cairo)
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/Config.in PBase/package/gstreamer1/gst-omx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/Config.in UBase/package/gstreamer1/gst-omx/Config.in
 --- buildroot-2016.05/package/gstreamer1/gst-omx/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst-omx/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst-omx/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,11 +0,0 @@
 -config BR2_PACKAGE_GST_OMX
 -	bool "gst-omx"
@@ -3537,9 +3537,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/Config.in PBase/p
 -
 -comment "gst-omx requires a OpenMAX implementation"
 -	depends on !BR2_PACKAGE_HAS_LIBOPENMAX
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/gst-omx.mk PBase/package/gstreamer1/gst-omx/gst-omx.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/gst-omx.mk UBase/package/gstreamer1/gst-omx/gst-omx.mk
 --- buildroot-2016.05/package/gstreamer1/gst-omx/gst-omx.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gst-omx/gst-omx.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gst-omx/gst-omx.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,45 +0,0 @@
 -################################################################################
 -#
@@ -3586,9 +3586,9 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gst-omx/gst-omx.mk PBase/
 -GST_OMX_POST_PATCH_HOOKS += GST_OMX_FIXUP_CONFIG_PATHS
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/Config.in PBase/package/gstreamer1/gstreamer1/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/Config.in UBase/package/gstreamer1/gstreamer1/Config.in
 --- buildroot-2016.05/package/gstreamer1/gstreamer1/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gstreamer1/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gstreamer1/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,55 +0,0 @@
 -comment "gstreamer 1.x needs a toolchain w/ wchar, threads"
 -	depends on BR2_USE_MMU
@@ -3645,15 +3645,15 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/Config.in PBas
 -	  additional space on the target.
 -
 -endif
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.hash PBase/package/gstreamer1/gstreamer1/gstreamer1.hash
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.hash UBase/package/gstreamer1/gstreamer1/gstreamer1.hash
 --- buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gstreamer1/gstreamer1.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gstreamer1/gstreamer1.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# From http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.8.1.tar.xz.sha256sum
 -sha256	5a3722fb9302dd977c17ced4240293dc777cb716dc98c8cca63d75c27e5e3107  gstreamer-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.mk PBase/package/gstreamer1/gstreamer1/gstreamer1.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.mk UBase/package/gstreamer1/gstreamer1/gstreamer1.mk
 --- buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gstreamer1/gstreamer1.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gstreamer1/gstreamer1.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,49 +0,0 @@
 -################################################################################
 -#
@@ -3704,21 +3704,21 @@ diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1/gstreamer1.mk 
 -GSTREAMER1_POST_INSTALL_STAGING_HOOKS += GSTREAMER1_LEGACY_CGSTCONFIG_H
 -
 -$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1.mk PBase/package/gstreamer1/gstreamer1.mk
+diff -Naur -x gcc buildroot-2016.05/package/gstreamer1/gstreamer1.mk UBase/package/gstreamer1/gstreamer1.mk
 --- buildroot-2016.05/package/gstreamer1/gstreamer1.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/gstreamer1/gstreamer1.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/gstreamer1/gstreamer1.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1 +0,0 @@
 -include package/gstreamer1/*/*.mk
-diff -Naur -x gcc buildroot-2016.05/package/libcec/libcec.hash PBase/package/libcec/libcec.hash
+diff -Naur -x gcc buildroot-2016.05/package/libcec/libcec.hash UBase/package/libcec/libcec.hash
 --- buildroot-2016.05/package/libcec/libcec.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libcec/libcec.hash	2016-11-09 16:27:19.979829449 +0100
++++ UBase/package/libcec/libcec.hash	2016-11-10 09:39:52.143829449 +0100
 @@ -1,2 +1,2 @@
  # Locally computed
 -sha256  0f29d5a2d155b507807ba896bc3b3e50a0ab56bf8f543a2bf5c2798c790292b5  libcec-2c675dac48387c48c7f43c5d2547ef0c4ef5c7dd.tar.gz
 +sha256 d8c4339b6b9944ee7d88fab428838a2cc2e4d244f9bf5266706650669815f10d  libcec-2.1.4-2.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/libcec/libcec.mk PBase/package/libcec/libcec.mk
+diff -Naur -x gcc buildroot-2016.05/package/libcec/libcec.mk UBase/package/libcec/libcec.mk
 --- buildroot-2016.05/package/libcec/libcec.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libcec/libcec.mk	2016-11-09 16:27:19.979829449 +0100
++++ UBase/package/libcec/libcec.mk	2016-11-10 09:39:52.143829449 +0100
 @@ -3,8 +3,9 @@
  # libcec
  #
@@ -3773,9 +3773,9 @@ diff -Naur -x gcc buildroot-2016.05/package/libcec/libcec.mk PBase/package/libce
 +#
 +$(eval $(autotools-package))
 +#
-diff -Naur -x gcc buildroot-2016.05/package/libfslcodec/libfslcodec.mk PBase/package/libfslcodec/libfslcodec.mk
+diff -Naur -x gcc buildroot-2016.05/package/libfslcodec/libfslcodec.mk UBase/package/libfslcodec/libfslcodec.mk
 --- buildroot-2016.05/package/libfslcodec/libfslcodec.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libfslcodec/libfslcodec.mk	2016-11-09 16:27:19.979829449 +0100
++++ UBase/package/libfslcodec/libfslcodec.mk	2016-11-10 09:39:52.143829449 +0100
 @@ -20,4 +20,21 @@
  # FIXME The Makefile installs both the arm9 and arm11 versions of the
  # libraries, but we only need one of them.
@@ -3798,9 +3798,9 @@ diff -Naur -x gcc buildroot-2016.05/package/libfslcodec/libfslcodec.mk PBase/pac
 +
 +
  $(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/Config.in PBase/package/libimxvpuapi/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/Config.in UBase/package/libimxvpuapi/Config.in
 --- buildroot-2016.05/package/libimxvpuapi/Config.in	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libimxvpuapi/Config.in	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/libimxvpuapi/Config.in	1970-01-01 01:00:00.000000000 +0100
 @@ -1,16 +0,0 @@
 -comment "libimxvpuapi needs an i.MX platform with VPU support"
 -	depends on BR2_arm
@@ -3818,15 +3818,15 @@ diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/Config.in PBase/package
 -	  top of imx-vpu, the low-level iMX6 VPU interface.
 -
 -	  https://github.com/Freescale/libimxvpuapi
-diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.hash PBase/package/libimxvpuapi/libimxvpuapi.hash
+diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.hash UBase/package/libimxvpuapi/libimxvpuapi.hash
 --- buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.hash	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libimxvpuapi/libimxvpuapi.hash	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/libimxvpuapi/libimxvpuapi.hash	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -# locally computed hash
 -sha256 8d7aeed88c06fda44318cef9565ae47b86461bd309908b1103a7974ed0822a8d  libimxvpuapi-0.10.1.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.mk PBase/package/libimxvpuapi/libimxvpuapi.mk
+diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.mk UBase/package/libimxvpuapi/libimxvpuapi.mk
 --- buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.mk	2016-05-31 23:52:36.000000000 +0200
-+++ PBase/package/libimxvpuapi/libimxvpuapi.mk	1970-01-01 01:00:00.000000000 +0100
++++ UBase/package/libimxvpuapi/libimxvpuapi.mk	1970-01-01 01:00:00.000000000 +0100
 @@ -1,35 +0,0 @@
 -################################################################################
 -#
@@ -3863,9 +3863,9 @@ diff -Naur -x gcc buildroot-2016.05/package/libimxvpuapi/libimxvpuapi.mk PBase/p
 -endef
 -
 -$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/Config.in PBase/package/novasom_gstreamer/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/Config.in UBase/package/novasom_gstreamer/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,31 @@
 +# Gstreamer 1.x & Plugins
 +menuconfig BR2_PACKAGE_NOVASOM_GSTREAMER
@@ -3898,9 +3898,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/Config.in PBase/pa
 +source "package/novasom_gstreamer/imx-vpu/Config.in"
 +endif
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/Config.in PBase/package/novasom_gstreamer/firmware-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/Config.in UBase/package/novasom_gstreamer/firmware-imx/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/firmware-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/firmware-imx/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/firmware-imx/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,10 @@
 +config BR2_PACKAGE_FIRMWARE_IMX
 +	bool "firmware-imx"
@@ -3912,9 +3912,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/Confi
 +
 +	  This library is provided by Freescale as-is and doesn't have
 +	  an upstream.
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/firmware-imx.mk PBase/package/novasom_gstreamer/firmware-imx/firmware-imx.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/firmware-imx.mk UBase/package/novasom_gstreamer/firmware-imx/firmware-imx.mk
 --- buildroot-2016.05/package/novasom_gstreamer/firmware-imx/firmware-imx.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/firmware-imx/firmware-imx.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/firmware-imx/firmware-imx.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,29 @@
 +################################################################################
 +#
@@ -3945,9 +3945,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/firmware-imx/firmw
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/Config.in PBase/package/novasom_gstreamer/gst1-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/Config.in UBase/package/novasom_gstreamer/gst1-imx/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-imx/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-imx/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,23 @@
 +comment "gst1-imx needs an imx-specific Linux kernel to be built"
 +	depends on BR2_arm && !BR2_LINUX_KERNEL
@@ -3972,15 +3972,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/Config.in
 +	  The MP3 plugin is built when BR2_PACKAGE_LIBFSLCODEC is enabled.
 +
 +	  https://github.com/Freescale/gstreamer-imx
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.hash PBase/package/novasom_gstreamer/gst1-imx/gst1-imx.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.hash UBase/package/novasom_gstreamer/gst1-imx/gst1-imx.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-imx/gst1-imx.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-imx/gst1-imx.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# locally computed hash
 +sha256 df34f080e24ac8f1619780aa5ad4e6ab1333f822cd2bf5fcb380b28c97248810  gst1-imx-0.12.0.tar.gz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.mk PBase/package/novasom_gstreamer/gst1-imx/gst1-imx.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.mk UBase/package/novasom_gstreamer/gst1-imx/gst1-imx.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-imx/gst1-imx.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-imx/gst1-imx.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,70 @@
 +################################################################################
 +#
@@ -4052,9 +4052,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-imx/gst1-imx.
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/Config.in PBase/package/novasom_gstreamer/gst1-libav/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/Config.in UBase/package/novasom_gstreamer/gst1-libav/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-libav/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-libav/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-libav/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,16 @@
 +config BR2_PACKAGE_GST1_LIBAV
 +	bool "gst1-libav"
@@ -4072,15 +4072,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/Config.
 +	  selected in the ffmpeg package.
 +
 +	  http://gstreamer.freedesktop.org/
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.hash PBase/package/novasom_gstreamer/gst1-libav/gst1-libav.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.hash UBase/package/novasom_gstreamer/gst1-libav/gst1-libav.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-libav/gst1-libav.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-libav/gst1-libav.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.8.1.tar.xz.sha256sum
 +sha256	44a49108c3531b5ac4f346a2247cd7fbafb0e8ab394394cb6d75a70300b38933  gst-libav-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.mk PBase/package/novasom_gstreamer/gst1-libav/gst1-libav.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.mk UBase/package/novasom_gstreamer/gst1-libav/gst1-libav.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-libav.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-libav/gst1-libav.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-libav/gst1-libav.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,18 @@
 +################################################################################
 +#
@@ -4100,9 +4100,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-libav/gst1-li
 +GST1_LIBAV_LICENSE_FILES = COPYING
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch PBase/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch UBase/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-bad/0001-use-gettext-0.18.patch	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,17 @@
 +Use newer version of gettext to match current buildroot gettext.
 +
@@ -4121,9 +4121,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/0
 + 
 + PACKAGE = @PACKAGE@
 + VERSION = @VERSION@
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/Config.in PBase/package/novasom_gstreamer/gst1-plugins-bad/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/Config.in UBase/package/novasom_gstreamer/gst1-plugins-bad/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-bad/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-bad/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,686 @@
 +menuconfig BR2_PACKAGE_GST1_PLUGINS_BAD
 +	bool "gst1-plugins-bad"
@@ -4811,15 +4811,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/C
 +	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
 +
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash PBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash UBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.8.1.tar.xz.sha256sum
 +sha256	0bbd58f363734fc0c4a620b2d6fb01d427fdafdbda7b90b4e15d03b751ca40f5  gst-plugins-bad-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk PBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk UBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-bad/gst1-plugins-bad.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,808 @@
 +################################################################################
 +#
@@ -5629,9 +5629,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-bad/g
 +# # find . -name 'plugin-*.xml' | xargs grep license
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/Config.in PBase/package/novasom_gstreamer/gst1-plugins-base/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/Config.in UBase/package/novasom_gstreamer/gst1-plugins-base/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-base/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-base/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,160 @@
 +menuconfig BR2_PACKAGE_GST1_PLUGINS_BASE
 +	bool "gst1-plugins-base"
@@ -5793,15 +5793,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/
 +	  Vorbis plugin library
 +
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash PBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash UBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.8.1.tar.xz.sha256sum
 +sha256	15a9de985cd265c344e359f5b19347df4021b7611ed2c2d91917cb900f2fad6f  gst-plugins-base-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk PBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk UBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-base/gst1-plugins-base.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,214 @@
 +################################################################################
 +#
@@ -6017,9 +6017,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-base/
 +endif
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/Config.in PBase/package/novasom_gstreamer/gst1-plugins-good/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/Config.in UBase/package/novasom_gstreamer/gst1-plugins-good/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-good/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-good/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,369 @@
 +menuconfig BR2_PACKAGE_GST1_PLUGINS_GOOD
 +	bool "gst1-plugins-good"
@@ -6390,15 +6390,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/
 +	  Wavpack lossless/lossy audio format handling
 +
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash PBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash UBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.8.1.tar.xz.sha256sum
 +sha256	2103e17921d67894e82eafdd64fb9b06518599952fd93e625bfbc83ffead0972  gst-plugins-good-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk PBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk UBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-good/gst1-plugins-good.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,428 @@
 +################################################################################
 +#
@@ -6828,9 +6828,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-good/
 +endif
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/Config.in PBase/package/novasom_gstreamer/gst1-plugins-ugly/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/Config.in UBase/package/novasom_gstreamer/gst1-plugins-ugly/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-ugly/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-ugly/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,84 @@
 +menuconfig BR2_PACKAGE_GST1_PLUGINS_UGLY
 +	bool "gst1-plugins-ugly"
@@ -6916,15 +6916,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/
 +# Note: to get descriptions use the following.
 +# # find . -name 'plugin-*.xml' | xargs grep -m 1 description
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash PBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash UBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.8.1.tar.xz.sha256sum
 +sha256	8e656a9a3be60d7e7ed3fb8e2a22d070b1f54f95d0b22accd876360e659446ce  gst-plugins-ugly-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk PBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk UBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-plugins-ugly/gst1-plugins-ugly.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,115 @@
 +################################################################################
 +#
@@ -7041,9 +7041,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-plugins-ugly/
 +# # find . -name 'plugin-*.xml' | xargs grep license
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/Config.in PBase/package/novasom_gstreamer/gst1-validate/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/Config.in UBase/package/novasom_gstreamer/gst1-validate/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-validate/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-validate/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-validate/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,16 @@
 +config BR2_PACKAGE_GST1_VALIDATE
 +	bool "gst1-validate"
@@ -7061,15 +7061,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/Conf
 +
 +comment "gst1-validate depends on python"
 +	depends on !BR2_PACKAGE_PYTHON
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.hash PBase/package/novasom_gstreamer/gst1-validate/gst1-validate.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.hash UBase/package/novasom_gstreamer/gst1-validate/gst1-validate.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-validate/gst1-validate.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-validate/gst1-validate.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gst-validate/gst-validate-1.8.1.tar.xz.sha256sum
 +sha256 a9b208c014cca2dc515599f01fd3a7a294133fd936366e74f439b9bc96a1ccbf  gst-validate-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.mk PBase/package/novasom_gstreamer/gst1-validate/gst1-validate.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.mk UBase/package/novasom_gstreamer/gst1-validate/gst1-validate.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1-validate.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gst1-validate/gst1-validate.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gst1-validate/gst1-validate.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,22 @@
 +################################################################################
 +#
@@ -7093,9 +7093,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gst1-validate/gst1
 +	$(if $(BR2_PACKAGE_CAIRO),cairo)
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/Config.in PBase/package/novasom_gstreamer/gstreamer1/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/Config.in UBase/package/novasom_gstreamer/gstreamer1/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gstreamer1/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gstreamer1/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gstreamer1/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,55 @@
 +comment "gstreamer 1.x needs a toolchain w/ wchar, threads"
 +	depends on BR2_USE_MMU
@@ -7152,15 +7152,15 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/Config.
 +	  additional space on the target.
 +
 +endif
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.hash PBase/package/novasom_gstreamer/gstreamer1/gstreamer1.hash
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.hash UBase/package/novasom_gstreamer/gstreamer1/gstreamer1.hash
 --- buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.hash	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gstreamer1/gstreamer1.hash	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gstreamer1/gstreamer1.hash	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,2 @@
 +# From http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.8.1.tar.xz.sha256sum
 +sha256	5a3722fb9302dd977c17ced4240293dc777cb716dc98c8cca63d75c27e5e3107  gstreamer-1.8.1.tar.xz
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.mk PBase/package/novasom_gstreamer/gstreamer1/gstreamer1.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.mk UBase/package/novasom_gstreamer/gstreamer1/gstreamer1.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstreamer1.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gstreamer1/gstreamer1.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gstreamer1/gstreamer1.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,49 @@
 +################################################################################
 +#
@@ -7211,9 +7211,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer1/gstream
 +GSTREAMER1_POST_INSTALL_STAGING_HOOKS += GSTREAMER1_LEGACY_CGSTCONFIG_H
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/Config.in PBase/package/novasom_gstreamer/gstreamer-imx/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/Config.in UBase/package/novasom_gstreamer/gstreamer-imx/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gstreamer-imx/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gstreamer-imx/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,8 @@
 +config BR2_PACKAGE_GSTREAMER_IMX
 +	bool "gstreamer_imx"
@@ -7223,9 +7223,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/Conf
 +	  gstreamer_imx for the Freescale i.MX SoCs.
 +
 +
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk PBase/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk UBase/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk
 --- buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/gstreamer-imx/gstreamer-imx.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,37 @@
 +################################################################################
 +#
@@ -7264,9 +7264,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/gstreamer-imx/gstr
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/Config.in PBase/package/novasom_gstreamer/imx-codec/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/Config.in UBase/package/novasom_gstreamer/imx-codec/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-codec/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-codec/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-codec/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,13 @@
 +config BR2_PACKAGE_IMX_CODEC
 +	bool "imx-codec"
@@ -7281,9 +7281,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/Config.i
 +comment "libfslcodec needs an (e)glibc toolchain"
 +	depends on BR2_arm
 +	depends on !BR2_TOOLCHAIN_USES_GLIBC
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/imx-codec.mk PBase/package/novasom_gstreamer/imx-codec/imx-codec.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/imx-codec.mk UBase/package/novasom_gstreamer/imx-codec/imx-codec.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-codec/imx-codec.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-codec/imx-codec.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-codec/imx-codec.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,21 @@
 +################################################################################
 +#
@@ -7306,9 +7306,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-codec/imx-code
 +
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in PBase/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in UBase/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-gst1alsaplugins/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,15 @@
 +comment "imx_gst1alsaplugins needs an imx-specific Linux kernel to be built"
 +        depends on BR2_arm && !BR2_LINUX_KERNEL
@@ -7325,9 +7325,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugin
 +	  http://gstreamer.freedesktop.org/
 +
 +
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk PBase/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk UBase/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-gst1alsaplugins/imx-gst1alsaplugins.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,18 @@
 +################################################################################
 +#
@@ -7347,9 +7347,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-gst1alsaplugin
 +IMX_GST1ALSAPLUGINS_DEPENDENCIES = linux alsa-lib gstreamer1 gst1-plugins-base imx-codec imx-parser
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/Config.in PBase/package/novasom_gstreamer/imx-kobs/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/Config.in UBase/package/novasom_gstreamer/imx-kobs/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-kobs/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-kobs/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-kobs/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,10 @@
 +config BR2_PACKAGE_IMX_KOBS
 +	bool "imx-kobs"
@@ -7361,9 +7361,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/Config.in
 +	  This library is provided by Freescale as-is and doesn't have
 +	  an upstream.
 +
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/imx-kobs.mk PBase/package/novasom_gstreamer/imx-kobs/imx-kobs.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/imx-kobs.mk UBase/package/novasom_gstreamer/imx-kobs/imx-kobs.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-kobs/imx-kobs.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-kobs/imx-kobs.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-kobs/imx-kobs.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,12 @@
 +################################################################################
 +#
@@ -7377,9 +7377,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-kobs/imx-kobs.
 +IMX_KOBS_LICENSE_FILES = COPYING
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/Config.in PBase/package/novasom_gstreamer/imx-lib/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/Config.in UBase/package/novasom_gstreamer/imx-lib/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-lib/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-lib/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-lib/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,16 @@
 +comment "imx-lib needs an imx-specific Linux kernel to be built"
 +	depends on BR2_arm && !BR2_LINUX_KERNEL
@@ -7397,9 +7397,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/Config.in 
 +	  This library is provided by Freescale as-is and doesn't have
 +	  an upstream.
 +
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/imx-lib.mk PBase/package/novasom_gstreamer/imx-lib/imx-lib.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/imx-lib.mk UBase/package/novasom_gstreamer/imx-lib/imx-lib.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-lib/imx-lib.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-lib/imx-lib.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-lib/imx-lib.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,40 @@
 +################################################################################
 +#
@@ -7441,9 +7441,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-lib/imx-lib.mk
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/Config.in PBase/package/novasom_gstreamer/imx-parser/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/Config.in UBase/package/novasom_gstreamer/imx-parser/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-parser/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-parser/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-parser/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,8 @@
 +config BR2_PACKAGE_IMX_PARSER
 +	bool "imx-parser"
@@ -7453,9 +7453,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/Config.
 +
 +	  This library is provided by Freescale as-is and doesn't have
 +	  an upstream.
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/imx-parser.mk PBase/package/novasom_gstreamer/imx-parser/imx-parser.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/imx-parser.mk UBase/package/novasom_gstreamer/imx-parser/imx-parser.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-parser/imx-parser.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-parser/imx-parser.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-parser/imx-parser.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,20 @@
 +################################################################################
 +#
@@ -7477,9 +7477,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-parser/imx-par
 +
 +
 +$(eval $(autotools-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/Config.in PBase/package/novasom_gstreamer/imx-vpu/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/Config.in UBase/package/novasom_gstreamer/imx-vpu/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/imx-vpu/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-vpu/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-vpu/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,12 @@
 +config BR2_PACKAGE_IMX_VPU
 +	bool "imx-vpu"
@@ -7493,9 +7493,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/Config.in 
 +
 +	  This library is provided by Freescale as-is and doesn't have
 +	  an upstream.
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/imx-vpu.mk PBase/package/novasom_gstreamer/imx-vpu/imx-vpu.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/imx-vpu.mk UBase/package/novasom_gstreamer/imx-vpu/imx-vpu.mk
 --- buildroot-2016.05/package/novasom_gstreamer/imx-vpu/imx-vpu.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/imx-vpu/imx-vpu.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/imx-vpu/imx-vpu.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,39 @@
 +################################################################################
 +#
@@ -7536,9 +7536,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/imx-vpu/imx-vpu.mk
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/Config.in PBase/package/novasom_gstreamer/libimxvpuapi/Config.in
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/Config.in UBase/package/novasom_gstreamer/libimxvpuapi/Config.in
 --- buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/Config.in	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/libimxvpuapi/Config.in	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/libimxvpuapi/Config.in	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,7 @@
 +config BR2_PACKAGE_LIBIMXVPUAPI
 +	bool "libimxvpuapi"
@@ -7547,9 +7547,9 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/Confi
 +	  libimxvpuapi for the Freescale i.MX SoCs.
 +
 +
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk PBase/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk UBase/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk
 --- buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/libimxvpuapi/libimxvpuapi.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1,34 @@
 +################################################################################
 +#
@@ -7585,8 +7585,8 @@ diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/libimxvpuapi/libim
 +endef
 +
 +$(eval $(generic-package))
-diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/novasom_gstreamer.mk PBase/package/novasom_gstreamer/novasom_gstreamer.mk
+diff -Naur -x gcc buildroot-2016.05/package/novasom_gstreamer/novasom_gstreamer.mk UBase/package/novasom_gstreamer/novasom_gstreamer.mk
 --- buildroot-2016.05/package/novasom_gstreamer/novasom_gstreamer.mk	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/package/novasom_gstreamer/novasom_gstreamer.mk	2016-11-09 16:27:19.983829449 +0100
++++ UBase/package/novasom_gstreamer/novasom_gstreamer.mk	2016-11-10 09:39:52.147829449 +0100
 @@ -0,0 +1 @@
 +include package/novasom_gstreamer/*/*.mk

@@ -1,6 +1,6 @@
 #!/bin/sh
 BUILDROOT="buildroot-2016.05"
-REFERENCE_FS="PBase"
+REFERENCE_FS="UBase"
 HERE=`pwd`
 cd ../FileSystem
 rm -rf Patches

@@ -1,12 +1,12 @@
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/autologin.sh PBase/board/novasis/Init/bin/autologin.sh
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/autologin.sh UBase/board/novasis/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/bin/autologin.sh	2016-11-09 16:27:19.967829449 +0100
++++ UBase/board/novasis/Init/bin/autologin.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,2 @@
 +#!/bin/sh
 +/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec PBase/board/novasis/Init/bin/get_exec
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec UBase/board/novasis/Init/bin/get_exec
 --- buildroot-2016.05/board/novasis/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/bin/get_exec	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/Init/bin/get_exec	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -18,9 +18,9 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/get_exec PBase/board/novasis
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs PBase/board/novasis/Init/bin/update_fs
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs UBase/board/novasis/Init/bin/update_fs
 --- buildroot-2016.05/board/novasis/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/bin/update_fs	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/Init/bin/update_fs	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -30,9 +30,9 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_fs PBase/board/novasi
 +cp /tmp/uInitrd /tmp/update_dir/.       
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel PBase/board/novasis/Init/bin/update_kernel
+diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel UBase/board/novasis/Init/bin/update_kernel
 --- buildroot-2016.05/board/novasis/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/bin/update_kernel	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/Init/bin/update_kernel	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +get_exec zImage
@@ -44,14 +44,14 @@ diff -Naur buildroot-2016.05/board/novasis/Init/bin/update_kernel PBase/board/no
 +cp /tmp/novasomp.dtb /tmp/update_dir/.
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars PBase/board/novasis/Init/etc/sysconfig/system_vars
+diff -Naur buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars UBase/board/novasis/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/etc/sysconfig/system_vars	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/Init/etc/sysconfig/system_vars	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.122
-diff -Naur buildroot-2016.05/board/novasis/Init/root/.asoundrc PBase/board/novasis/Init/root/.asoundrc
+diff -Naur buildroot-2016.05/board/novasis/Init/root/.asoundrc UBase/board/novasis/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/Init/root/.asoundrc	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/Init/root/.asoundrc	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +        type hw
@@ -91,15 +91,15 @@ diff -Naur buildroot-2016.05/board/novasis/Init/root/.asoundrc PBase/board/novas
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh PBase/board/novasis/NOVAsomP/Init/bin/autologin.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh UBase/board/novasis/NOVAsomP/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/bin/autologin.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/bin/autologin.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,2 @@
 +#!/bin/sh
 +/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec PBase/board/novasis/NOVAsomP/Init/bin/get_exec
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec UBase/board/novasis/NOVAsomP/Init/bin/get_exec
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/bin/get_exec	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/bin/get_exec	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -111,9 +111,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec PBase/boar
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs PBase/board/novasis/NOVAsomP/Init/bin/update_fs
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs UBase/board/novasis/NOVAsomP/Init/bin/update_fs
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/bin/update_fs	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/bin/update_fs	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -123,9 +123,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs PBase/boa
 +cp /tmp/uInitrd /tmp/update_dir/.       
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel PBase/board/novasis/NOVAsomP/Init/bin/update_kernel
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel UBase/board/novasis/NOVAsomP/Init/bin/update_kernel
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/bin/update_kernel	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/bin/update_kernel	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +get_exec zImage
@@ -137,9 +137,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel PBase
 +cp /tmp/novasomp.dtb /tmp/update_dir/.
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab PBase/board/novasis/NOVAsomP/Init/etc/fstab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab UBase/board/novasis/NOVAsomP/Init/etc/fstab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/fstab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/fstab	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,8 @@
 +# <file system>	<mount pt>	<type>	<options>	<dump>	<pass>
 +/dev/root	/		ext2	rw,noauto	0	1
@@ -149,9 +149,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab PBase/board/n
 +tmpfs		/tmp		tmpfs	mode=1777	0	0
 +tmpfs		/run		tmpfs	mode=0755,nosuid,nodev	0	0
 +sysfs		/sys		sysfs	defaults	0	0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group PBase/board/novasis/NOVAsomP/Init/etc/group
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group UBase/board/novasis/NOVAsomP/Init/etc/group
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/group	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/group	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,26 @@
 +root:x:0:
 +daemon:x:1:
@@ -179,9 +179,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group PBase/board/n
 +netdev:x:82:
 +nogroup:x:99:
 +users:x:100:
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp PBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp UBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,57 @@
 +#! /bin/sh
 +#
@@ -240,9 +240,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S
 +
 +exit 0
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services PBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services UBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +# called by usr/share/udhcpc/default.script after the dhcp have a valid ip
@@ -261,17 +261,17 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_s
 +sleep 1
 +touch /tmp/system_ready
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater PBase/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater UBase/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +sleep 20
 +/sbin/hwclock -w
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK PBase/board/novasis/NOVAsomP/Init/etc/init.d/rcK
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK UBase/board/novasis/NOVAsomP/Init/etc/init.d/rcK
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/rcK	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/rcK	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,27 @@
 +#!/bin/sh
 +
@@ -300,9 +300,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK PBase/bo
 +    esac
 +done
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS PBase/board/novasis/NOVAsomP/Init/etc/init.d/rcS
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS UBase/board/novasis/NOVAsomP/Init/etc/init.d/rcS
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,48 @@
 +#!/bin/sh
 +
@@ -352,9 +352,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS PBase/bo
 +			;;
 +	esac
 +done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging PBase/board/novasis/NOVAsomP/Init/etc/init.d/S01logging
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging UBase/board/novasis/NOVAsomP/Init/etc/init.d/S01logging
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,40 @@
 +#!/bin/sh
 +#
@@ -396,9 +396,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging P
 +esac
 +
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom PBase/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom UBase/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,51 @@
 +#! /bin/sh
 +#
@@ -451,9 +451,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom P
 +		exit 1
 +		;;
 +esac
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network PBase/board/novasis/NOVAsomP/Init/etc/init.d/S40network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network UBase/board/novasis/NOVAsomP/Init/etc/init.d/S40network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,56 @@
 +#!/bin/sh
 +#
@@ -511,9 +511,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network P
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp PBase/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp UBase/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,6 @@
 +#! /bin/sh
 +#
@@ -521,9 +521,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp PBase
 +#
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd PBase/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd UBase/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,57 @@
 +#!/bin/sh
 +#
@@ -582,9 +582,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd PBas
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet PBase/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet UBase/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,36 @@
 +#!/bin/sh
 +#
@@ -622,9 +622,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet PB
 +esac
 +
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld PBase/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld UBase/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,38 @@
 +#!/bin/sh
 +[ ! -f /usr/bin/mysql ] && exit 0
@@ -664,9 +664,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld PB
 +		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
 +		;;
 +esac
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab PBase/board/novasis/NOVAsomP/Init/etc/inittab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab UBase/board/novasis/NOVAsomP/Init/etc/inittab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/inittab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/inittab	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,35 @@
 +# /etc/inittab
 +#
@@ -703,14 +703,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab PBase/board
 +::shutdown:/etc/init.d/rcK
 +::shutdown:/sbin/swapoff -a
 +::shutdown:/bin/umount -a -r
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/issue PBase/board/novasis/NOVAsomP/Init/etc/issue
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/issue UBase/board/novasis/NOVAsomP/Init/etc/issue
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/issue	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/issue	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/issue	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1 @@
 +Welcome
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab PBase/board/novasis/NOVAsomP/Init/etc/mtab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab UBase/board/novasis/NOVAsomP/Init/etc/mtab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/mtab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/mtab	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,30 @@
 +sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
 +proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
@@ -742,9 +742,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab PBase/board/no
 +UShared /media/sf_UShared vboxsf rw,nodev,relatime 0 0
 +tmpfs /run/user/1000 tmpfs rw,nosuid,nodev,relatime,size=998148k,mode=700,uid=1000,gid=1000 0 0
 +gvfsd-fuse /run/user/1000/gvfs fuse.gvfsd-fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface PBase/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface UBase/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +
@@ -767,9 +767,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d
 +    exit 1
 +fi
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces PBase/board/novasis/NOVAsomP/Init/etc/network/interfaces
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces UBase/board/novasis/NOVAsomP/Init/etc/network/interfaces
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/network/interfaces	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/network/interfaces	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,9 @@
 +# interface file auto-generated by buildroot
 +
@@ -780,9 +780,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces 
 +iface eth0 inet dhcp
 +	pre-up /etc/network/nfs_check
 +	wait-delay 15
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check PBase/board/novasis/NOVAsomP/Init/etc/network/nfs_check
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check UBase/board/novasis/NOVAsomP/Init/etc/network/nfs_check
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/network/nfs_check	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/network/nfs_check	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,20 @@
 +#!/bin/sh
 +
@@ -804,9 +804,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check P
 +	echo Skipping $IFACE, used for NFS from $nfsip
 +	exit 1
 +fi
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf PBase/board/novasis/NOVAsomP/Init/etc/nsswitch.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf UBase/board/novasis/NOVAsomP/Init/etc/nsswitch.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,13 @@
 +# /etc/nsswitch.conf
 +
@@ -821,18 +821,18 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf PBase
 +services:       files
 +ethers:         files
 +rpc:            files
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release PBase/board/novasis/NOVAsomP/Init/etc/os-release
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release UBase/board/novasis/NOVAsomP/Init/etc/os-release
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/os-release	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/os-release	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,5 @@
 +NAME=Buildroot
 +VERSION=2016.05
 +ID=buildroot
 +VERSION_ID=2016.05
 +PRETTY_NAME="Buildroot 2016.05"
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd PBase/board/novasis/NOVAsomP/Init/etc/passwd
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd UBase/board/novasis/NOVAsomP/Init/etc/passwd
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/passwd	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/passwd	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,9 @@
 +root:x:0:0:root:/root:/bin/sh
 +daemon:x:1:1:daemon:/usr/sbin:/bin/false
@@ -843,9 +843,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd PBase/board/
 +www-data:x:33:33:www-data:/var/www:/bin/false
 +operator:x:37:37:Operator:/var:/bin/false
 +nobody:x:99:99:nobody:/home:/bin/false
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile PBase/board/novasis/NOVAsomP/Init/etc/profile
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile UBase/board/novasis/NOVAsomP/Init/etc/profile
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/profile	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/profile	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,20 @@
 +export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 +
@@ -867,14 +867,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile PBase/board
 +	fi
 +	unset i
 +done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh PBase/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh UBase/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1 @@
 +umask 022
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols PBase/board/novasis/NOVAsomP/Init/etc/protocols
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols UBase/board/novasis/NOVAsomP/Init/etc/protocols
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/protocols	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/protocols	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,61 @@
 +# Internet (IP) protocols
 +#
@@ -937,9 +937,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols PBase/boa
 +shim6	140	Shim6		# Shim6 Protocol [RFC5533]
 +wesp	141	WESP		# Wrapped Encapsulating Security Payload
 +rohc	142	ROHC		# Robust Header Compression
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services PBase/board/novasis/NOVAsomP/Init/etc/services
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services UBase/board/novasis/NOVAsomP/Init/etc/services
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/services	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/services	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,302 @@
 +# /etc/services:
 +# $Id: services,v 1.1 2004/10/09 02:49:18 andersen Exp $
@@ -1243,9 +1243,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services PBase/boar
 +
 +# Local services
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow PBase/board/novasis/NOVAsomP/Init/etc/shadow
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow UBase/board/novasis/NOVAsomP/Init/etc/shadow
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/shadow	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/shadow	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,9 @@
 +root::10933:0:99999:7:::
 +daemon:*:10933:0:99999:7:::
@@ -1256,9 +1256,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow PBase/board/
 +www-data:*:10933:0:99999:7:::
 +operator:*:10933:0:99999:7:::
 +nobody:*:10933:0:99999:7:::
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/network	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/network	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,19 @@
 +# Wired ethernet
 +ETH0_ENABLED=Y
@@ -1279,14 +1279,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network P
 +NET_ALIAS=192.168.10.248
 +NET_HTTPD_PORT=8080
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-11-09 16:27:33.139829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-11-10 10:35:07.009475563 +0100
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.132
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,16 @@
 +#Wireless
 +WLAN_ENABLED=N
@@ -1304,9 +1304,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless 
 +WLAN_DNS_DOMAIN=-
 +WLAN_MAC=1E:72:49:ED:F7:54
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc PBase/board/novasis/NOVAsomP/Init/root/.asoundrc
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc UBase/board/novasis/NOVAsomP/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/root/.asoundrc	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/root/.asoundrc	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +        type hw
@@ -1346,9 +1346,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc PBase/bo
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script PBase/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script UBase/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,83 @@
 +#!/bin/sh
 +
@@ -1433,9 +1433,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/defaul
 +done
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh PBase/board/novasis/NOVAsomP/post-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh UBase/board/novasis/NOVAsomP/post-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/post-image.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/post-image.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -1446,9 +1446,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh PBase/board/no
 +ln -s ${BASE_DIR}/images/uInitrd
 +popd
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh PBase/board/novasis/NOVAsomP/pre-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh UBase/board/novasis/NOVAsomP/pre-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/pre-image.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/pre-image.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -1459,9 +1459,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh PBase/board/nov
 +chmod 777 ${TARGET_DIR}/etc/init.d/*
 +sync
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt PBase/board/novasis/NOVAsomP/readme.txt
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt UBase/board/novasis/NOVAsomP/readme.txt
 --- buildroot-2016.05/board/novasis/NOVAsomP/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomP/readme.txt	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomP/readme.txt	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,29 @@
 +***************************
 +Novasis NOVAsomP board
@@ -1492,9 +1492,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt PBase/board/novas
 +References
 +==========
 +[1] http://www.novasis.it/NOVAsomP.html
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg PBase/board/novasis/NOVAsomU/genimage.cfg
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg UBase/board/novasis/NOVAsomU/genimage.cfg
 --- buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/genimage.cfg	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/genimage.cfg	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,41 @@
 +# Minimal microSD card image for the Freescale's i.MX6UL EVK board
 +#
@@ -1537,15 +1537,15 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/genimage.cfg PBase/board/nov
 +    image = "rootfs.ext2"
 +  }
 +}
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh PBase/board/novasis/NOVAsomU/Init/bin/autologin.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh UBase/board/novasis/NOVAsomU/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/bin/autologin.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/bin/autologin.sh	2016-11-10 09:39:52.135829449 +0100
 @@ -0,0 +1,2 @@
 +#!/bin/sh
 +/bin/login -f root
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec PBase/board/novasis/NOVAsomU/Init/bin/get_exec
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec UBase/board/novasis/NOVAsomU/Init/bin/get_exec
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/bin/get_exec	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/bin/get_exec	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -1557,9 +1557,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/get_exec PBase/boar
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs PBase/board/novasis/NOVAsomU/Init/bin/update_fs
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs UBase/board/novasis/NOVAsomU/Init/bin/update_fs
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/bin/update_fs	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/bin/update_fs	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -1569,9 +1569,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_fs PBase/boa
 +cp /tmp/uInitrd /tmp/update_dir/.       
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel PBase/board/novasis/NOVAsomU/Init/bin/update_kernel
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel UBase/board/novasis/NOVAsomU/Init/bin/update_kernel
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/bin/update_kernel	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/bin/update_kernel	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +get_exec zImage
@@ -1583,9 +1583,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/bin/update_kernel PBase
 +cp /tmp/novasomp.dtb /tmp/update_dir/.
 +umount /tmp/update_dir
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/fstab PBase/board/novasis/NOVAsomU/Init/etc/fstab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/fstab UBase/board/novasis/NOVAsomU/Init/etc/fstab
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/fstab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/fstab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/fstab	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,8 @@
 +# <file system>	<mount pt>	<type>	<options>	<dump>	<pass>
 +/dev/root	/		ext2	rw,noauto	0	1
@@ -1595,9 +1595,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/fstab PBase/board/n
 +tmpfs		/tmp		tmpfs	mode=1777	0	0
 +tmpfs		/run		tmpfs	mode=0755,nosuid,nodev	0	0
 +sysfs		/sys		sysfs	defaults	0	0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/group PBase/board/novasis/NOVAsomU/Init/etc/group
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/group UBase/board/novasis/NOVAsomU/Init/etc/group
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/group	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/group	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/group	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,26 @@
 +root:x:0:
 +daemon:x:1:
@@ -1625,9 +1625,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/group PBase/board/n
 +netdev:x:82:
 +nogroup:x:99:
 +users:x:100:
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp PBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp UBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S49ntp	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,57 @@
 +#! /bin/sh
 +#
@@ -1686,9 +1686,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_S
 +
 +exit 0
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services PBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services UBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_services	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +# called by usr/share/udhcpc/default.script after the dhcp have a valid ip
@@ -1707,17 +1707,17 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/afterlease_s
 +sleep 1
 +touch /tmp/system_ready
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater PBase/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater UBase/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/hwclock_updater	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +sleep 20
 +/sbin/hwclock -w
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcK PBase/board/novasis/NOVAsomU/Init/etc/init.d/rcK
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcK UBase/board/novasis/NOVAsomU/Init/etc/init.d/rcK
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcK	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/rcK	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/rcK	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,27 @@
 +#!/bin/sh
 +
@@ -1746,9 +1746,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcK PBase/bo
 +    esac
 +done
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcS PBase/board/novasis/NOVAsomU/Init/etc/init.d/rcS
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcS UBase/board/novasis/NOVAsomU/Init/etc/init.d/rcS
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/rcS	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/rcS	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,48 @@
 +#!/bin/sh
 +
@@ -1798,9 +1798,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/rcS PBase/bo
 +			;;
 +	esac
 +done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S01logging PBase/board/novasis/NOVAsomU/Init/etc/init.d/S01logging
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S01logging UBase/board/novasis/NOVAsomU/Init/etc/init.d/S01logging
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S01logging	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S01logging	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S01logging	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,40 @@
 +#!/bin/sh
 +#
@@ -1842,9 +1842,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S01logging P
 +esac
 +
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom PBase/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom UBase/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,51 @@
 +#! /bin/sh
 +#
@@ -1897,9 +1897,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S20urandom P
 +		exit 1
 +		;;
 +esac
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S40network PBase/board/novasis/NOVAsomU/Init/etc/init.d/S40network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S40network UBase/board/novasis/NOVAsomU/Init/etc/init.d/S40network
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S40network	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S40network	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S40network	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,56 @@
 +#!/bin/sh
 +#
@@ -1957,9 +1957,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S40network P
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp PBase/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp UBase/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,6 @@
 +#! /bin/sh
 +#
@@ -1967,9 +1967,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S49ntp PBase
 +#
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd PBase/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd UBase/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,57 @@
 +#!/bin/sh
 +#
@@ -2028,9 +2028,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50sshd PBas
 +
 +exit $?
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet PBase/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet UBase/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,36 @@
 +#!/bin/sh
 +#
@@ -2068,9 +2068,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S50telnet PB
 +esac
 +
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld PBase/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld UBase/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,38 @@
 +#!/bin/sh
 +[ ! -f /usr/bin/mysql ] && exit 0
@@ -2110,9 +2110,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/init.d/S97mysqld PB
 +		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
 +		;;
 +esac
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab PBase/board/novasis/NOVAsomU/Init/etc/inittab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab UBase/board/novasis/NOVAsomU/Init/etc/inittab
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/inittab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/inittab	2016-11-10 10:35:02.647295565 +0100
 @@ -0,0 +1,35 @@
 +# /etc/inittab
 +#
@@ -2140,7 +2140,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab PBase/board
 +::sysinit:/etc/init.d/rcS
 +
 +# Put a getty on the serial port
-+ttymxc0::respawn:/sbin/getty -L -l /bin/autologin.sh -n ttymxc2 115200 vt100 # GENERIC_SERIAL
++ttymxc0::respawn:/sbin/getty -L -l /bin/autologin.sh -n ttymxc0 115200 vt100 # GENERIC_SERIAL
 +
 +# Stuff to do for the 3-finger salute
 +#::ctrlaltdel:/sbin/reboot
@@ -2149,14 +2149,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/inittab PBase/board
 +::shutdown:/etc/init.d/rcK
 +::shutdown:/sbin/swapoff -a
 +::shutdown:/bin/umount -a -r
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/issue PBase/board/novasis/NOVAsomU/Init/etc/issue
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/issue UBase/board/novasis/NOVAsomU/Init/etc/issue
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/issue	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/issue	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/issue	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1 @@
 +Welcome
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/mtab PBase/board/novasis/NOVAsomU/Init/etc/mtab
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/mtab UBase/board/novasis/NOVAsomU/Init/etc/mtab
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/mtab	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/mtab	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/mtab	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,30 @@
 +sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
 +proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
@@ -2188,9 +2188,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/mtab PBase/board/no
 +UShared /media/sf_UShared vboxsf rw,nodev,relatime 0 0
 +tmpfs /run/user/1000 tmpfs rw,nosuid,nodev,relatime,size=998148k,mode=700,uid=1000,gid=1000 0 0
 +gvfsd-fuse /run/user/1000/gvfs fuse.gvfsd-fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface PBase/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface UBase/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d/wait_iface	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +
@@ -2213,9 +2213,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/if-pre-up.d
 +    exit 1
 +fi
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/interfaces PBase/board/novasis/NOVAsomU/Init/etc/network/interfaces
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/interfaces UBase/board/novasis/NOVAsomU/Init/etc/network/interfaces
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/interfaces	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/network/interfaces	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/network/interfaces	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,9 @@
 +# interface file auto-generated by buildroot
 +
@@ -2226,9 +2226,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/interfaces 
 +iface eth0 inet dhcp
 +	pre-up /etc/network/nfs_check
 +	wait-delay 15
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/nfs_check PBase/board/novasis/NOVAsomU/Init/etc/network/nfs_check
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/nfs_check UBase/board/novasis/NOVAsomU/Init/etc/network/nfs_check
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/nfs_check	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/network/nfs_check	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/network/nfs_check	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,20 @@
 +#!/bin/sh
 +
@@ -2250,9 +2250,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/network/nfs_check P
 +	echo Skipping $IFACE, used for NFS from $nfsip
 +	exit 1
 +fi
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/nsswitch.conf PBase/board/novasis/NOVAsomU/Init/etc/nsswitch.conf
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/nsswitch.conf UBase/board/novasis/NOVAsomU/Init/etc/nsswitch.conf
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/nsswitch.conf	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/nsswitch.conf	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/nsswitch.conf	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,13 @@
 +# /etc/nsswitch.conf
 +
@@ -2267,18 +2267,18 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/nsswitch.conf PBase
 +services:       files
 +ethers:         files
 +rpc:            files
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/os-release PBase/board/novasis/NOVAsomU/Init/etc/os-release
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/os-release UBase/board/novasis/NOVAsomU/Init/etc/os-release
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/os-release	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/os-release	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/os-release	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,5 @@
 +NAME=Buildroot
 +VERSION=2016.05
 +ID=buildroot
 +VERSION_ID=2016.05
 +PRETTY_NAME="Buildroot 2016.05"
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/passwd PBase/board/novasis/NOVAsomU/Init/etc/passwd
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/passwd UBase/board/novasis/NOVAsomU/Init/etc/passwd
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/passwd	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/passwd	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/passwd	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,9 @@
 +root:x:0:0:root:/root:/bin/sh
 +daemon:x:1:1:daemon:/usr/sbin:/bin/false
@@ -2289,9 +2289,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/passwd PBase/board/
 +www-data:x:33:33:www-data:/var/www:/bin/false
 +operator:x:37:37:Operator:/var:/bin/false
 +nobody:x:99:99:nobody:/home:/bin/false
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile PBase/board/novasis/NOVAsomU/Init/etc/profile
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile UBase/board/novasis/NOVAsomU/Init/etc/profile
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/profile	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/profile	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,20 @@
 +export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 +
@@ -2313,14 +2313,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile PBase/board
 +	fi
 +	unset i
 +done
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh PBase/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh UBase/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/profile.d/umask.sh	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1 @@
 +umask 022
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/protocols PBase/board/novasis/NOVAsomU/Init/etc/protocols
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/protocols UBase/board/novasis/NOVAsomU/Init/etc/protocols
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/protocols	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/protocols	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/protocols	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,61 @@
 +# Internet (IP) protocols
 +#
@@ -2383,9 +2383,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/protocols PBase/boa
 +shim6	140	Shim6		# Shim6 Protocol [RFC5533]
 +wesp	141	WESP		# Wrapped Encapsulating Security Payload
 +rohc	142	ROHC		# Robust Header Compression
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/services PBase/board/novasis/NOVAsomU/Init/etc/services
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/services UBase/board/novasis/NOVAsomU/Init/etc/services
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/services	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/services	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/services	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,302 @@
 +# /etc/services:
 +# $Id: services,v 1.1 2004/10/09 02:49:18 andersen Exp $
@@ -2689,9 +2689,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/services PBase/boar
 +
 +# Local services
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/shadow PBase/board/novasis/NOVAsomU/Init/etc/shadow
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/shadow UBase/board/novasis/NOVAsomU/Init/etc/shadow
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/shadow	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/shadow	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/shadow	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,9 @@
 +root::10933:0:99999:7:::
 +daemon:*:10933:0:99999:7:::
@@ -2702,9 +2702,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/shadow PBase/board/
 +www-data:*:10933:0:99999:7:::
 +operator:*:10933:0:99999:7:::
 +nobody:*:10933:0:99999:7:::
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/network PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/network
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/network UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/network
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/network	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/network	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/network	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,19 @@
 +# Wired ethernet
 +ETH0_ENABLED=Y
@@ -2725,14 +2725,14 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/network P
 +NET_ALIAS=192.168.10.248
 +NET_HTTPD_PORT=8080
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/system_vars	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.132
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,16 @@
 +#Wireless
 +WLAN_ENABLED=N
@@ -2750,9 +2750,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/etc/sysconfig/wireless 
 +WLAN_DNS_DOMAIN=-
 +WLAN_MAC=1E:72:49:ED:F7:54
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/root/.asoundrc PBase/board/novasis/NOVAsomU/Init/root/.asoundrc
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/root/.asoundrc UBase/board/novasis/NOVAsomU/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/root/.asoundrc	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/root/.asoundrc	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +        type hw
@@ -2792,9 +2792,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/root/.asoundrc PBase/bo
 +        channels 2
 +}
 +
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script PBase/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script UBase/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script
 --- buildroot-2016.05/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/Init/usr/share/udhcpc/default.script	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,83 @@
 +#!/bin/sh
 +
@@ -2879,34 +2879,35 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/Init/usr/share/udhcpc/defaul
 +done
 +
 +exit 0
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh PBase/board/novasis/NOVAsomU/post-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh UBase/board/novasis/NOVAsomU/post-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomU/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/post-image.sh	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/post-image.sh	2016-11-10 10:34:17.396681565 +0100
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
-+echo "###### Creating uInitr ######"
-+output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "UL_Image" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
++echo "###### Creating uInitrd for NOVAsomU ######"
++output/host/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -n "NOVAsomU" -a 0x80000 -d output/images/rootfs.ext3.gz output/images/uInitrd
 +pushd ../../Deploy
 +rm uInitrd
 +ln -s ${BASE_DIR}/images/uInitrd
 +popd
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh PBase/board/novasis/NOVAsomU/pre-image.sh
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh UBase/board/novasis/NOVAsomU/pre-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomU/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/pre-image.sh	2016-11-09 16:27:19.971829449 +0100
-@@ -0,0 +1,8 @@
++++ UBase/board/novasis/NOVAsomU/pre-image.sh	2016-11-10 10:33:24.566279564 +0100
+@@ -0,0 +1,9 @@
 +#!/bin/bash
 +
 +echo "###### Customizing file system ######"
 +echo "cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}"
 +cp -r board/novasis/NOVAsomU/Init/* ${TARGET_DIR}
 +chmod 777 ${TARGET_DIR}/bin/*
++chmod 777 ${TARGET_DIR}/etc/init.d/*
 +sync
 +exit $?
-diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/readme.txt PBase/board/novasis/NOVAsomU/readme.txt
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/readme.txt UBase/board/novasis/NOVAsomU/readme.txt
 --- buildroot-2016.05/board/novasis/NOVAsomU/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/board/novasis/NOVAsomU/readme.txt	2016-11-09 16:27:19.971829449 +0100
++++ UBase/board/novasis/NOVAsomU/readme.txt	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,64 @@
 +***************************
 +Freescale i.MX6UL EVK board
@@ -2972,9 +2973,9 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomU/readme.txt PBase/board/novas
 +References
 +==========
 +[1] http://cache.freescale.com/files/32bit/doc/quick_start_guide/IMX6ULTRALITEQSG.pdf
-diff -Naur -x gcc buildroot-2016.05/configs/novasomp_defconfig PBase/configs/novasomp_defconfig
+diff -Naur -x gcc buildroot-2016.05/configs/novasomp_defconfig UBase/configs/novasomp_defconfig
 --- buildroot-2016.05/configs/novasomp_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/configs/novasomp_defconfig	2016-11-09 16:27:19.971829449 +0100
++++ UBase/configs/novasomp_defconfig	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,108 @@
 +BR2_ARCH_HAS_MMU_OPTIONAL=y
 +BR2_arm=y
@@ -3084,9 +3085,9 @@ diff -Naur -x gcc buildroot-2016.05/configs/novasomp_defconfig PBase/configs/nov
 +BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS=y
 +BR2_PACKAGE_HOST_MKE2IMG=y
 +BR2_PACKAGE_HOST_UBOOT_TOOLS=y
-diff -Naur -x gcc buildroot-2016.05/configs/novasomu_defconfig PBase/configs/novasomu_defconfig
+diff -Naur -x gcc buildroot-2016.05/configs/novasomu_defconfig UBase/configs/novasomu_defconfig
 --- buildroot-2016.05/configs/novasomu_defconfig	1970-01-01 01:00:00.000000000 +0100
-+++ PBase/configs/novasomu_defconfig	2016-11-09 16:27:19.971829449 +0100
++++ UBase/configs/novasomu_defconfig	2016-11-10 09:39:52.139829449 +0100
 @@ -0,0 +1,85 @@
 +# architecture
 +BR2_arm=y
