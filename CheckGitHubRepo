@@ -47,5 +47,5 @@ echo ""
 echo "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTRECV}${NC} file(s) received from remote to ${GREEN}${REPOCOUNT}${NC} local repos"
 echo ""
 
-exit
+exit ${COUNTRECV}
 
