@@ -1188,7 +1188,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network S
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars SBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ SBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-11-11 15:20:47.861045102 +0100
++++ SBase/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2016-11-11 15:46:59.401045102 +0100
 @@ -0,0 +1 @@
 +REFERENCE_SERVER=192.168.10.132
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless SBase/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless
@@ -1612,11 +1612,11 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/rcK SBase/bo
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/rcS SBase/board/novasis/NOVAsomS/Init/etc/init.d/rcS
 --- buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
-+++ SBase/board/novasis/NOVAsomS/Init/etc/init.d/rcS	2016-11-11 13:20:13.929045102 +0100
++++ SBase/board/novasis/NOVAsomS/Init/etc/init.d/rcS	2016-11-11 15:45:19.969045102 +0100
 @@ -0,0 +1,48 @@
 +#!/bin/sh
 +
-+mount /dev/mmcblk0p3 /mnt
++mount /dev/mmcblk2p3 /mnt
 +if [ -d /mnt/sysconfig ]; then
 +	# If the file REINIT_VARS is present remove all saved and restart with default values
 +	if [ -f /mnt/sysconfig/REINIT_VARS ]; then
@@ -1833,7 +1833,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/S49ntp SBase
 +exit 0
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd SBase/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd
 --- buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
-+++ SBase/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd	2016-11-11 13:20:13.929045102 +0100
++++ SBase/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd	2016-11-11 15:46:25.173045102 +0100
 @@ -0,0 +1,57 @@
 +#!/bin/sh
 +#
@@ -1843,7 +1843,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/init.d/S50sshd SBas
 +# Make sure the ssh-keygen progam exists
 +[ -f /usr/bin/ssh-keygen ] || exit 0
 +
-+mount /dev/mmcblk0p3 /mnt
++mount /dev/mmcblk2p3 /mnt
 +if [ -d /mnt/sysconfig/ssh ]; then
 +	cp -r /mnt/sysconfig/ss* /etc/.
 +else
@@ -2614,6 +2614,204 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/etc/sysconfig/wireless 
 +WLAN_DNS_DOMAIN=-
 +WLAN_MAC=1E:72:49:ED:F7:54
 +
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_not_present SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_not_present
+--- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_not_present	1970-01-01 01:00:00.000000000 +0100
++++ SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_not_present	2016-11-11 15:36:17.161045102 +0100
+@@ -0,0 +1,38 @@
++pcm.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 1
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 0
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 0
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_codec SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_codec
+--- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_codec	1970-01-01 01:00:00.000000000 +0100
++++ SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_codec	2016-11-11 15:39:43.909045102 +0100
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++        type hw   
++        card 0   
++        channels 2
++}
++ctl.sgtl5000audio {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 0
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 0
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_hdmi SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_hdmi
+--- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_hdmi	1970-01-01 01:00:00.000000000 +0100
++++ SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_hdmi	2016-11-11 15:38:53.449045102 +0100
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++        type hw   
++        card 0   
++        channels 2
++}
++ctl.sgtl5000audio {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 2
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 2
++        channels 2
++}
++
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_spdif SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_spdif
+--- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_spdif	1970-01-01 01:00:00.000000000 +0100
++++ SBase/board/novasis/NOVAsomS/Init/root/alsa_audio/codec_present_default_spdif	2016-11-11 15:40:00.797045102 +0100
+@@ -0,0 +1,48 @@
++pcm.sgtl5000audio {
++        type hw   
++        card 0   
++        channels 2
++}
++ctl.sgtl5000audio {
++        type hw
++        card 0
++        channels 2
++}
++pcm.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++ctl.imxspdif {
++        type hw
++        card 1
++        channels 2
++}
++pcm.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++ctl.imxhdmisoc {
++        type hw
++        card 2
++        channels 2
++}
++pcm.copy {
++        type plug
++        slave {
++                pcm hw
++        }
++        route_policy copy
++}
++pcm.!default {
++        type hw
++        card 1
++        channels 2
++}
++ctl.!default {
++        type hw
++        card 1
++        channels 2
++}
++
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/.asoundrc SBase/board/novasis/NOVAsomS/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
 +++ SBase/board/novasis/NOVAsomS/Init/root/.asoundrc	2016-11-11 13:20:13.933045102 +0100
@@ -2656,6 +2854,17 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/.asoundrc SBase/bo
 +        channels 2
 +}
 +
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/root/.profile SBase/board/novasis/NOVAsomS/Init/root/.profile
+--- buildroot-2016.05/board/novasis/NOVAsomS/Init/root/.profile	1970-01-01 01:00:00.000000000 +0100
++++ SBase/board/novasis/NOVAsomS/Init/root/.profile	2016-11-11 15:44:22.509045102 +0100
+@@ -0,0 +1,7 @@
++rm .asoundrc
++RES=`dmesg | grep imx6-novasom-sgtl5000`
++if [ "$?" = "1" ]; then
++	ln -s alsa_audio/codec_not_present .asoundrc
++else
++	ln -s alsa_audio/codec_present_default_hdmi .asoundrc
++fi
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomS/Init/usr/share/udhcpc/default.script SBase/board/novasis/NOVAsomS/Init/usr/share/udhcpc/default.script
 --- buildroot-2016.05/board/novasis/NOVAsomS/Init/usr/share/udhcpc/default.script	1970-01-01 01:00:00.000000000 +0100
 +++ SBase/board/novasis/NOVAsomS/Init/usr/share/udhcpc/default.script	2016-11-11 13:20:13.933045102 +0100
