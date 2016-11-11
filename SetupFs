@@ -51,6 +51,7 @@ subst_config "BR2_TARGET_GENERIC_ISSUE" "Welcome"
 subst_config "BR2_PACKAGE_BUSYBOX_CONFIG" "\.\/BusyBox\.config"
 chmod 777 board/novasis/NOVAsomP/*
 chmod 777 board/novasis/NOVAsomU/*
+chmod 777 board/novasis/NOVAsomS/*
 cd ..
 rm -rf ${PATCH_DIR} 
 echo "Done"

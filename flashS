@@ -4,9 +4,17 @@
 # ${3} is size of second user partition, if enabled
 # ${4} is the device
 #DISK="/dev/sdb"
-cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+[ "${2}" = "" ] && ${2}="16"
+[ "${3}" = "" ] && ${3}="16"
+[ "${4}" = "" ] && ${4}="/dev/sdb"
 DISK=${4}
-[ "${4}" = "" ] && DISK="/dev/sdb"
+
+echo "Number of user partition is $1"
+echo "Size of first user partition is $2"
+echo "Size of second user partition is $3"
+echo "The device is $4"
+
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
 
 UBOOT_IMG="NOVAsomS/u-boot.img"
 SPL_FILE="NOVAsomS/SPL"
@@ -20,10 +28,8 @@ sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
 sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
 sync
 
-[ "${2}" = "" ] && ${2}="16"
-[ "${3}" = "" ] && ${3}="16"
-
 if [ "${1}" = "-" ]; then
+echo "No user partition"
 	sudo fdisk ${DISK} << __EOF__
 d
 1
@@ -53,7 +59,16 @@ __EOF__
 
 fi
 if [ "${1}" = "1" ]; then
+echo "$1 user partition of $2 size"
 	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
 n
 p
 1
@@ -71,7 +86,7 @@ t
 83
 n
 p
-3
+2
 
 +${2}M
 t
@@ -83,7 +98,16 @@ __EOF__
 fi
 
 if [ "${1}" = "2" ]; then
+echo "$1 user partition of $2 size and $3 size"
 	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
 n
 p
 1
@@ -93,7 +117,7 @@ t
 b
 n
 p
-2
+3
 
 +16M
 t
@@ -101,11 +125,11 @@ t
 83
 n
 p
-3
+2
 
 +${2}M
 t
-3
+2
 83
 
 n
@@ -182,10 +206,12 @@ echo -n "Copying imx6q-novasomP.dtb ..."
 sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6q-novasomS.dtb tmpmount/.
 [ "$?" != "0" ] && return 1
 echo "Done"
-echo -n "Copying imx6sdl-novasomP.dtb ..."
-sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomS.dtb tmpmount/.
-[ "$?" != "0" ] && return 1
-echo "Done"
+if [ -f ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomS.dtb ]; then
+	echo -n "Copying imx6sdl-novasomP.dtb ..."
+	sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomS.dtb tmpmount/.
+	[ "$?" != "0" ] && return 1
+	echo "Done"
+fi
 echo -n "Copying zImage ..."
 sudo cp ../../Deploy/zImage tmpmount/.
 [ "$?" != "0" ] && return 1
@@ -201,4 +227,4 @@ echo "Done"
 sudo umount tmpmount
 sync
 
-return 0
+exit 0

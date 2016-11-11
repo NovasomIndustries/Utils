@@ -1,4 +1,4 @@
-. ../../Utils/SourceMe
+. ./SourceMe
 cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
 export KBUILD_OUTPUT=./NOVAsomS
 make distclean
