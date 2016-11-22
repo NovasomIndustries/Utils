@@ -26,6 +26,13 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 	if [ "${VAR}" = "Y" ]; then
 		git pull origin master >/dev/null 2>&1
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
+		if [ "${1}" = "Qt/NOVAembed/NOVAembed" ]; then
+			HERE=`pwd`
+			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
+			make
+			cd ${HERE} 
+		fi
 	else
 		echo "${RED}Update skipped${NC}"
 	fi
@@ -42,12 +49,6 @@ echo ""
 
 for i in ${DIRS}; do
 	gitloop /Devel/NOVAsom_SDK/$i
-	if [ "${i}" = "Qt/NOVAembed/NOVAembed" ]; then
-		HERE=`pwd`
-		cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
-		make
-		cd ${HERE} 
-	fi
 done
 echo ""
 echo "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTRECV}${NC} file(s) received from remote to ${GREEN}${REPOCOUNT}${NC} local repos"
