@@ -29,7 +29,7 @@ for i in ${DIRS}; do
 			read TEXTMOD
 			cd ${PREPEND_PATH}/${i}
 			#./gitupdate "${TEXTMOD}" >/dev/null 2>&1
-			./gitupdate "${TEXTMOD}"
+			${PREPEND_PATH}/Utils/gitupdate "${TEXTMOD}"
 			cd ${HERE} 
 			COUNTSENT=`expr $COUNTSENT + $INCREMENT`;
 		fi
