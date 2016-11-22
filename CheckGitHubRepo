@@ -30,6 +30,7 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
 			HERE=`pwd`
 			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+			make distclean
 			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
 			make
 			cd ${HERE} 
