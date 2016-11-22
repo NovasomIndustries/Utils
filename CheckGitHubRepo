@@ -24,6 +24,9 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 	echo -n "  Do you want to update ? [Y/n] "
 	read VAR
 	if [ "${VAR}" = "Y" ]; then
+		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
+			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
+		fi
 		git pull origin master
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
 		echo $1
