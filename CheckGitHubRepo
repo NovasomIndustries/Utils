@@ -26,6 +26,7 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 	if [ "${VAR}" = "Y" ]; then
 		git pull origin master >/dev/null 2>&1
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
+		echo $1
 		if [ "${1}" = "Qt/NOVAembed/NOVAembed" ]; then
 			HERE=`pwd`
 			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
