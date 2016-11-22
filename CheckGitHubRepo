@@ -42,6 +42,12 @@ echo ""
 
 for i in ${DIRS}; do
 	gitloop /Devel/NOVAsom_SDK/$i
+	if [ "${i}" = "Qt/NOVAembed/NOVAembed" ]; then
+		HERE=`pwd`
+		cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+		make
+		cd ${HERE} 
+	fi
 done
 echo ""
 echo "Finished. Found ${RED}${COUNTMODS}${NC} modification(s) , ${RED}${COUNTRECV}${NC} file(s) received from remote to ${GREEN}${REPOCOUNT}${NC} local repos"
