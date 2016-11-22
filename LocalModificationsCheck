@@ -28,7 +28,8 @@ for i in ${DIRS}; do
 			echo -n "Enter the text of the modification : "
 			read TEXTMOD
 			cd ${PREPEND_PATH}/${i}
-			./gitupdate "${TEXTMOD}" >/dev/null 2>&1
+			#./gitupdate "${TEXTMOD}" >/dev/null 2>&1
+			./gitupdate "${TEXTMOD}"
 			cd ${HERE} 
 			COUNTSENT=`expr $COUNTSENT + $INCREMENT`;
 		fi
