@@ -14,6 +14,8 @@ make imx6q-novasomS.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP.dtb
 [ ! "$?" = "0" ] && return 1
+make imx6sdl-novasomP_lvds.dtb
+[ ! "$?" = "0" ] && return 1
 make imx6q-novasomP.dtb
 [ ! "$?" = "0" ] && return 1
 return 0
