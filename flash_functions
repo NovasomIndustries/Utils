@@ -31,8 +31,6 @@ echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
 echo "The SPL_FILE is ${SPL_FILE}"
 
-return 0
-
 [ ! -b ${DISK} ] && echo "${DISK} not found"
 [ ! -b ${DISK} ] && return 1
 sudo umount ${DISK}* >/dev/null 2>&1
@@ -176,7 +174,6 @@ sync
 DISK=${2}
 echo "Number of user partition is $1"
 echo "The device is $2"
-return 0
 
 echo y | sudo mkfs.vfat -F 16 ${DISK}1 -n BOOT
 RET=$?
@@ -219,7 +216,6 @@ if [ "${1}" = "2" ]; then
                 return 1
         fi
 fi
-
 return 0
 }
 
@@ -241,12 +237,12 @@ DISK=${1}
 UBOOT_IMG="${2}/u-boot.img"
 DTB_FILESDL=${3}
 DTB_FILEQ=${4}
+KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo "The device is ${DISK}"
 echo "The UBOOT_IMG is ${UBOOT_IMG}"
 echo "The DTB_FILESDL is ${DTB_FILESDL}"
 echo "The DTB_FILEQ is ${DTB_FILEQ}"
-
-return 0
+echo "The KERNEL is ${KERNEL}"
 
 rm -rf tmpmount
 mkdir tmpmount
@@ -260,7 +256,7 @@ sudo cp ${UBOOT_IMG} tmpmount/.
 echo "Done"
 [ "$?" != "0" ] && return 1
 echo -n "Copying novasomP dtb files ..."
-sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/*novasomP.dtb tmpmount/dtb/.
+sudo cp ../../Kernel/${KERNEL}/arch/arm/boot/dts/*novasomP.dtb tmpmount/dtb/.
 [ "$?" != "0" ] && return 1
 cd tmpmount
 ln -s dtb/${DTB_FILESDL} imx6sdl-novasomP.dtb
