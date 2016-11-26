@@ -1,0 +1,54 @@
+#!/bin/bash
+. ./flash_functions
+# ${1} is number of user partition
+# ${2} is size of first user partition, if enabled
+# ${3} is size of second user partition, if enabled
+# ${4} is the device
+# ${5} is the SPL_FILE
+# ${6} is the UBOOT_IMG
+# ${7} is the board name
+# ${8} is the dtb for sdl
+# ${9} is the dtb for quad
+
+NUMBER_OF_USR_PARTTIONS=${1}
+SIZE_OF_FIRST_PARTTION=${2}
+SIZE_OF_2ND_PARTTION=${3}
+DISK=${4}
+BOARD_NAME=${5}
+DTB_FILESDL=${6}
+DTB_FILEQ=${7}
+
+[ "${1}" = "" ] && NUMBER_OF_USR_PARTTIONS="-" # Defaults to no user partitions
+[ "${2}" = "" ] && SIZE_OF_FIRST_PARTTION="16"
+[ "${3}" = "" ] && SIZE_OF_2ND_PARTTION="16"
+[ "${4}" = "" ] && DISK="/dev/sdb"
+[ "${5}" = "" ] && BOARD_NAME="NOVAsomP" # Defaults to P
+[ "${6}" = "" ] && DTB_FILESDL="imx6sdl-novasomP.dtb" # Defaults to P HDMI
+[ "${7}" = "" ] && DTB_FILEQ="imx6q-novasomP.dtb" # Defaults to P HDMI
+
+echo "###################"
+echo "####  init_usd ####"
+echo "###################"
+init_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
+if ! [ "$?" = "0" ]; then
+        echo "init_usd error"
+        return 1
+fi
+echo "#####################"
+echo "####  format_usd ####"
+echo "#####################"
+format_usd $NUMBER_OF_USR_PARTTIONS $DISK
+if ! [ "$?" = "0" ]; then
+        echo "format_usd error"
+        return 1
+fi
+echo "####################"
+echo "####  store_bin ####"
+echo "####################"
+store_bin $DISK $BOARD_NAME $DTB_FILESDL $DTB_FILEQ
+if ! [ "$?" = "0" ]; then
+        echo "store_bin error"
+        return 1
+fi
+
+
