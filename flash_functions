@@ -234,11 +234,13 @@ store_bin() {
 [ "${3}" = "" ] && ${3}="imx6sdl-novasomP.dtb" # Defaults to P HDMI
 [ "${4}" = "" ] && ${4}="imx6q-novasomP.dtb" # Defaults to P HDMI
 DISK=${1}
+BOARD_NAME=${2}
 UBOOT_IMG="${2}/u-boot.img"
 DTB_FILESDL=${3}
 DTB_FILEQ=${4}
 KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo "The device is ${DISK}"
+echo "The BOARD_NAME is ${BOARD_NAME}"
 echo "The UBOOT_IMG is ${UBOOT_IMG}"
 echo "The DTB_FILESDL is ${DTB_FILESDL}"
 echo "The DTB_FILEQ is ${DTB_FILEQ}"
@@ -259,8 +261,8 @@ echo -n "Copying novasomP dtb files ..."
 sudo cp ../../Kernel/${KERNEL}/arch/arm/boot/dts/*novasomP.dtb tmpmount/dtb/.
 [ "$?" != "0" ] && return 1
 cd tmpmount
-ln -s dtb/${DTB_FILESDL} imx6sdl-novasomP.dtb
-ln -s dtb/${DTB_FILEQ} imx6q-novasomP.dtb
+ln -s dtb/${DTB_FILESDL} imx6sdl-${BOARD_NAME}.dtb
+ln -s dtb/${DTB_FILEQ} imx6q-${BOARD_NAME}.dtb
 echo "Done"
 echo -n "Copying zImage ..."
 sudo cp ../../Deploy/zImage tmpmount/.
@@ -268,6 +270,10 @@ sudo cp ../../Deploy/zImage tmpmount/.
 echo "Done"
 echo -n "Copying uInitrd ..."
 sudo cp ../../Deploy/uInitrd tmpmount/.
+[ "$?" != "0" ] && return 1
+echo "Done"
+echo -n "Copying NOVAsom.params, if present ..."
+[ -f ../../Deploy/NOVAsom-${BOARD_NAME}.params ] && sudo cp ../../Deploy/NOVAsom-${BOARD_NAME}.params tmpmount/NOVAsom.params
 [ "$?" != "0" ] && return 1
 echo "Done"
 sudo umount tmpmount
