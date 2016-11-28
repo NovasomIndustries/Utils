@@ -202,12 +202,8 @@ echo -n "Copying ${UBOOT_IMG} ..."
 sudo cp ${UBOOT_IMG} tmpmount/.
 echo "Done"
 [ "$?" != "0" ] && return 1
-echo -n "Copying imx6q-novasomP.dtb ..."
-sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6q-novasomP.dtb tmpmount/.
-[ "$?" != "0" ] && return 1
-echo "Done"
-echo -n "Copying imx6sdl-novasomP.dtb ..."
-sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6sdl-novasomP.dtb tmpmount/.
+echo -n "Copying novasomP dtb files ..."
+sudo cp ../../Kernel/linux-imx_4.1.15_1.2.0_ga/arch/arm/boot/dts/imx6*-novasomP* tmpmount/.
 [ "$?" != "0" ] && return 1
 echo "Done"
 echo -n "Copying zImage ..."
