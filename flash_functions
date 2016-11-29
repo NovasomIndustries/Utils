@@ -228,19 +228,16 @@ store_bin() {
 # 			${2} is the BOARD_NAME
 # 			${3} is the DTB_FILE for solo/dl
 # 			${4} is the DTB_FILE for quad
-# 			${5} is the NOVAsomParams file
 #########################################################
 [ "${1}" = "" ] && ${1}="/dev/sdb"
 [ "${2}" = "" ] && ${2}="NOVAsomP" # Defaults to P
 [ "${3}" = "" ] && ${3}="imx6sdl-novasomP.dtb" # Defaults to P HDMI
 [ "${4}" = "" ] && ${4}="imx6q-novasomP.dtb" # Defaults to P HDMI
-[ "${5}" = "" ] && ${5}="BootParameters/NOVAsomParams_template" # Defaults to template file
 DISK=${1}
 BOARD_NAME=${2}
 UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.img"
 DTB_FILESDL=${3}
 DTB_FILEQ=${4}
-NOVASOM_PARAMS=${5}
 
 KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo "The device is ${DISK}"
@@ -292,9 +289,6 @@ sudo cp ../Deploy/uInitrd tmpmount/.
 RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
-echo "Done"
-echo -n "Copying NOVAsomParams, if present ..."
-[ -f  ] && sudo cp ${NOVASOM_PARAMS} tmpmount/NOVAsomParams
 echo "Done"
 sudo umount tmpmount
 sync

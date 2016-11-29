@@ -7,7 +7,6 @@
 # ${5} is the board name
 # ${6} is the dtb for sdl
 # ${7} is the dtb for quad
-# ${8} is the NOVAsomParams file
 
 NUMBER_OF_USR_PARTTIONS=${1}
 SIZE_OF_FIRST_PARTTION=${2}
@@ -16,7 +15,6 @@ DISK=${4}
 BOARD_NAME=${5}
 DTB_FILESDL=${6}
 DTB_FILEQ=${7}
-NOVASOM_PARAMS="BootParameters/${8}"
 
 [ "${1}" = "" ] && NUMBER_OF_USR_PARTTIONS="-" # Defaults to no user partitions
 [ "${2}" = "" ] && SIZE_OF_FIRST_PARTTION="16"
@@ -25,7 +23,6 @@ NOVASOM_PARAMS="BootParameters/${8}"
 [ "${5}" = "" ] && BOARD_NAME="NOVAsomP" # Defaults to P
 [ "${6}" = "" ] && DTB_FILESDL="imx6sdl-novasomP.dtb" # Defaults to P HDMI
 [ "${7}" = "" ] && DTB_FILEQ="imx6q-novasomP.dtb" # Defaults to P HDMI
-[ "${8}" = "" ] && NOVASOM_PARAMS="BootParameters/NOVAsomParams_template" # Defaults to template file
 
 echo "#####################"
 echo "####   init_usd  ####"
@@ -46,7 +43,7 @@ fi
 echo "#####################"
 echo "####  store_bin  ####"
 echo "#####################"
-store_bin $DISK $BOARD_NAME $DTB_FILESDL $DTB_FILEQ $NOVASOM_PARAMS
+store_bin $DISK $BOARD_NAME $DTB_FILESDL $DTB_FILEQ
 if ! [ "$?" = "0" ]; then
         echo "store_bin error"
         exit 1
