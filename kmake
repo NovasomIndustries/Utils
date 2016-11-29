@@ -9,10 +9,12 @@ make imx6ul-14x14-evk.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6q-novasomS.dtb
 [ ! "$?" = "0" ] && return 1
-make imx6sdl-novasomP.dtb
+make imx6sdl-novasomP_hdmi.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_lvds.dtb
 [ ! "$?" = "0" ] && return 1
-make imx6q-novasomP.dtb
+make imx6q-novasomP_hdmi.dtb
 [ ! "$?" = "0" ] && return 1
+#make imx6q-novasomP_lvds.dtb
+#[ ! "$?" = "0" ] && return 1
 return 0

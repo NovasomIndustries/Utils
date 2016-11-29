@@ -21,8 +21,8 @@ BOARD_NAME=${5}
 [ "${3}" = "" ] && ${SIZE_OF_2ND_PARTITION}="16"
 [ "${4}" = "" ] && ${DISK}="/dev/sdb"
 [ "${5}" = "" ] && ${BOARD_NAME}="NOVAsomP" # Defaults to P
-SPL_FILE="${BOARD_NAME}/SPL"
-UBOOT_IMG="${BOARD_NAME}/u-boot.img"
+SPL_FILE="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/SPL"
+UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.img"
 
 echo "Number of user partition is ${NUMBER_OF_USR_PARTITIONS}"
 echo "Size of first user partition is ${SIZE_OF_FIRST_PARTITION}"
@@ -228,16 +228,20 @@ store_bin() {
 # 			${2} is the BOARD_NAME
 # 			${3} is the DTB_FILE for solo/dl
 # 			${4} is the DTB_FILE for quad
+# 			${5} is the NOVAsomParams file
 #########################################################
 [ "${1}" = "" ] && ${1}="/dev/sdb"
 [ "${2}" = "" ] && ${2}="NOVAsomP" # Defaults to P
 [ "${3}" = "" ] && ${3}="imx6sdl-novasomP.dtb" # Defaults to P HDMI
 [ "${4}" = "" ] && ${4}="imx6q-novasomP.dtb" # Defaults to P HDMI
+[ "${5}" = "" ] && ${5}="BootParameters/NOVAsomParams_template" # Defaults to template file
 DISK=${1}
 BOARD_NAME=${2}
-UBOOT_IMG="${2}/u-boot.img"
+UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.img"
 DTB_FILESDL=${3}
 DTB_FILEQ=${4}
+NOVASOM_PARAMS=${5}
+
 KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
@@ -246,35 +250,51 @@ echo "The DTB_FILESDL is ${DTB_FILESDL}"
 echo "The DTB_FILEQ is ${DTB_FILEQ}"
 echo "The KERNEL is ${KERNEL}"
 
+[ "${BOARD_NAME}" == "NOVAsomP" ] && BOARD_DTB="*novasomP*.dtb"
+[ "${BOARD_NAME}" == "NOVAsomS" ] && BOARD_DTB="*novasomS*.dtb"
+[ "${BOARD_NAME}" == "NOVAsomU" ] && BOARD_DTB="*novasomU*.dtb"
+
+[ "${BOARD_NAME}" == "NOVAsomP" ] && DEST_BOARD_DTB="novasomP"
+[ "${BOARD_NAME}" == "NOVAsomS" ] && DEST_BOARD_DTB="novasomS"
+[ "${BOARD_NAME}" == "NOVAsomU" ] && DEST_BOARD_DTB="novasomU"
+
 rm -rf tmpmount
 mkdir tmpmount
 sleep 1
 sudo mount ${DISK}1 tmpmount
 [ "$?" != "0" ] && return 1
-sudo rm -rf tmpmount/*
-sudo mkdir tmpmount/dtb
 echo -n "Copying ${UBOOT_IMG} ..."
 sudo cp ${UBOOT_IMG} tmpmount/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
 echo "Done"
-[ "$?" != "0" ] && return 1
-echo -n "Copying novasomP dtb files ..."
-sudo cp ../../Kernel/${KERNEL}/arch/arm/boot/dts/*novasomP.dtb tmpmount/dtb/.
-[ "$?" != "0" ] && return 1
+echo -n "Copying ${BOARD_DTB} dtb files ..."
+sudo mkdir tmpmount/dtb
+sudo cp ../Kernel/${KERNEL}/arch/arm/boot/dts/${BOARD_DTB} tmpmount/dtb/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
+echo "Done"
 cd tmpmount
-ln -s dtb/${DTB_FILESDL} imx6sdl-${BOARD_NAME}.dtb
-ln -s dtb/${DTB_FILEQ} imx6q-${BOARD_NAME}.dtb
+sudo cp dtb/${DTB_FILESDL} imx6sdl-${DEST_BOARD_DTB}.dtb
+sudo cp dtb/${DTB_FILEQ} imx6q-${DEST_BOARD_DTB}.dtb
+cd ..
 echo "Done"
 echo -n "Copying zImage ..."
-sudo cp ../../Deploy/zImage tmpmount/.
-[ "$?" != "0" ] && return 1
+sudo cp ../Deploy/zImage tmpmount/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
 echo "Done"
 echo -n "Copying uInitrd ..."
-sudo cp ../../Deploy/uInitrd tmpmount/.
-[ "$?" != "0" ] && return 1
+sudo cp ../Deploy/uInitrd tmpmount/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
 echo "Done"
-echo -n "Copying NOVAsom.params, if present ..."
-[ -f ../../Deploy/NOVAsom-${BOARD_NAME}.params ] && sudo cp ../../Deploy/NOVAsom-${BOARD_NAME}.params tmpmount/NOVAsom.params
-[ "$?" != "0" ] && return 1
+echo -n "Copying NOVAsomParams, if present ..."
+[ -f  ] && sudo cp ${NOVASOM_PARAMS} tmpmount/NOVAsomParams
 echo "Done"
 sudo umount tmpmount
 sync
