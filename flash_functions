@@ -290,6 +290,10 @@ RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
 echo "Done"
+[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+[ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
+[ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
+[ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
 sudo umount tmpmount
 sync
 return 0
