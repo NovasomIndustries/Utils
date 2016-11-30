@@ -1,21 +1,27 @@
 #!/bin/sh
 . ./SourceMe
 cd ../Kernel/${1}
-make -j32 zImage
-[ ! "$?" = "0" ] && return 1
-make -j32 modules
-[ ! "$?" = "0" ] && return 1
+echo ""
+###################### NOVAsomU ###############################
+echo "Make dtbs for NOVAsomU ..."
 make imx6ul-14x14-evk.dtb
 [ ! "$?" = "0" ] && return 1
-make imx6q-novasomS.dtb
-[ ! "$?" = "0" ] && return 1
+echo "Make dtbs for NOVAsomU finished successfully"
+echo ""
 ###################### NOVAsomP ###############################
+echo "Make dtbs for NOVAsomP ..."
 make imx6sdl-novasomP_hdmi_1280x720.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_hdmi_1920x1080.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_lvds_800x480.dtb
 [ ! "$?" = "0" ] && return 1
+echo "Make dtbs for NOVAsomP finished successfully"
+echo ""
 ###################### NOVAsomS ###############################
+echo "Make dtbs for NOVAsomS ..."
 make imx6q-novasomS_lvds_800x480.dtb
+[ ! "$?" = "0" ] && return 1
+echo "Make dtbs for NOVAsomS finished successfully"
+echo ""
 return 0

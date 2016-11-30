@@ -37,9 +37,12 @@ sudo umount ${DISK}* >/dev/null 2>&1
 echo "Writing ${BOARD_NAME} uSD"
 sleep 1
 sudo echo -n "Writing u-boot ... "
-sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
+sudo dd if=/dev/zero of=${DISK} bs=4M count=2; sync
+sync
+sleep 1
 sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
 sync
+echo "Done"
 
 if [ "${NUMBER_OF_USR_PARTITIONS}" = "-" ]; then
 echo "No user partition"
@@ -240,12 +243,14 @@ DTB_FILESDL=${3}
 DTB_FILEQ=${4}
 
 KERNEL="linux-imx_4.1.15_1.2.0_ga"
+echo ""
 echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
 echo "The UBOOT_IMG is ${UBOOT_IMG}"
 echo "The DTB_FILESDL is ${DTB_FILESDL}"
 echo "The DTB_FILEQ is ${DTB_FILEQ}"
 echo "The KERNEL is ${KERNEL}"
+echo ""
 
 [ "${BOARD_NAME}" == "NOVAsomP" ] && BOARD_DTB="*novasomP*.dtb"
 [ "${BOARD_NAME}" == "NOVAsomS" ] && BOARD_DTB="*novasomS*.dtb"
@@ -290,7 +295,14 @@ RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
 echo "Done"
+! [ -f  ../Deploy/NOVAsomParams ] && return 0
+echo ""
+echo "#########################"
+echo "####  NOVAsomParams  ####"
+echo "#########################"
+
 [ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+echo ""
 [ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
 [ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
 [ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
