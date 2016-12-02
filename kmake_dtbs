@@ -16,11 +16,15 @@ make imx6sdl-novasomP_hdmi_1920x1080.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_lvds_800x480.dtb
 [ ! "$?" = "0" ] && return 1
+make imx6sdl-novasomP_lvds_800x600.dtb
+[ ! "$?" = "0" ] && return 1
 echo "Make dtbs for NOVAsomP finished successfully"
 echo ""
 ###################### NOVAsomS ###############################
 echo "Make dtbs for NOVAsomS ..."
 make imx6q-novasomS_lvds_800x480.dtb
+[ ! "$?" = "0" ] && return 1
+make imx6q-novasomS_lvds_800x600.dtb
 [ ! "$?" = "0" ] && return 1
 echo "Make dtbs for NOVAsomS finished successfully"
 echo ""
