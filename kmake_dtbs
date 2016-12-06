@@ -4,7 +4,9 @@ cd ../Kernel/${1}
 echo ""
 ###################### NOVAsomU ###############################
 echo "Make dtbs for NOVAsomU ..."
-make imx6ul-14x14-evk.dtb
+#make imx6ul-14x14-evk.dtb
+#[ ! "$?" = "0" ] && return 1
+make imx6ul-novasomU_lcd480x272.dtb
 [ ! "$?" = "0" ] && return 1
 echo "Make dtbs for NOVAsomU finished successfully"
 echo ""

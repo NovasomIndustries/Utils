@@ -27,7 +27,11 @@ DTB_FILEQ=${7}
 echo "#####################"
 echo "####   init_usd  ####"
 echo "#####################"
-init_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
+if [ "$BOARD_NAME" = "NOVAsomU" ]; then 
+	Uinit_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
+else
+	init_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
+fi
 if ! [ "$?" = "0" ]; then
         echo "init_usd error"
         exit 1
@@ -43,7 +47,11 @@ fi
 echo "#####################"
 echo "####  store_bin  ####"
 echo "#####################"
-store_bin $DISK $BOARD_NAME $DTB_FILESDL $DTB_FILEQ
+if [ "${BOARD_NAME}" = "NOVAsomU" ]; then
+	Ustore_bin $DISK $BOARD_NAME
+else
+	store_bin $DISK $BOARD_NAME $DTB_FILESDL $DTB_FILEQ
+fi
 if ! [ "$?" = "0" ]; then
         echo "store_bin error"
         exit 1

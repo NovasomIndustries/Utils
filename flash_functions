@@ -1,5 +1,168 @@
 #!/bin/bash
 
+Uinit_usd () {
+#########################################################
+# Name		: Uinit_usd
+# Op     	: initializes the uSD for U
+# Params 	:
+# 			${1} is number of user partition
+# 			${2} is size of first user partition, if enabled
+# 			${3} is size of second user partition, if enabled
+# 			${4} is the device
+# 			${5} is the board name
+#########################################################
+NUMBER_OF_USR_PARTITIONS=${1}
+SIZE_OF_FIRST_PARTITION=${2}
+SIZE_OF_2ND_PARTITION=${3}
+DISK=${4}
+BOARD_NAME=${5}
+[ "${1}" = "" ] && ${NUMBER_OF_USR_PARTITIONS}="-" # Defaults to no user partitions
+[ "${2}" = "" ] && ${SIZE_OF_FIRST_PARTITION}="16"
+[ "${3}" = "" ] && ${SIZE_OF_2ND_PARTITION}="16"
+[ "${4}" = "" ] && ${DISK}="/dev/sdb"
+[ "${5}" = "" ] && ${BOARD_NAME}="NOVAsomU" # Defaults to P
+UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.imx"
+
+echo "Number of user partition is ${NUMBER_OF_USR_PARTITIONS}"
+echo "Size of first user partition is ${SIZE_OF_FIRST_PARTITION}"
+echo "Size of second user partition is ${SIZE_OF_2ND_PARTITION}"
+echo "The device is ${DISK}"
+echo "The BOARD_NAME is ${BOARD_NAME}"
+echo "The SPL_FILE is ${SPL_FILE}"
+
+[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && return 1
+sudo umount ${DISK}* >/dev/null 2>&1
+echo "Writing ${BOARD_NAME} uSD"
+sleep 1
+sudo echo -n "Writing u-boot ... "
+sudo dd if=/dev/zero of=${DISK} bs=4M count=2; sync
+sync
+sleep 1
+sudo dd if=${UBOOT_IMG} of=${DISK} bs=1k seek=1; sync
+sync
+echo "Done"
+
+if [ "${NUMBER_OF_USR_PARTITIONS}" = "-" ]; then
+echo "No user partition"
+	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+3
+83
+w
+__EOF__
+
+fi
+if [ "${NUMBER_OF_USR_PARTITIONS}" = "1" ]; then
+echo "${NUMBER_OF_USR_PARTITIONS} user partition of ${SIZE_OF_FIRST_PARTITION} size"
+	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+3
+83
+n
+p
+2
+
++${SIZE_OF_FIRST_PARTITION}M
+t
+3
+83
+w
+__EOF__
+
+fi
+
+if [ "${NUMBER_OF_USR_PARTITIONS}" = "2" ]; then
+echo "${NUMBER_OF_USR_PARTITIONS} user partition of ${SIZE_OF_FIRST_PARTITION} size and ${SIZE_OF_2ND_PARTITION} size"
+	sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+2
+83
+n
+p
+2
+
++${SIZE_OF_FIRST_PARTITION}M
+t
+2
+83
+
+n
+p
+
++${SIZE_OF_2ND_PARTITION}M
+t
+4
+83
+w
+__EOF__
+
+fi
+sync
+return $?
+}
+
+
 init_usd () {
 #########################################################
 # Name		: init_usd
@@ -177,6 +340,7 @@ sync
 DISK=${2}
 echo "Number of user partition is $1"
 echo "The device is $2"
+sleep 1
 
 echo y | sudo mkfs.vfat -F 16 ${DISK}1 -n BOOT
 RET=$?
@@ -246,9 +410,14 @@ KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo ""
 echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
-echo "The UBOOT_IMG is ${UBOOT_IMG}"
-echo "The DTB_FILESDL is ${DTB_FILESDL}"
-echo "The DTB_FILEQ is ${DTB_FILEQ}"
+if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
+	echo "The UBOOT_IMG is ${UBOOT_IMG}"
+	echo "The DTB_FILESDL is ${DTB_FILESDL}"
+	echo "The DTB_FILEQ is ${DTB_FILEQ}"
+else
+	DTB_FILESDL=imx6ul-novasomU.dtb
+	echo "The DTB_FILESDL is ${DTB_FILESDL}"
+fi
 echo "The KERNEL is ${KERNEL}"
 echo ""
 
@@ -265,12 +434,14 @@ mkdir tmpmount
 sleep 1
 sudo mount ${DISK}1 tmpmount
 [ "$?" != "0" ] && return 1
-echo -n "Copying ${UBOOT_IMG} ..."
-sudo cp ${UBOOT_IMG} tmpmount/.
-RET=${?}
-[ "${RET}" != "0" ] && sudo umount tmpmount
-[ "${RET}" != "0" ] && return 1
-echo "Done"
+if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
+	echo -n "Copying ${UBOOT_IMG} ..."
+	sudo cp ${UBOOT_IMG} tmpmount/.
+	RET=${?}
+	[ "${RET}" != "0" ] && sudo umount tmpmount
+	[ "${RET}" != "0" ] && return 1
+	echo "Done"
+fi
 echo -n "Copying ${BOARD_DTB} dtb files ..."
 sudo mkdir tmpmount/dtb
 sudo cp ../Kernel/${KERNEL}/arch/arm/boot/dts/${BOARD_DTB} tmpmount/dtb/.
@@ -279,8 +450,12 @@ RET=${?}
 [ "${RET}" != "0" ] && return 1
 echo "Done"
 cd tmpmount
-sudo cp dtb/${DTB_FILESDL} imx6sdl-${DEST_BOARD_DTB}.dtb
-sudo cp dtb/${DTB_FILEQ} imx6q-${DEST_BOARD_DTB}.dtb
+if [ "${BOARD_NAME}" = "NOVAsomU" ]; then
+	sudo cp dtb/${DTB_FILESDL} imx6u-${DEST_BOARD_DTB}.dtb
+else
+	sudo cp dtb/${DTB_FILESDL} imx6sdl-${DEST_BOARD_DTB}.dtb
+	sudo cp dtb/${DTB_FILEQ} imx6q-${DEST_BOARD_DTB}.dtb
+fi
 cd ..
 echo "Done"
 echo -n "Copying zImage ..."
@@ -295,18 +470,75 @@ RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
 echo "Done"
-! [ -f  ../Deploy/NOVAsomParams ] && return 0
-echo ""
-echo "#########################"
-echo "####  NOVAsomParams  ####"
-echo "#########################"
+if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
+	! [ -f  ../Deploy/NOVAsomParams ] && return 0
+	echo ""
+	echo "#########################"
+	echo "####  NOVAsomParams  ####"
+	echo "#########################"
 
-[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+	[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+	echo ""
+	[ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
+	[ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
+	[ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
+	sudo umount tmpmount
+	sync
+fi
+return 0
+}
+
+Ustore_bin() {
+#########################################################
+# Name          : Ustore_bin
+# Op            : write the files on the uSD
+# Params        :
+#               	${1} is the device
+# 			${2} is the BOARD_NAME
+#########################################################
+[ "${1}" = "" ] && ${1}="/dev/sdb"
+DISK=${1}
+BOARD_NAME=${2}
+UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.img"
+DTB_FILE="imx6ul-novasomU_lcd480x272.dtb"
+KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo ""
-[ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
-[ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
-[ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
+echo "The device is ${DISK}"
+echo "The BOARD_NAME is ${BOARD_NAME}"
+echo "The DTB_FILE is ${DTB_FILE}"
+echo "The KERNEL is ${KERNEL}"
+echo ""
+
+rm -rf tmpmount
+mkdir tmpmount
+sleep 1
+sudo mount ${DISK}1 tmpmount
+[ "$?" != "0" ] && return 1
+
+echo -n "Copying ${DTB_FILE} dtb files ..."
+sudo mkdir tmpmount/dtb
+sudo cp ../Kernel/${KERNEL}/arch/arm/boot/dts/${DTB_FILE} tmpmount/dtb/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
+echo "Done"
+cd tmpmount
+sudo cp dtb/${DTB_FILE} ${DTB_FILE}
+
+cd ..
+echo "Done"
+echo -n "Copying zImage ..."
+sudo cp ../Deploy/zImage tmpmount/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
+echo "Done"
+echo -n "Copying uInitrd ..."
+sudo cp ../Deploy/uInitrd tmpmount/.
+RET=${?}
+[ "${RET}" != "0" ] && sudo umount tmpmount
+[ "${RET}" != "0" ] && return 1
+echo "Done"
 sudo umount tmpmount
-sync
 return 0
 }
