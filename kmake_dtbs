@@ -1,7 +1,7 @@
 #!/bin/sh
 . ./SourceMe
 cd ../Kernel/${1}
-echo ""
+echo "`pwd`"
 ###################### NOVAsomU ###############################
 echo "Make dtbs for NOVAsomU ..."
 #make imx6ul-14x14-evk.dtb
@@ -15,6 +15,8 @@ echo "Make dtbs for NOVAsomP ..."
 make imx6sdl-novasomP_hdmi_1280x720.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_hdmi_1920x1080.dtb
+[ ! "$?" = "0" ] && return 1
+make imx6sdl-novasomP_lvds_1024x600.dtb
 [ ! "$?" = "0" ] && return 1
 make imx6sdl-novasomP_lvds_800x480.dtb
 [ ! "$?" = "0" ] && return 1

@@ -523,7 +523,7 @@ RET=${?}
 [ "${RET}" != "0" ] && return 1
 echo "Done"
 cd tmpmount
-sudo cp dtb/${DTB_FILE} ${DTB_FILE}
+sudo cp dtb/${DTB_FILE} imx6ul-novasomU.dtb
 
 cd ..
 echo "Done"
