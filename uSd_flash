@@ -1,5 +1,9 @@
 #!/bin/bash
 . ./flash_functions
+KERNEL="linux-imx_4.1.15_1.2.0_ga"
+DTB_K_PATH="/Devel/NOVAsom_SDK/Kernel/${KERNEL}/arch/arm/boot/dts"
+DTB_U_PATH="/Devel/NOVAsom_SDK/DtbUserWorkArea"
+
 # ${1} is number of user partition
 # ${2} is size of first user partition, if enabled
 # ${3} is size of second user partition, if enabled
@@ -7,22 +11,29 @@
 # ${5} is the board name
 # ${6} is the dtb for sdl
 # ${7} is the dtb for quad
+# ${8} if present and contains "user" then the dtbs are from user area
 
 NUMBER_OF_USR_PARTTIONS=${1}
 SIZE_OF_FIRST_PARTTION=${2}
 SIZE_OF_2ND_PARTTION=${3}
 DISK=${4}
 BOARD_NAME=${5}
-DTB_FILESDL=${6}
-DTB_FILEQ=${7}
+
+if [ "$8" = "user" ]; then
+	DTB_FILESDL=${DTB_U_PATH}/${6}
+	DTB_FILEQ=${DTB_U_PATH}/${7}
+else
+	DTB_FILESDL=${DTB_K_PATH}/${6}
+	DTB_FILEQ=${DTB_K_PATH}/${7}
+fi
 
 [ "${1}" = "" ] && NUMBER_OF_USR_PARTTIONS="-" # Defaults to no user partitions
 [ "${2}" = "" ] && SIZE_OF_FIRST_PARTTION="16"
 [ "${3}" = "" ] && SIZE_OF_2ND_PARTTION="16"
 [ "${4}" = "" ] && DISK="/dev/sdb"
 [ "${5}" = "" ] && BOARD_NAME="NOVAsomP" # Defaults to P
-[ "${6}" = "" ] && DTB_FILESDL="imx6sdl-novasomP.dtb" # Defaults to P HDMI
-[ "${7}" = "" ] && DTB_FILEQ="imx6q-novasomP.dtb" # Defaults to P HDMI
+[ "${6}" = "" ] && DTB_FILESDL="${DTB_K_PATH}/imx6sdl-novasomP.dtb" # Defaults to P HDMI
+[ "${7}" = "" ] && DTB_FILEQ="${DTB_K_PATH}/imx6q-novasomP.dtb" # Defaults to P HDMI
 
 echo "#####################"
 echo "####   init_usd  ####"

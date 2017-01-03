@@ -406,56 +406,32 @@ UBOOT_IMG="../Bootloader/u-boot-novasom-2015.04/${BOARD_NAME}/u-boot.img"
 DTB_FILESDL=${3}
 DTB_FILEQ=${4}
 
-KERNEL="linux-imx_4.1.15_1.2.0_ga"
 echo ""
 echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
-if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
-	echo "The UBOOT_IMG is ${UBOOT_IMG}"
-	echo "The DTB_FILESDL is ${DTB_FILESDL}"
-	echo "The DTB_FILEQ is ${DTB_FILEQ}"
-else
-	DTB_FILESDL=imx6ul-novasomU.dtb
-	echo "The DTB_FILESDL is ${DTB_FILESDL}"
-fi
-echo "The KERNEL is ${KERNEL}"
+echo "The UBOOT_IMG is ${UBOOT_IMG}"
+echo "The DTB_FILESDL is ${DTB_FILESDL}"
+echo "The DTB_FILEQ is ${DTB_FILEQ}"
 echo ""
-
-[ "${BOARD_NAME}" == "NOVAsomP" ] && BOARD_DTB="*novasomP*.dtb"
-[ "${BOARD_NAME}" == "NOVAsomS" ] && BOARD_DTB="*novasomS*.dtb"
-[ "${BOARD_NAME}" == "NOVAsomU" ] && BOARD_DTB="*novasomU*.dtb"
 
 [ "${BOARD_NAME}" == "NOVAsomP" ] && DEST_BOARD_DTB="novasomP"
 [ "${BOARD_NAME}" == "NOVAsomS" ] && DEST_BOARD_DTB="novasomS"
-[ "${BOARD_NAME}" == "NOVAsomU" ] && DEST_BOARD_DTB="novasomU"
 
 rm -rf tmpmount
 mkdir tmpmount
 sleep 1
 sudo mount ${DISK}1 tmpmount
 [ "$?" != "0" ] && return 1
-if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
-	echo -n "Copying ${UBOOT_IMG} ..."
-	sudo cp ${UBOOT_IMG} tmpmount/.
-	RET=${?}
-	[ "${RET}" != "0" ] && sudo umount tmpmount
-	[ "${RET}" != "0" ] && return 1
-	echo "Done"
-fi
-echo -n "Copying ${BOARD_DTB} dtb files ..."
-sudo mkdir tmpmount/dtb
-sudo cp ../Kernel/${KERNEL}/arch/arm/boot/dts/${BOARD_DTB} tmpmount/dtb/.
+echo -n "Copying ${UBOOT_IMG} ..."
+sudo cp ${UBOOT_IMG} tmpmount/.
 RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
 echo "Done"
+echo -n "Copying ${DEST_BOARD_DTB} dtb files ..."
 cd tmpmount
-if [ "${BOARD_NAME}" = "NOVAsomU" ]; then
-	sudo cp dtb/${DTB_FILESDL} imx6u-${DEST_BOARD_DTB}.dtb
-else
-	sudo cp dtb/${DTB_FILESDL} imx6sdl-${DEST_BOARD_DTB}.dtb
-	sudo cp dtb/${DTB_FILEQ} imx6q-${DEST_BOARD_DTB}.dtb
-fi
+sudo cp ${DTB_FILESDL} imx6sdl-${DEST_BOARD_DTB}.dtb
+sudo cp ${DTB_FILEQ} imx6q-${DEST_BOARD_DTB}.dtb
 cd ..
 echo "Done"
 echo -n "Copying zImage ..."
@@ -470,21 +446,19 @@ RET=${?}
 [ "${RET}" != "0" ] && sudo umount tmpmount
 [ "${RET}" != "0" ] && return 1
 echo "Done"
-if ! [ "${BOARD_NAME}" = "NOVAsomU" ]; then 
-	! [ -f  ../Deploy/NOVAsomParams ] && return 0
-	echo ""
-	echo "#########################"
-	echo "####  NOVAsomParams  ####"
-	echo "#########################"
+! [ -f  ../Deploy/NOVAsomParams ] && return 0
+echo ""
+echo "#########################"
+echo "####  NOVAsomParams  ####"
+echo "#########################"
 
-	[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
-	echo ""
-	[ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
-	[ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
-	[ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
-	sudo umount tmpmount
-	sync
-fi
+[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+echo ""
+[ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
+[ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
+[ -f  ../Deploy/NOVAsomParams ] && sudo cp ../Deploy/NOVAsomParams tmpmount/NOVAsomParams
+sudo umount tmpmount
+sync
 return 0
 }
 
