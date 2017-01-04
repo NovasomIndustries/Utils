@@ -36,6 +36,11 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			make distclean
 			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
 			make
+			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser
+			gcc -Wall -g  -c /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser/src/dts_gen.c -o obj/Debug/src/dts_gen.o
+			gcc -Wall -g  -c /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser/src/iomux.c -o obj/Debug/src/iomux.o
+			gcc -Wall -g  -c /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser/src/main.c -o obj/Debug/src/main.o
+			g++  -o bin/Debug/NOVAembed_P_Parser obj/Debug/src/dts_gen.o obj/Debug/src/iomux.o obj/Debug/src/main.o 
 			cd ${HERE} 
 		fi
 		echo "${GREEN}SYNC OK${NC} : ${1}"
