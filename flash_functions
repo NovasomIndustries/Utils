@@ -452,7 +452,9 @@ echo "#########################"
 echo "####  NOVAsomParams  ####"
 echo "#########################"
 
-[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to root dir"
+[ -f  ../Deploy/splash.bmp.gz ] && echo "Found splash.bmp.gz, copying to boot partition"
+[ -f  ../Deploy/splash.bmp.gz ] && sudo cp ../Deploy/splash.bmp.gz tmpmount/.
+[ -f  ../Deploy/NOVAsomParams ] && echo "Found NOVAsomParams, copying to boot partition"
 echo ""
 [ -f  ../Deploy/NOVAsomParams ] && echo "Contents of NOVAsomParams :"
 [ -f  ../Deploy/NOVAsomParams ] && cat ../Deploy/NOVAsomParams
