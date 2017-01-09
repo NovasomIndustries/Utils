@@ -84,7 +84,7 @@ echo "**  Check for remote modified files  **"
 echo "***************************************"
 echo ""
 
-if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin ]; then
+if [ ! -d /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin ]; then
 	HERE=`pwd`
 	cd /Devel/NOVAsom_SDK/Qt/NOVAembed
 	git clone https://github.com/NovasomIndustries/P_EasyPin.git
