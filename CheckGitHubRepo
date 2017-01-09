@@ -1,5 +1,5 @@
 #!/bin/sh
-DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed CodeBlocks Xcompiler"
+DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed Qt/NOVAembed/P_EasyPin CodeBlocks Xcompiler"
 REPOCOUNT=`echo "$DIRS" | awk '{print NF}'`
 
 GREEN='\033[0;32m'
@@ -45,6 +45,19 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			g++  -o bin/Debug/NOVAembed_P_Parser obj/dts_gen.o obj/iomux.o obj/main.o 
 			cd ${HERE} 
 		fi
+		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin" ]; then
+			HERE=`pwd`
+			if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug ]; then
+				cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
+				make distclean
+			else
+				mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
+			fi
+			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
+			make
+			cd ${HERE} 
+		fi
+
 		echo "${GREEN}SYNC OK${NC} : ${1}"
 	else
 		echo "${RED}Update skipped${NC}"
