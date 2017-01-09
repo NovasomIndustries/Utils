@@ -10,6 +10,34 @@ COUNTMODS=0
 COUNTRECV=0
 INCREMENT=1
 
+novaembed()
+{
+cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+make distclean
+/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
+make
+cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser
+rm -rf obj bin
+mkdir -p obj bin/Debug
+gcc -Wall -g  -c src/dts_gen.c -o obj/dts_gen.o
+gcc -Wall -g  -c src/iomux.c -o obj/iomux.o
+gcc -Wall -g  -c src/main.c -o obj/main.o
+g++  -o bin/Debug/NOVAembed_P_Parser obj/dts_gen.o obj/iomux.o obj/main.o
+}
+
+easypin()
+{
+if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug ]; then
+	cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
+	make distclean
+else
+	mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
+fi
+/usr/lib/x86_64-linux-gnu/qt5/bin/qmake/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
+make
+}
+
+
 gitloop()
 {
 gitbin="git -C $1"
@@ -32,29 +60,12 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 		echo $1
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
 			HERE=`pwd`
-			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
-			make distclean
-			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
-			make
-			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser
-			rm -rf obj bin
-			mkdir -p obj bin/Debug
-			gcc -Wall -g  -c src/dts_gen.c -o obj/dts_gen.o
-			gcc -Wall -g  -c src/iomux.c -o obj/iomux.o
-			gcc -Wall -g  -c src/main.c -o obj/main.o
-			g++  -o bin/Debug/NOVAembed_P_Parser obj/dts_gen.o obj/iomux.o obj/main.o 
+			novaembed
 			cd ${HERE} 
 		fi
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin" ]; then
 			HERE=`pwd`
-			if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug ]; then
-				cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
-				make distclean
-			else
-				mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
-			fi
-			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
-			make
+			easypin
 			cd ${HERE} 
 		fi
 
@@ -72,6 +83,13 @@ echo "***************************************"
 echo "**  Check for remote modified files  **"
 echo "***************************************"
 echo ""
+
+if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin ]; then
+	HERE=`pwd`
+	cd /Devel/NOVAsom_SDK/Qt/NOVAembed
+	git clone https://github.com/NovasomIndustries/P_EasyPin.git
+	cd ${HERE} 
+fi
 
 for i in ${DIRS}; do
 	gitloop /Devel/NOVAsom_SDK/$i
