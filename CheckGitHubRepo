@@ -37,8 +37,8 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
 			make
 			cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser
-			rm -rf obj
-			mkdir obj
+			rm -rf obj bin
+			mkdir -p obj bin/Debug
 			gcc -Wall -g  -c src/dts_gen.c -o obj/dts_gen.o
 			gcc -Wall -g  -c src/iomux.c -o obj/iomux.o
 			gcc -Wall -g  -c src/main.c -o obj/main.o
