@@ -54,6 +54,7 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 	read VAR
 	if [ "${VAR}" = "Y" ]; then
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
+			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user
 			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 		fi
 		git pull origin master
