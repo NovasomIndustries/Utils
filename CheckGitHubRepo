@@ -34,7 +34,7 @@ else
 	mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
 	cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
 fi
-/usr/lib/x86_64-linux-gnu/qt5/bin/qmake/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
+/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
 make
 }
 
