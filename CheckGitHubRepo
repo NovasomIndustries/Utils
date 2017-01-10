@@ -1,5 +1,5 @@
 #!/bin/sh
-DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Utils Qt/NOVAembed/NOVAembed Qt/NOVAembed/P_EasyPin CodeBlocks Xcompiler"
+DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Qt/NOVAembed/NOVAembed Qt/NOVAembed/P_EasyPin CodeBlocks Xcompiler"
 REPOCOUNT=`echo "$DIRS" | awk '{print NF}'`
 
 GREEN='\033[0;32m'
