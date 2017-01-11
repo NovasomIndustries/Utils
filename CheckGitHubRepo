@@ -58,8 +58,8 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 		fi
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/P_EasyPin/P_EasyPin" ]; then
-			rm -f /Devel/NOVAsom_SDK/Qt/P_EasyPin/P_EasyPin/P_EasyPin.pro.userOLD
-			mv /Devel/NOVAsom_SDK/Qt/P_EasyPin/P_EasyPin/P_EasyPin.pro.user /Devel/NOVAsom_SDK/Qt/P_EasyPin/P_EasyPin/P_EasyPin.pro.userOLD
+			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.userOLD
+			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.userOLD
 		fi
 		git pull origin master
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
