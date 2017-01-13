@@ -2,12 +2,11 @@
 
 novaembed()
 {
-rm -rf  /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
-rm -rf  /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed
-mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+rm -rf  /Devel/NOVAsom_SDK/Qt/NOVAembed
+mkdir -p /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
+cd /Devel/NOVAsom_SDK/Qt/NOVAembed
 git clone https://github.com/NovasomIndustries/NOVAembed.git
 cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-NOVAembed-Desktop-Debug
-make distclean
 /usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro -r -spec linux-g++-64 CONFIG+=debug
 make
 cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_P_Parser
