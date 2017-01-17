@@ -1,0 +1,2 @@
+#!/bin/sh
+cp ../Kernel/linux-imx_4.1.15_1.2.0_ga/drivers/net/wireless/atmel/wilc3000/*ko ../application_storage/.
