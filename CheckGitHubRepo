@@ -1,5 +1,5 @@
 #!/bin/sh
-DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Qt/NOVAembed/NOVAembed Qt/NOVAembed/P_EasyPin Xcompiler"
+DIRS="Bootloader/u-boot-novasom-2015.04 Kernel/linux-imx_3.10.53_1.1.0_ga Kernel/linux-imx_4.1.15_1.2.0_ga Doc Qt/NOVAembed/NOVAembed Xcompiler"
 REPOCOUNT=`echo "$DIRS" | awk '{print NF}'`
 
 GREEN='\033[0;32m'
@@ -25,20 +25,6 @@ gcc -Wall -g  -c src/main.c -o obj/main.o
 g++  -o bin/Debug/NOVAembed_P_Parser obj/dts_gen.o obj/iomux.o obj/main.o
 }
 
-easypin()
-{
-if [ -d /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug ]; then
-	cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
-	make distclean
-else
-	mkdir /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
-	cd /Devel/NOVAsom_SDK/Qt/NOVAembed/build-P_EasyPin-Desktop-Debug
-fi
-/usr/lib/x86_64-linux-gnu/qt5/bin/qmake /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro -r -spec linux-g++-64 CONFIG+=debug
-make
-}
-
-
 gitloop()
 {
 gitbin="git -C $1"
@@ -57,10 +43,6 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 		fi
-		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/P_EasyPin/P_EasyPin" ]; then
-			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.userOLD
-			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin/P_EasyPin.pro.userOLD
-		fi
 		git pull origin master
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
 		# echo $1
@@ -69,12 +51,6 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			novaembed
 			cd ${HERE} 
 		fi
-		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin" ]; then
-			HERE=`pwd`
-			easypin
-			cd ${HERE} 
-		fi
-
 		echo "${GREEN}SYNC OK${NC} : ${1}"
 	else
 		echo "${RED}Update skipped${NC}"
@@ -89,14 +65,6 @@ echo "***************************************"
 echo "**  Check for remote modified files  **"
 echo "***************************************"
 echo ""
-
-if [ ! -d /Devel/NOVAsom_SDK/Qt/NOVAembed/P_EasyPin ]; then
-	HERE=`pwd`
-	cd /Devel/NOVAsom_SDK/Qt/NOVAembed
-	git clone https://github.com/NovasomIndustries/P_EasyPin.git
-	easypin
-	cd ${HERE} 
-fi
 
 if [ ! -d /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed ]; then
 	HERE=`pwd`
