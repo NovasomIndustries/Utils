@@ -23,6 +23,6 @@ cd ${WORKAREA_LOCATION}
 cpp -nostdinc -I ${KERNEL_LOCATION}/include -undef -x assembler-with-cpp ${DTS_INFILE} > ${DTS_TMP}
 [ ! "$?" = "0" ] && return 1
 ${DTC_EXEC} -O dtb -b 0 -o ${DTB_OUTFILE} ${DTS_TMP}
-rm ${INFILE}.tmp.dts
 [ ! "$?" = "0" ] && return 1
+rm ${INFILE}.tmp.dts
 return 0
