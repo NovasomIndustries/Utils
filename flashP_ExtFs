@@ -11,6 +11,11 @@ echo "External file system directory :  $EXTFS_DIRNAME"
 
 UBOOT_IMG="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/u-boot.img"
 SPL_FILE="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/SPL"
+pushd /Devel/NOVAsom_SDK/Kernel/linux-imx_3.10.53_1.1.0_ga
+./dtbmake
+cp arch/arm/boot/dts/imx6sdl-novasomP.dtb  ${FULL_PATH_PTR}/.
+cp arch/arm/boot/dts/imx6q-novasomP.dtb    ${FULL_PATH_PTR}/.
+popd
 
 FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
 for i in ${FILES}; do
