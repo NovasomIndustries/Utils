@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # ${1} is the device
 # ${2} is the pointer to the external file system
 EXTFS_FILENAME=`basename ${2}`
@@ -13,8 +13,6 @@ UBOOT_IMG="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/u-boot.
 SPL_FILE="/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04/NOVAsomP/SPL"
 pushd /Devel/NOVAsom_SDK/Kernel/linux-imx_3.10.53_1.1.0_ga
 ./dtbmake
-cp arch/arm/boot/dts/imx6sdl-novasomP.dtb  ${FULL_PATH_PTR}/.
-cp arch/arm/boot/dts/imx6q-novasomP.dtb    ${FULL_PATH_PTR}/.
 popd
 
 FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
@@ -90,7 +88,7 @@ sync
 cp tools/logos/novasomp.bmp .
 rm novasomp.bmp.gz
 gzip novasomp.bmp
-rm -rf tmpmount
+sudo rm -rf tmpmount
 mkdir tmpmount
 sleep 1
 sudo mount ${DISK}1 tmpmount

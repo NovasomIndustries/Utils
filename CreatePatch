@@ -1,6 +1,6 @@
 #!/bin/sh
 BUILDROOT="buildroot-2016.05"
-REFERENCE_FS="SDLBase"
+REFERENCE_FS="Base"
 HERE=`pwd`
 cd ../FileSystem
 echo -n "Cleaning up ..."
