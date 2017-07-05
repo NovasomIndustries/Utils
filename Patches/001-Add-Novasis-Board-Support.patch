@@ -1,12 +1,12 @@
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh Base/board/novasis/NOVAsomP/Init/bin/autologin.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/autologin.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/bin/autologin.sh	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/autologin.sh	2017-07-05 11:55:56.752590000 +0200
 @@ -0,0 +1,2 @@
 +#!/bin/sh
 +/bin/login -f root
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Base/board/novasis/NOVAsomP/Init/bin/get_exec
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/bin/get_exec	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/get_exec	2017-07-05 11:55:56.752590000 +0200
 @@ -0,0 +1,10 @@
 +#!/bin/sh
 +. /etc/sysconfig/system_vars
@@ -18,9 +18,17 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/get_exec Base/board
 +rm -f `basename ${1}`
 +wget http://${REFERENCE_SERVER}/${1}
 +chmod 777 `basename ${1}`
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/go_wifi.sh Base/board/novasis/NOVAsomP/Init/bin/go_wifi.sh
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/go_wifi.sh	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/NOVAsomP/Init/bin/go_wifi.sh	2017-07-05 11:55:56.752590000 +0200
+@@ -0,0 +1,4 @@
++#!/bin/sh
++ifconfig eth0 down
++wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf -Dwext &
++udhcpc -i wlan0 &
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Base/board/novasis/NOVAsomP/Init/bin/update_fs
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/bin/update_fs	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/update_fs	2017-07-05 11:55:56.752590000 +0200
 @@ -0,0 +1,8 @@
 +#!/bin/sh
 +get_exec uInitrd       
@@ -32,7 +40,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_fs Base/boar
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Base/board/novasis/NOVAsomP/Init/bin/update_kernel
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/bin/update_kernel	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/bin/update_kernel	2017-07-05 11:55:56.752590000 +0200
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +get_exec zImage
@@ -57,7 +65,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/bin/update_kernel Base/
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab Base/board/novasis/NOVAsomP/Init/etc/fstab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/fstab	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/fstab	2017-07-05 11:55:56.760593999 +0200
 @@ -0,0 +1,8 @@
 +# <file system>	<mount pt>	<type>	<options>	<dump>	<pass>
 +/dev/root	/		ext2	rw,noauto	0	1
@@ -69,7 +77,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/fstab Base/board/no
 +sysfs		/sys		sysfs	defaults	0	0
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group Base/board/novasis/NOVAsomP/Init/etc/group
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/group	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/group	2017-07-05 11:55:56.760593999 +0200
 @@ -0,0 +1,26 @@
 +root:x:0:
 +daemon:x:1:
@@ -99,7 +107,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/group Base/board/no
 +users:x:100:
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S49ntp	2017-07-05 11:55:56.760593999 +0200
 @@ -0,0 +1,57 @@
 +#! /bin/sh
 +#
@@ -160,7 +168,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_S
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_services	2017-07-05 11:55:56.760593999 +0200
 @@ -0,0 +1,17 @@
 +#!/bin/sh
 +# called by usr/share/udhcpc/default.script after the dhcp have a valid ip
@@ -181,7 +189,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/afterlease_s
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater Base/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_updater	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,4 @@
 +#!/bin/sh
 +sleep 20
@@ -189,7 +197,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/hwclock_upda
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK Base/board/novasis/NOVAsomP/Init/etc/init.d/rcK
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/rcK	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/rcK	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,27 @@
 +#!/bin/sh
 +
@@ -220,7 +228,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcK Base/boa
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Base/board/novasis/NOVAsomP/Init/etc/init.d/rcS
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/rcS	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,52 @@
 +#!/bin/sh
 +
@@ -276,7 +284,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/rcS Base/boa
 +done
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging Base/board/novasis/NOVAsomP/Init/etc/init.d/S01logging
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S01logging	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,40 @@
 +#!/bin/sh
 +#
@@ -320,7 +328,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S01logging B
 +exit $?
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom Base/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,51 @@
 +#! /bin/sh
 +#
@@ -375,7 +383,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S20urandom B
 +esac
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network Base/board/novasis/NOVAsomP/Init/etc/init.d/S40network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S40network	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,56 @@
 +#!/bin/sh
 +#
@@ -435,7 +443,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S40network B
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Base/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp	2017-07-05 11:55:56.764596000 +0200
 @@ -0,0 +1,6 @@
 +#! /bin/sh
 +#
@@ -445,7 +453,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S49ntp Base/
 +exit 0
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Base/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1,57 @@
 +#!/bin/sh
 +#
@@ -506,7 +514,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50sshd Base
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet Base/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1,36 @@
 +#!/bin/sh
 +#
@@ -546,7 +554,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S50telnet Ba
 +exit $?
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Base/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1,38 @@
 +#!/bin/sh
 +[ ! -f /usr/bin/mysql ] && exit 0
@@ -588,7 +596,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/init.d/S97mysqld Ba
 +esac
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab Base/board/novasis/NOVAsomP/Init/etc/inittab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/inittab	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/inittab	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1,35 @@
 +# /etc/inittab
 +#
@@ -627,12 +635,12 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/inittab Base/board/
 +::shutdown:/bin/umount -a -r
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/issue Base/board/novasis/NOVAsomP/Init/etc/issue
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/issue	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/issue	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/issue	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1 @@
 +Welcome
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab Base/board/novasis/NOVAsomP/Init/etc/mtab
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/mtab	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/mtab	2017-07-05 11:55:56.768598000 +0200
 @@ -0,0 +1,30 @@
 +sysfs /sys sysfs rw,nosuid,nodev,noexec,relatime 0 0
 +proc /proc proc rw,nosuid,nodev,noexec,relatime 0 0
@@ -666,7 +674,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/mtab Base/board/nov
 +gvfsd-fuse /run/user/1000/gvfs fuse.gvfsd-fuse rw,nosuid,nodev,relatime,user_id=1000,group_id=1000 0 0
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface Base/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d/wait_iface	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,21 @@
 +#!/bin/sh
 +
@@ -691,7 +699,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/if-pre-up.d
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces Base/board/novasis/NOVAsomP/Init/etc/network/interfaces
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/network/interfaces	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/network/interfaces	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,9 @@
 +# interface file auto-generated by buildroot
 +
@@ -704,7 +712,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/interfaces 
 +	wait-delay 15
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check Base/board/novasis/NOVAsomP/Init/etc/network/nfs_check
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/network/nfs_check	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/network/nfs_check	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,20 @@
 +#!/bin/sh
 +
@@ -728,7 +736,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/network/nfs_check B
 +fi
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf Base/board/novasis/NOVAsomP/Init/etc/nsswitch.conf
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/nsswitch.conf	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,13 @@
 +# /etc/nsswitch.conf
 +
@@ -745,7 +753,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/nsswitch.conf Base/
 +rpc:            files
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release Base/board/novasis/NOVAsomP/Init/etc/os-release
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/os-release	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/os-release	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,5 @@
 +NAME=Buildroot
 +VERSION=2016.05
@@ -754,7 +762,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/os-release Base/boa
 +PRETTY_NAME="Buildroot 2016.05"
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd Base/board/novasis/NOVAsomP/Init/etc/passwd
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/passwd	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/passwd	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,9 @@
 +root:x:0:0:root:/root:/bin/sh
 +daemon:x:1:1:daemon:/usr/sbin:/bin/false
@@ -767,7 +775,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/passwd Base/board/n
 +nobody:x:99:99:nobody:/home:/bin/false
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile Base/board/novasis/NOVAsomP/Init/etc/profile
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/profile	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/profile	2017-07-05 11:55:56.772599999 +0200
 @@ -0,0 +1,20 @@
 +export PATH=/bin:/sbin:/usr/bin:/usr/sbin
 +
@@ -791,12 +799,12 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile Base/board/
 +done
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh Base/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/profile.d/umask.sh	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1 @@
 +umask 022
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols Base/board/novasis/NOVAsomP/Init/etc/protocols
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/protocols	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/protocols	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1,61 @@
 +# Internet (IP) protocols
 +#
@@ -861,7 +869,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/protocols Base/boar
 +rohc	142	ROHC		# Robust Header Compression
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services Base/board/novasis/NOVAsomP/Init/etc/services
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/services	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/services	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1,302 @@
 +# /etc/services:
 +# $Id: services,v 1.1 2004/10/09 02:49:18 andersen Exp $
@@ -1167,7 +1175,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/services Base/board
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow Base/board/novasis/NOVAsomP/Init/etc/shadow
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/shadow	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/shadow	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1,9 @@
 +root::10933:0:99999:7:::
 +daemon:*:10933:0:99999:7:::
@@ -1180,7 +1188,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/shadow Base/board/n
 +nobody:*:10933:0:99999:7:::
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network Base/board/novasis/NOVAsomP/Init/etc/sysconfig/network
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/network	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/network	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1,19 @@
 +# Wired ethernet
 +ETH0_ENABLED=Y
@@ -1203,12 +1211,12 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/network B
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars Base/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2017-03-27 12:33:29.102149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/system_vars	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1 @@
-+REFERENCE_SERVER=192.168.10.134
++REFERENCE_SERVER=192.168.10.125
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless Base/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless	2017-07-05 11:55:56.776602000 +0200
 @@ -0,0 +1,16 @@
 +#Wireless
 +WLAN_ENABLED=N
@@ -1226,9 +1234,45 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/etc/sysconfig/wireless 
 +WLAN_DNS_DOMAIN=-
 +WLAN_MAC=1E:72:49:ED:F7:54
 +
+diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/lib/firmware/rtlwifi/rtl8188eufw.bin Base/board/novasis/NOVAsomP/Init/lib/firmware/rtlwifi/rtl8188eufw.bin
+--- buildroot-2016.05/board/novasis/NOVAsomP/Init/lib/firmware/rtlwifi/rtl8188eufw.bin	1970-01-01 01:00:00.000000000 +0100
++++ Base/board/novasis/NOVAsomP/Init/lib/firmware/rtlwifi/rtl8188eufw.bin	2017-07-05 11:55:56.752590000 +0200
+@@ -0,0 +1,31 @@
++áˆ   !'06  -              EN                Áo                                              ¡æ      V÷                                                                                                                                                                                                                                                                                                                                                                                                                                                  Â¯€ş2B…ĞuĞªàÂŒåŠ$gõŠåŒ4yõŒÒŒì$‰øæ¼tÿÃ•´@ @Îyx€æpÂ¯æ0áDöÒ¯Ùíê‹Ğ"åÿ#$ø¿ xæ0äò åÃŸP tˆ%øæı¦æ®¾tÿÍøèm`àæÀà€öåÓŸ@'å$‰øæ®¾tÿıæÍøåm`Ğàö€õå$ˆÈö€Óå#$øÂ¯æ0àâ 0á0ãTôT|ÆÒ¯T€B"xˆ¦t`ÿvÿßûäx€öößúxv0EŞt“Ààä“ÀàC‰uŠ`uŒyÒŒÒ¯"ïÓ”@ÿ"t//øæ åôÂ¯æD0öÒ¯®îÃŸP!tˆ.øæùæ¾tÿıíi`		ç÷		€ó€ÚîÓŸ@îÓŸ@"tˆ.øæùîµ©æıíi`	ç		÷€ó€Ùï$ˆøæøï/EŞ“öï/“ö "ïÓ”@ÿ"ï#$øæ0åôÂ¯æTŒöÒ¯åµ
++tˆ/øæõBMP.t‰/øæ¿tÿıæùtˆ/øûæüél`¨çö€ô¨¦åµã "t‰/øæı†tˆ/ø¦†åµ¬íl`	¨æ÷€ôåµŞ‰ "ïÓ”@ÿ"ï#$øÂ¯æ0å0àÒäÒâÆÒ¯ 0âBLğäÿşå#$€øÂ©0÷æ`-ö`0P.€0ñíö`%~0ğÂ¯æç#0âÒ¯€Â¯æçTìNöÒ¯BMïDƒôÂ¯VÆÒ¯T€Oÿ"Åğø£à(ğÅğøå‚‚pƒà8ğ"ï[ÿîZşíYıìXü"ïKÿîJşíIıìHü"àü£àı£àş£àÿ"âüâıâşâÿ"âûâùâúâËø"ìòíòîòïò"¤%‚õ‚åğ5ƒõƒ"àû£àú£àù"ëğ£êğ£éğ"ĞƒĞ‚øä“pt“p££“øt“õ‚ˆƒäst“h`ï£££€ßEŒBİä“£øä“£@ö€òßô€)ä“£øT$ÈÃ3ÄTD Èƒ@ôV€Fößä€ @€EÑä~“`¼£ÿT?0å	Tşä“£`ÏTÀ%à`¨@¸ä“£úä“£øä“£ÈÅ‚ÈÊÅƒÊğ£ÈÅ‚ÈÊÅƒÊßéŞç€¾ A‚	 A‚
++ A‚ Yâ\$^]_¡ÀàÀğÀƒÀ‚ÀĞuĞ À ÀÀÀÀÀÀÀÄtæğtE£ğÑ5tæÄğtE£ğĞĞĞĞĞĞĞĞ ĞĞĞ‚ĞƒĞğĞà2 TàU5õ9£àU6õ:£àU7õ;£àU8õ<­9T2­:U2­;V2­<W2S‘ï"ÀàÀğÀƒÀ‚ÀĞuĞ À ÀÀÀÀÀÀÀÄtoğtF£ğlxåA0ä‘'åA0ælÕåC0àQÂåC0áMåC0âLÁåC0ãlâåC0ämåC0åm3åC0æñåD0áQtoÄğtF£ğĞĞĞĞĞĞĞĞ ĞĞĞ‚ĞƒĞğĞà2€Şà´'à`+àTşğTpñ*"à)0ààÿtàÿ}Ó¯ÃÀĞ‚íğ*à‚ğ$àşÄT0àH îÄT0àH ‚àşopH ïpH$şpHP$ş`Q$üpH‹$ü`H î´I^‚àpI“‚à´I4‚à´‚àÿ`su€f&‚àd`H sÓH ‚àpI“‚à´I4‚à´	H¥¿I^‚àd` ¥ïd` ú ‚à´¥¿1^‚à´14‚à´¥¿ú‚àdp\rõïdpT1¾€P‚à´¥¿1^‚à´14‚à´¥¿ú‚àp1“‚à´s»€‚à´%àÿT?0à1±ĞĞ’¯"Ñ«ïd`¸tğ€=$àÿT0à¸tğ€(ïÄT0à¸tğ€)àÓ”@¸tğ€¸äğ"¹tğ "€Şàdp1%àTığ"toğñ¿$àD€ğ*tğ#ğ"¹tğ¸ğ"%à ààD@ğ*tğ€àTğ*tğ#ğ"äğ"%àÃ à*tğ€àD@ğàD€ğ*tğ'àD€ğ#tğ"äğ"‚ïğTe‚à`"äğ*tğ#ğ"1ã*tğ#ğ""tÿğñ:7tğıQW1ãä*ğ#ğ""tÿğñ:…» ÚÌğ ÀŒ~.¢…» Ú   p~.¢ù Ú    äıÿU|~-\ìD€ü‚ Î‚DÙ…» Î|~.¢ t?ğ£àTığSàD ğ"4t@ğıäÿt=/øæMşöt0/õ‚ä4õƒîğ"Ó¯ÃÀĞäËğ¤ÿTşàTşNşğïTÿîTıOÿğ¤şTıïTûMÿğîTşïT÷Nÿğ¤şTıïTïMÿğîT şïTßNğ¤Ã àa^àÿ0àmËt!ğïT?0àQNËàDğ€ä ğ£ğ}@ÿ‘&àıT0àËàDğíÄT0àËàDğàÄT0àËàD€ğËà'ğ"à`€Ëtğ'ğ"àd`ÿSàÿ àaçËt1ğïT?0àQNËàDğ€}@äÿ‘&àıT0àËàDğíÄT0àËàDğËà'ğ#àdpıG=Qs¿	)àÿ}€äıÿG=€A*à#ğ'àD@ğ€0Ëtğ'ğ#à´}€#à´}G=Ñ4)G9Z§ĞĞ’¯"}‘&}t=/øæşíô^şöt0/õ‚ä4õƒîğ"ïp7}x‘&}‘&}ÈqWäğ<tğ}G=$àT÷ğTïğ
++àTøğ"6txğ£tğ}xÿQW}QW
++àDğ2£àXğ€Şà´%àTûğ*à â}G=%àDğ"àÿ0à#àd`:'àpï0à
++*àd`(±ƒ%àT0à-àÿ£àop
++ñÍ‘.àğæàğ"à0à!tğ'à`E%àÿT0à;à0ä‘-àsğ‚äuğD©Ã‚à”€‚àd€”€@˜àTşğàDğuøÑÖ?à0àäõ£ñûWtğ¾àğ"€Şàd`Á#'àpÁ#&àÄTdp"«à.ğªà-ğ£àÿp-àşÿ€ .ïğ%àDğä0ğ2£àXğWäğ<tğ+àTığTïğ&àÿÄT$ıP€à0àmò€nÉ%àT0à-àÿ£àµñÍ‘"àÃ à%àDğ"Ñ«ïpÑ<"'àdpf&àT`Q*àpÿ1“*àd`f&[äğ<tğÑ«ïd`8äõ:àÃTõäûıX~P[tğ’tğ$àDğ"*àp}G="àô` "àTd` "P`-àsğ}QWBà0à-€Şà´&‚àğà´
++Dàğä‚ğDàÿCàµä£ğñ"äÿSà`"àõVtÿğñ:¿tû"åVğ€tût ğ"ä‚ğ£ğøàp£àp£àp£àp"Ó‚à”è‚à”@
++ÀàD ğ "2~ 2ª‚äuğD©€¿t-õ‚ä4üõƒàT?ğï`t!-õ‚ä4üõƒàDğt-õ‚ä4üõƒàD€ğ"t!-õ‚ä4üõƒàTïğt-õ‚ä4üõƒàD@ğ"ïsğ?tğıtE/øæMşöt8/õ‚ä4õƒîğ"àDğäõ9àõäûıT~åTÄ3Tà…ƒ…‚ğåTÄ3TàÿåTO£ğëTÄ3TàÿåTO…‚…ƒ££ğ½…‚ƒ£££tğ"…‚…ƒ£££tğ"äMğ'à`X€ŞàdpPMğä.ğà0à#à´äMğ1sïpMğMà`$+àDğäõ/OûWtğ*à â}G="äLğ'àp!r€Şàd`!r&àÿÄT`"$ş`p!.àğàÿ`0à`ïp-à£ğ€ Ltğà0à#à´äLğ1sïpLğLà`C+àDğ0à`´	äõ0à€äõ0àuğ¤$şÿ/à/OüWtğ*à â}G="Cà 0ç"'àpà0àà0à1s¿A[N<"Ó¯ÃÀĞà´€1s¿€qĞĞ’¯"Kà`äğSàDğüàğà0à£tğàÿÃ0à1Ä?à0à‘e"äğ"àÿ0à=#à~ ´~"à} ´}íNp#ïÃ0à!QE#à´äı€	#àpıG="à´#àd`}G='àd`&àT`N«ïpıG="àÿ0à?#à~ ´~"à} ´}íNp%ïÃ0à!t¬#à´äı€
++#à´äıÿG="Ó¯ÃÀĞËE¤ÿğ¿ËE ½d`!€ËE ½d`à àäÿq€1ĞĞ’¯"Ó¯ÃÀĞ"à‚ğopï`>`bpa¸paß$`‚àÿ´‘Aï´‘P‚àÿ´‘Tïd`‘C‚àÿ´‘óï´‘X‚àÿ´‘èïp}‘+€y‚à´t`€m‚à´‘!€b‚à´tq€V‚àpP‘€L‚àÿ´tL€?ï´‘4€7ï´‘ß€/‚àp)‘2€%‚àÿ´t{€ï´‘€ï´±€‚àp‘	ĞĞ’¯"‘+"toğ'àT¿ğ"tğ"‘+Iİ"tğ""tğ"‘+"tÿğ"tğ"‘ó'àT¿ğä"ğ"‘X€ï‘è€ë‘e"äğ"ğ"Ó¯ÃÀĞàDğ tÿğ·t	ğ´t†ğ|~-\ìTü‚ Î‚DÙ…» Î|~.¢…» ÚÌÀ ÀŒ~.¢…» Ú À p~.¢ù Ú >`äıÿ±ĞĞ’¯"‘e"tğ""äğ"ğ""äğ'àD@ğ"tğ"‘e"toğ'àT¿ğ"tğ"Ó¯ÃÀĞÀÀùDÙå ÎĞĞ`õĞĞ’¯"ÈEïE(Uq UzUƒU‹U”Uœ U¤!U­#Uµ$U¾%UÇ&UÏÀ  UØÈEj°ÈEeÈEAÀÈEuØÈE€DÈEÁKÈEjøÈEááÈEJlÈEk>ÈE€>ÈEkNÀàDğ"ZK¤ÿTşEàTşNğïÃ0à ½Fğ ½Gğ"¤ÿTş?àTşNğ ½şTàÃ@ğï à‘e"äğ?àT¼ğ@à½ğ"¤ÿT'ğïÄT£ğ ½ÿTğÄTş&àTğNğ ½T%àş$àTıNğïTÄTğÿ&àTOğ ½)ğÑÆ¹tğ¸ğ'àºğ)à»ğ&àT¾ğ"ËEr³'àÿL>'à`ËE ½Tÿ ½ırÄ"ÀàÀğÀƒÀ‚ÀĞuĞ À ÀÀÀÀÀÀÀÄt÷ğtV£ğl¥åI0áoyåI0âñ¥åI0ãoåJ0àoÉåJ0äp"åK0áQxåK0à1ÿåK0ãñàåL0áD'åL0äNÄåL0åp8åL0æpÎt÷ÄğtV£ğĞĞĞĞĞĞĞĞ ĞĞĞ‚ĞƒĞğĞà2'à`4’à0à#äõ:àÃTõäûıX~[tğ’tğ"$àT÷ğG*""¤1ğ"Èäğ£ğ£ğ{zyQÿş+'¿	Qàd`"«äVğVàÿÃ”@æÃtşŸÿä” ş{zyR+'ïdpwRàÿTÀş`ïTpRàÿT0`gïT`bStğ€äSğSàRpàÿîT?TğïTT?£ğ€àşT0TğîT£ğTàd0pT£àdpN õàT@WğàpA£tğ€Xtğ€VàğÄtéğtW£ğXàÈğRàÉğSàÊğäı2€Õ" ÷à ç	à æ" ÷à0æ"ç€<ïğ1dtğ-§11±1@1_äõ5õ6õ7õ8­5P2­6Q2­7R2­8S2u=äõ>u?u@0å=ğ£å>ğ£å?ğ£å@ğ"uEuFCFuGuHb8åEğ£åFğ£åGğ£åHğ"0äğ£ğ£ğ£ğ8ğ£ğ£ğ£ğıP2äıQ2äıR2äıS24tÿğ£ğ£ğ£ğ<ğ£ğ£ğ£ğıT2}ÿU2}ÿV2}ÿW2 €àD€ı€2ı àT¿ğWéQw2wQÉQ^CAtğÿCAàğCAàğ1Q? €àD@ı€2u ÿQhQùQäÿCQbQoQ§qOQŠQ•EàTşğ£tğ£ğä£ğ£ğ"äõM"ä€Şğ"uèu¨„"ä€Øğ£ğ"”àDğ"ätğ£tğ"?àTşğä£ğ"BàTşğTğ£t
++ğä£ğ"àTşğTığTûğT÷ğTïğTßğä£ğ£ğ£ğ£tğ"àDğœt~ğ£t’ğ£t ğ£t$ğ›tIğštàğ™äğ˜ğ"äQğ£ğ˜à 0äïd`>ÃRà”ˆQà”@ÁàDğ"QäuğD©~ 2ªÓRà”2Qà” @¹Æà0ã²"ä'ğ£ğ&àTğTğğ$àTığT÷ğTïğ-tğ£ğ$àTûğ£àTûğä0ğ/tğ2äğ£tğä+ğ$àTşğ)tğ$àTßğ*tğ$àT¿ğTğ£àTşğTığT÷ğ4 Ú    €<à´1t™ğ€€<à1´tğ€t@ğ8tğ£tğ£àTD(ğ£tğä£ğ£àTığTûğT÷ğTïğTßğT¿ğä£ğ"äYğYàdğ$$Äğt\£ğ*àÿ)ào`G*Ñ¿‘_±ò2¿±gBM€ÊÓ¯ÃÀĞ$à0à$àÿ0àÃ0à±û¿€
++#àÿ`´‘–€‘¦ĞĞ’¯"Ó¯ÃÀĞ±"‘ºĞĞ’¯"*àpÑ/¿‘–åàğ"±ó àTïı2äÿPäZğ£ğ	à 0çïeP`>Ã[à”ˆZà”@ÀàDğ"ZäuğD©~ 2ªÓ[à”2Zà” @¹Æà0à²"1àı“2(à`/à0çtğ€/tğ àDı2‘Ê àDı2~ 2ªÓ¯ÃÀĞ-§äõR2ï`scRåR$gÄğt]£ğ ˆàõPõQT`ßåP0à ä)ÅSQî€?åP0á å½ïpCQ äğSQı€$åP0â ægSQû€åP0ã ç	anïpCQ€SQ÷­Qˆ2€‡ĞĞ’¯"" à àù""àd` "AàşïÃPï%à$øæ0ä¸tğ£ğ "€Ş"‡à`¸tğ€†à á¸tğ€¸äğ"¹tğ "äûúıDN½ïğ`ğÑq€ìÓ¯ÃÀĞÌàT¾ğ¾àıpáœ‚	àÿt~ ¨€Ã3Î3ÎØùÿï]pá•‚	àuğĞE
++à¿ğuuu¿u{zyÀ+í‚	àuğÑE
++àÁğ‚	àuğÒE
++àÂğ‚	àuğÓE
++àÃğ‚	àuğğE
++àÄğ‚	àuğñE
++àÅğ‚	àuğòE
++àÆğ‚	àuğóE
++àÇğ¾àÿ‚	àşt¨€Ã3Øüô_¾ğ‚	àÿt¨€Ã3ØüÌğÀàÿ{zyÁU?‚	àğàTğÁ‚ÀàDğĞĞ’¯"äûúıDNĞïğ`ğl€ëÔïğ£íğ£ Ú    äâğ$~-\Ú ÎÔàûpÚDÙ€ëuğ¤$bõ‚ä4‡õƒàş£àÿ-\Ş ÎÕàÿäüışx »¨©ª«ŞDÙíTıìT€üDÌìD€üŞ ÎÚDÙìTü…» Î$~.¢Ôàuğ¤$bõ‚ä4‡õƒàş£àÿÀÀŞDÙ…» ÎĞĞ.¢ÚDÙìD€ü…» Î$~.¢Ôàp €	Ôà´(~-\x ¨ïTÿäâïğâàÔ`àuğ¤$fõ‚ä4‡€àuğ¤$dõ‚ä4‡õƒàş£àÿ-\íTıäüÖ ÎÖDÙãïğ«é Ú    ¯äüışx »¨©ª«åDÙíTıäüDÌìTüé Îãàuğ¤$`õ‚ä4‡õƒàş£àÿÀÀéDÙ…» ÎĞĞ.¢Ó¯ÃÀĞ_¶ĞĞ’¯"xtò	àx òt òâÿ0àâ$€òïÃığxâ$ õ‚ä4üõƒàxòd`âÿd`ïd`aŞäxòxâÿâÃŸP-âıâ-Zğàÿ$ õ‚ä4üõƒàşt-øîòï´ÿıàğxâò€Éxâxòÿxâxòxâxòxâxòxâx3òx	âx4òx
++âx5òxâx6òxâx7òxâx8òxâx9òxâx:òäxòï$ø`u$ü`l$`aÀxâ´)ÅaÅxâ´½aÅxâ´ñaÅxâ´xâşâıíÿxîòşïòÿ2ªaÅxâ´xâşâıíÿxîòşïòÿ2aÅxâô`aÅòaÅxtòxâd`aªx4âÿäüışx »À©ª«x3âÿäüışĞ DÌÀÀÀÀx5âÿäüışx »ĞĞĞĞ DÌxDşxâpa“âÿâı1_xDşx8âÿäüışx »À©ª«x7âÿäüışĞ DÌÀÀÀÀx9âÿäüışx »ĞĞĞĞ DÌx Dşx Då ›xDñD¿ÀÀÀÀxDåx DñD¿ĞĞĞĞ DÌxDşxDåù ÎxâıâÿU€xâÿâıxâûxâ¼ğqá€xtòxâÿÃ”Pï`
++xâÿâ/ò!" "¬í­x$òíòë´x'tò€ëx'´tò€tòÓx%â”ÿâ” Pcäx&òx'âÿâşÃŸ@¡t3.øâx(ò¼à`-t7.øâx2òîÿx%â/ÿâ4 ‚õƒàx)òx2âÿôşx)â^şâıï]Nòx$âÿâ/ÿx(âı2x&âò€¡Óx%â”ÿâ”Piäx&òx'âÿâşÃŸ@¡t3.øâx(ò¼à`-x&âÿıâ-ıâ4 ‚õƒàx)òt7/øâx2òâÿôşx)â^şâıï]Nòx(âÿx&âıâ-ıâ4 ‚õƒïğx&âò€›¼à`x$âşâÿ-\x.Dşäx&òx'âÿâşÃŸP]t3.øâx(ò¼à`+x.Dåx&âûuğ¤ùø ¨x)ïòt7+øâx2òâşô_ÿx(âıî]Oòx(âÿx&âıÃtıä” ü{şt*-ùt€<úïêâò€˜x*Då…» Îx$âşâÿ.¢""ËE ½ÿş¤ıÃ0àËE ½Ïğ€ÏïğÎîğÏàşÎàÿÓP8ËE¤TştŞ/õ‚ä4€õƒîğtŞ/õ‚ä4€õƒàpÑ%€Îàÿ±€Îàğ€º€Şàp$*àpÿI“*àd`Ñ&$àT÷ğTïğT¿ğTğ""àTğ"äğ*tğ"íïğ£íğ­¬äõğ£ğÄt9ğtf£ğìT?ü@íğ®î£ğíà$`4$Ú`$<pAîàÄ333T€òğ£tiğ£t€ğ€,îàTòğ£t¥ğ£tğ€îàÄTòğ£tğ£tğ€ "óàğòà`BğñàCğ€CäğòàBğôàÿBà_ÿòào`ît9Äğtf£ğCäğ"äjğ‡_àiğävğfğfàÿÃ”@Pty/õ‚ä4õƒtÿğfàğ€áäfğiàÿfàşÃŸ@htß.ùä4†uõ‰u
++{zy[+í\àÿ/'ïvğ[àÿ£àı1êï$Èxğuğ¤ğ\àTwğäeğgğgàÿÃ”PWwàş¨€ÃØü à>gà%àÿxà/$yùä4ú{ÀÀeàuğ¤$]ùt5ğ‹õ‰uĞĞ+íeàğgàğ€Ÿvàÿfà/ğg@äjğjàÃ”@@A¯àÿ$yõ‚ä4õƒàlğàşTğÄTıkğîTş£ğtz/õ‚ä4õƒàmğüîşìûëÿrîğ£ïğíE(h‹ hÂisj ii¯i¯i¯i¯j3	ji
++  j¯jàı$|õ‚ä4õƒàşt{-õ‚ä4õƒàıíÿtîğü£ïğmàÿ/–htğA jà$|õ‚ä4õƒàÿäüışx »¨©ª«jà${õ‚ä4õƒàÿäüışDÌÀÀÀÀjà$}õ‚ä4õƒàÿäüışx »ĞĞĞĞ DÌÀÀÀÀjà$~õ‚ä4õƒàÿäüışx »ĞĞĞĞ DÌn ÎnDÙ…– Îràş£àÿ.ähtğA màıjà${õ‚ä4õƒàûäÿ0Ç€màıjà${õ‚ä4õƒàûäÿ0jhtğA htğjà$|õ‚ä4õƒàÿäüışx »¨©ª«jà${õ‚ä4õƒàÿäüışDÌÀÀÀÀlàÿäüışx »ĞĞĞĞ DÌn Îkà$ûÿÀnDÙù ÎmàıĞU€mhtğjà${ùä4uõ‰u{şz€y3+ímàÿlàıä¼ğ{€4htğjà${ùä4uõ‰u{şz€y3+ímàÿlàıä¼ğ{cáhà$ÿjà/ğ"	àı¤ş¯í.€=ğ ½ÿí/€>ğ ½ÿí/€?ğ ½ÿí/€@ğ ½ÿ®í/€Ağ" ½ÿ0à&¤8ğ ½9ğïTşÿ£àTOğ ½;ğ"8tğ£tğ£àTD(ğ£tğ"¤>ğ>àçğ"¤Jğ ½Kğ"Ó¯ÃÀĞıîğ£ïğä£ğ£ğıàş£àõ‚ƒà`-Ã‚ à”èÿà”@ÀàD€ğ €ÿäuğD©
++~ 2ª€ÅĞĞ’¯"Ó¯ÃÀĞÑE‚
++àÿğ ïü¯~q`ï`:ÑE‹Š‰ ½$õ{zy +íÑE ½®ğ£tÿğËàd€ğĞĞ’¯"Ó¯ÃÀĞäÿ€Ùàş€Øàıµ~€~ îd`2¯àpíuğ¤$Bùt€5ğú{q¶ï`€Øàğà ´
++ï`ä€ØğĞĞ’¯""""4àU=õA£àU>õB£àU?õC£àU@õD4åAğ£åBğ£åCğ£åDğ"<àUEõI£àUFõJ£àUGõK£àUHõL<åIğ£åJğ£åKğ£åLğS‘ß"à0àä£ğ£ğ"€Şàdp'à`Wäğ<tOôWtğ"€Şàdp&'à` Wäğ<tğ$àTûğ+àTığTpG*"€Şà´'à`&àTd`€Ñ"àp€>àÿäı±iNOt ğ"Ó¯ÃÀĞ‚íğ‚ïğäıüñ7| ­‚à%ğ‚à`t/õ‚ä4üõƒàD€ğ¯t/õ‚ä4üõƒäğt	/õ‚ä4üõƒàTğğt!-õ‚ä4üõƒàT÷ğ®¯ĞĞ’¯"NñK¿€@àÿ}±i­¬¯NO‚t ğ"©àLğàıTÀp	+àTşğ€rí0æK'àdp*$àÿÃ à	+àDğ€(&àTdp-+àDğ±Ò€ +àDğ&àTd`±O€Ñ€+àTşğLà+0çOñWtğ$àDğ"àTığ"_äğ<tğäõ:àÃTõäûı\~P_tğ’tğ$àDğ*àd`äıG=äÿO"äLğ©àLğàTÀp+àTşğTığG*Là0æ!'àdp +àDğ&àTd`±O€Ñ€+àTşğLà+0çOñWtğ$àDğ"àTığ"äşïÃıï0à~€ıíğ¯"Ó¯ÃÀĞà`"àT`ÀàDğÆà0áä €ĞĞ’¯"'à`sá?à0àIİ"'à`5’à0á$äõ:àÃTõäûı\~P_tğ’tğ"$àTïğG*"qHMïğ$0ààDğ€àTşğMà0æ/à0çäğ€/t€ğ$à0à2äğ£tğ2£àXğìàTİğ"ìàD"ğ"Jà`äğSàDğıàğ"$àÿÄT0à'ïT¿ğàà%0ààDğ€àTşğ¹tğ¸tğG*äÿEà0àHIàı`At~ ¨€Ã3Î3ÎØùÿààûï[`äIğ"GàÓPÇtğ¾EàTşğ"OIàğ"€<àd`àDğ"$àÿÄT0à,ïTğàà%0áàDğ€àTığ¹tğ¸ğ'à`G*nÃî”@
++íığä/ÿ"Ãî”@$ıàmpàµätwğıäğ€íığä/ÿ"äNğ£ğ£ğ ƒàNğ ƒàşNàÿµ"ÃPà”dOà” @ÀàD@ğNàÿ"OäuğD©€ÂtE/øæşíô^şöt8/õ‚ä4õƒîğ"Ó¯ÃÀĞ‚íğ‚ïğÓ”Ppàÿt¨€Ã3Øüôÿ Gà_ıG2‚àÿt¨€Ã3Øüÿ FàOıF2‚à`‚àÿt¨€Ã3Øüÿ EàO€‚àÿt¨€Ã3Øüôÿ Eà_ıE€~‚à$øğà$ÿt¨€Ã3Øüôÿ Cà_ıC2‚àÿt¨€Ã3Øüÿ CàOıC2‚à`‚à$ÿt¨€Ã3Øüÿ BàOıB€‚à$ÿt¨€Ã3Øüôÿ Bà_ıB2ĞĞ’¯"$àTûğä0ğ+ğ"ï$ş`p(-tğ£ğ"íp
++;à-ğ€-íğ-à£ğ%àDğ"N«ïd`¸tğ€g+àÿT`¸tğ€V)àşäÃP¸tğ€Dï0â¸tğ€8+à0ä¸tğ€)%àT? à¸t ğ€>à`¸t€ğ€¸äğ"¹tğ "ï`B€Şàdp:%àTşğ"tğàT¿ğäÿO¿$àD@ğ*tğ#ğ"¹tğ¸tğ""toğ'àT¿ğ*tğ#ğ"Te*tğ#ğ"$àÿT?0àïTûğ+àTığTpB€=0àğ+àTïğ0àÿ´€ï´Xàğ8àÿ0àÓŸ@€Şà´%àTûğ"G*""+à 0ç""tÿğ'àD@ğ"tğ"'àD@ğIİ"tğ"Iã"tğ""toğ'àT¿ğ"tğ"®Qs¿#àd`
++¯}G=" "Wà`Häğ<tğ$àÿT?0àïTûğ+àTığ"0àğ+àTïğ8àÿ0àÓŸ@€Şà´%àTûğ"€?àÿ}miTU­U¬T¯SO‚¯U®T€àTı¬t,õ‚ä4üõƒàDğt,õ‚ä4üõƒàTûğ¬t,õ‚ä4üõƒàDúğt,õ‚ä4üõƒàDğ¬t,õ‚ä4üõƒàDğSäğRğQtÿğPtığt,õ‚ä4üõƒàTÀMıt/õ‚ä4üõƒíğ"«ªí+ûä:úÃ€Ûà›€ÚàšP£à$ÿ€Úà4 şÃëŸûêúêığ¯t /õ‚ä4ûõƒàÿ"¤ÿTşBàTşNğïÃ0à
++ ½Cğ"Eà0à-HàğàÿFàµ’àTpOIàğ€’tğäHğ" »
+\ No newline at end of file
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Base/board/novasis/NOVAsomP/Init/root/.asoundrc
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/root/.asoundrc	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/root/.asoundrc	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,38 @@
 +pcm.imxspdif {
 +        type hw
@@ -1270,7 +1314,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.asoundrc Base/boa
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/options.ini.TMPL Base/board/novasis/NOVAsomP/Init/root/options.ini.TMPL
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/options.ini.TMPL	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/root/options.ini.TMPL	2017-03-27 12:45:00.134149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/root/options.ini.TMPL	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,86 @@
 +[browser]
 +homepage=http://www.google.it
@@ -1360,7 +1404,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/options.ini.TMPL B
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.profile Base/board/novasis/NOVAsomP/Init/root/.profile
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.profile	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/root/.profile	2017-03-27 12:32:38.506149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/root/.profile	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,20 @@
 +#
 +# .profile, started at boot from root user
@@ -1384,7 +1428,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/root/.profile Base/boar
 +
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script Base/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script
 --- buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/Init/usr/share/udhcpc/default.script	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,83 @@
 +#!/bin/sh
 +
@@ -1471,7 +1515,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/Init/usr/share/udhcpc/defaul
 +exit 0
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Base/board/novasis/NOVAsomP/post-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/post-image.sh	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/post-image.sh	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -1484,7 +1528,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/post-image.sh Base/board/nov
 +exit $?
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Base/board/novasis/NOVAsomP/pre-image.sh
 --- buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/pre-image.sh	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/pre-image.sh	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,9 @@
 +#!/bin/bash
 +
@@ -1497,7 +1541,7 @@ diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/pre-image.sh Base/board/nova
 +exit $?
 diff -Naur buildroot-2016.05/board/novasis/NOVAsomP/readme.txt Base/board/novasis/NOVAsomP/readme.txt
 --- buildroot-2016.05/board/novasis/NOVAsomP/readme.txt	1970-01-01 01:00:00.000000000 +0100
-+++ Base/board/novasis/NOVAsomP/readme.txt	2017-03-27 11:25:37.902149391 +0200
++++ Base/board/novasis/NOVAsomP/readme.txt	2017-07-05 11:55:56.780604000 +0200
 @@ -0,0 +1,29 @@
 +***************************
 +Novasis NOVAsomP board
