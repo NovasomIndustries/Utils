@@ -1,0 +1,17 @@
+#!/bin/sh
+echo $1
+. ./SourceMe
+cd ../Kernel/linux-imx_4.1.43
+echo "`pwd`"
+###################### NOVAsomU ###############################
+echo "Make kernel for NOVAsomU ..."
+make -j32 zImage
+echo "Make dtbs for NOVAsomU ..."
+make novasomu.dtb
+[ ! "$?" = "0" ] && return 1
+cd ../../Deploy
+rm zImage
+rm novasomu.dtb
+ln -s ../Kernel/linux-imx_4.1.43/arch/arm/boot/zImage
+ln -s ../Kernel/linux-imx_4.1.43/arch/arm/boot/dts/novasomu.dtb
+echo "Make dtbs for NOVAsomU finished successfully"
