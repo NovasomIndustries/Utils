@@ -5,6 +5,7 @@ cd ../Kernel/linux-imx_4.1.43
 echo "`pwd`"
 ###################### NOVAsomU ###############################
 echo "Make kernel for NOVAsomU ..."
+make imx_v7_defconfig
 make -j32 zImage
 echo "Make dtbs for NOVAsomU ..."
 make novasomu.dtb

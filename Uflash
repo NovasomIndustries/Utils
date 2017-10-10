@@ -12,7 +12,8 @@
 DISK=${4}
 
 KERNEL="linux-imx_4.1.43"
-cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2016.03
+BOOTLOADER="u-boot-novasom-2016.03"
+cd /Devel/NOVAsom_SDK/Bootloader/${BOOTLOADER}
 
 UBOOT_IMX="NOVAsomU/u-boot.imx"
 [ ! -b ${DISK} ] && echo "${DISK} not found"
@@ -188,7 +189,7 @@ echo -n "Copying uInitrd ..."
 sudo cp ../../Deploy/uInitrd tmpmount/.
 [ "$?" != "0" ] && return 1
 echo "Done"
-sudo cp ../../Bootloader/u-boot-novasom-2016.03/ddr-test-uboot-jtag-mx6ull.bin tmpmount/.
+sudo cp ../../Bootloader/${BOOTLOADER}/ddr-test-uboot-jtag-mx6ull.bin tmpmount/.
 sudo umount tmpmount
 sync
 sudo umount ${DISK}
