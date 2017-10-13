@@ -15,7 +15,7 @@ pushd /Devel/NOVAsom_SDK/Kernel/linux-imx_3.10.53_1.1.0_ga
 ./dtbmake
 popd
 
-FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
+FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
 for i in ${FILES}; do
         if [ ! -f ${i} ]; then
                 echo "File $i not found. Givin'up"
@@ -99,14 +99,16 @@ sudo cp ${UBOOT_IMG} tmpmount/.
 echo "Done"
 [ "$?" != "0" ] && return 1
 
-FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/*.dtb ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
+FILES="${UBOOT_IMG} ${FULL_PATH_PTR}/NOVAsomKernel ${FULL_PATH_PTR}/NOVAsomParams ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
 for i in ${FILES}; do
 	if [ ! -f ${i} ]; then
 		echo "File $i not found. Givin'up"
 	fi
 done
 echo -n "Copying dtbs ..."
-sudo cp ${FULL_PATH_PTR}/*.dtb tmpmount/.
+DTB_FILES_PTR="/Devel/NOVAsom_SDK/Kernel/linux-imx_3.10.53_1.1.0_ga/arch/arm/boot/dts"
+sudo cp ${DTB_FILES_PTR}/imx6q-novasomP_NOEMMC.dtb tmpmount/mx6q-novasomP.dtb
+sudo cp ${DTB_FILES_PTR}/imx6sdl-novasomP_NOEMMC.dtb tmpmount/mx6sdl-novasomP.dtb
 echo "Done"
 echo -n "Copying NOVAsomKernel ..."
 sudo cp ${FULL_PATH_PTR}/NOVAsomKernel tmpmount/.
