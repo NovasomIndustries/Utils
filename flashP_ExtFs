@@ -127,5 +127,6 @@ sudo tar jxf ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2  -C tmpmount
 sync
 sudo umount tmpmount
 sync
+sudo echo 1 > /tmp/result
 
 return 0
