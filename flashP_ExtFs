@@ -107,8 +107,8 @@ for i in ${FILES}; do
 done
 echo -n "Copying dtbs ..."
 DTB_FILES_PTR="/Devel/NOVAsom_SDK/Kernel/linux-imx_3.10.53_1.1.0_ga/arch/arm/boot/dts"
-sudo cp ${DTB_FILES_PTR}/imx6q-novasomP_NOEMMC.dtb tmpmount/mx6q-novasomP.dtb
-sudo cp ${DTB_FILES_PTR}/imx6sdl-novasomP_NOEMMC.dtb tmpmount/mx6sdl-novasomP.dtb
+sudo cp ${DTB_FILES_PTR}/imx6q-novasomP_NOEMMC.dtb tmpmount/imx6q-novasomP.dtb
+sudo cp ${DTB_FILES_PTR}/imx6sdl-novasomP_NOEMMC.dtb tmpmount/imx6sdl-novasomP.dtb
 echo "Done"
 echo -n "Copying NOVAsomKernel ..."
 sudo cp ${FULL_PATH_PTR}/NOVAsomKernel tmpmount/.
