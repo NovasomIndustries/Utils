@@ -67,6 +67,21 @@ echo "**  Check for remote modified files  **"
 echo "***************************************"
 echo ""
 
+if [ -d /Devel/NOVAsom_SDK/Kernel/linux-imx_4.1.43 ]; then
+	HERE=`pwd`
+	cd /Devel/NOVAsom_SDK/Kernel
+	git clone https://github.com/NovasomIndustries/linux-imx_4.1.43.git
+	cd ${HERE} 
+fi
+
+if [ -d /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2016.03 ]; then
+	HERE=`pwd`
+	cd /Devel/NOVAsom_SDK/Bootloader
+	git clone https://github.com/NovasomIndustries/u-boot-novasom-2016.03.git
+	cd ${HERE} 
+fi
+
+
 if [ ! -d /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed ]; then
 	HERE=`pwd`
 	cd /Devel/NOVAsom_SDK/Qt/NOVAembed

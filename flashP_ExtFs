@@ -123,7 +123,6 @@ sudo mount -t ext4 ${DISK}2 tmpmount
 echo "Populating file system from ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2"
 sudo tar jxf ${FULL_PATH_PTR}/${EXTFS_FILENAME}*.tar.bz2  -C tmpmount
 sync
-cd ..
 sudo umount tmpmount
 sync
 
