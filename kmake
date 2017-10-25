@@ -1,11 +1,12 @@
 #!/bin/sh
+echo "*********************"
+echo "**** $1"
+echo "*********************"
 HERE=`pwd`
 . ./SourceMe
 cd ../Kernel/${1}
 make -j32 zImage
 [ ! "$?" = "0" ] && return 1
 make -j32 modules
-cd ${HERE}
-./kmake_dtbs ${1}
 [ ! "$?" = "0" ] && return 1
 return 0
