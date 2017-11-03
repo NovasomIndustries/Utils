@@ -181,6 +181,13 @@ echo -n "Copying novasomu.dtb ..."
 sudo cp ../../Deploy/novasomu.dtb tmpmount/imx6ull-14x14-ddr3-arm2.dtb
 [ "$?" != "0" ] && return 1
 echo "Done"
+echo -n "Copying u-boot files ..."
+sudo cp ../../Bootloader/${BOOTLOADER}/NOVAsomU/u-boot.imx tmpmount/.
+sudo cp ../../Bootloader/${BOOTLOADER}/qspi-header.bin tmpmount/.
+
+sudo cp ../../Deploy/novasomu.dtb tmpmount/imx6ull-14x14-ddr3-arm2.dtb
+[ "$?" != "0" ] && return 1
+echo "Done"
 echo -n "Copying zImage ..."
 sudo cp ../../Kernel/${KERNEL}/arch/arm/boot/zImage tmpmount/.
 [ "$?" != "0" ] && return 1
