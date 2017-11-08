@@ -27,10 +27,10 @@ novaembed()
 	cd /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed_U_Parser
 	rm -rf obj bin
 	mkdir -p obj bin/Debug
-	gcc -Wall -g  -c src/dts_gen.c -o obj/Debug/src/dts_gen.o
-	gcc -Wall -g  -c src/iomux.c -o obj/Debug/src/iomux.o
-	gcc -Wall -g  -c src/main.c -o obj/Debug/src/main.o
-	g++  -o bin/Debug/NOVAembed_U_Parser obj/Debug/src/dts_gen.o obj/Debug/src/iomux.o obj/Debug/src/main.o  
+	gcc -Wall -g  -c src/dts_gen.c -o obj/dts_gen.o
+	gcc -Wall -g  -c src/iomux.c -o obj/iomux.o
+	gcc -Wall -g  -c src/main.c -o obj/main.o
+	g++  -o bin/Debug/NOVAembed_U_Parser obj/dts_gen.o obj/iomux.o obj/main.o  
 }
 
 gitloop()
