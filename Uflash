@@ -179,13 +179,11 @@ sudo rm -rf tmpmount/*
 [ "$?" != "0" ] && return 1
 echo `pwd`
 echo -n "Copying novasomu.dtb ..."
-#sudo cp ../../Deploy/novasomu.dtb tmpmount/imx6ull-14x14-ddr3-arm2.dtb
 sudo cp ../../Deploy/novasomu.dtb tmpmount/.
 [ "$?" != "0" ] && return 1
 echo "Done"
 echo -n "Copying u-boot files ..."
 sudo cp ../../Bootloader/${BOOTLOADER}/NOVAsomU/u-boot.imx tmpmount/.
-sudo cp ../../Bootloader/${BOOTLOADER}/qspi-header.bin tmpmount/qspi-header.bin
 [ "$?" != "0" ] && return 1
 echo "Done"
 echo -n "Copying zImage ..."
@@ -197,6 +195,7 @@ sudo cp ../../Deploy/uInitrd tmpmount/.
 [ "$?" != "0" ] && return 1
 echo "Done"
 sudo cp ../../Bootloader/${BOOTLOADER}/ddr-test-uboot-jtag-mx6ull.bin tmpmount/.
+sudo cp ../../Bootloader/${BOOTLOADER}/qspi-header.bin tmpmount/qspi-header.bin
 sudo umount tmpmount
 sync
 sudo umount ${DISK}
