@@ -169,6 +169,7 @@ if [ "${1}" = "2" ]; then
 fi
 
 sync
+sudo umount tmpmount >/dev/null 2>&1
 rm -rf tmpmount
 mkdir tmpmount
 sleep 1
