@@ -36,6 +36,7 @@ novaembed()
 gitloop()
 {
 gitbin="git -C $1"
+echo "Look for updates in ${1}" >> /Devel/NOVAsom_SDK/Logs/update.log
 
 # Fetches from all the remotes, although --all can be replaced with origin
 $gitbin fetch origin
@@ -43,15 +44,17 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 	cd $1
 	COUNTMODS=`expr $COUNTMODS + $INCREMENT`;
 	#$gitbin rebase @{u} --preserve-merges
+	echo "Updates found in ${1}" >> /Devel/NOVAsom_SDK/Logs/update.log
 	echo "  ${RED}Updates in ${1}${NC}"
 	echo -n "  Do you want to update ? [Y/n] "
 	read VAR
 	if [ "${VAR}" = "Y" ]; then
+		echo "Applying updates in ${1}" >> /Devel/NOVAsom_SDK/Logs/update.log
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
 			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 		fi
-		git pull origin master
+		git pull origin master >> /Devel/NOVAsom_SDK/Logs/update.log
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
 		# echo $1
 		if [ "${1}" = "/Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed" ]; then
@@ -73,6 +76,8 @@ echo "***************************************"
 echo "**  Check for remote modified files  **"
 echo "***************************************"
 echo ""
+
+echo "Check on `date`" > /Devel/NOVAsom_SDK/Logs/update.log
 
 if ! [ -d /Devel/NOVAsom_SDK/Kernel/linux-imx_4.1.43 ]; then
 	HERE=`pwd`
