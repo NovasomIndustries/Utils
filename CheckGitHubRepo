@@ -54,6 +54,9 @@ if [ $($gitbin rev-parse HEAD)>/dev/null 2>&1 != $($gitbin rev-parse @{u})>/dev/
 			rm -f /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 			mv /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.user /Devel/NOVAsom_SDK/Qt/NOVAembed/NOVAembed/NOVAembed.pro.userOLD
 		fi
+		if [ "${1}" = "/Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2016.03" ]; then
+			rm -rf /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2016.03/NOVAsomU
+		fi
 		git pull origin master >> /Devel/NOVAsom_SDK/Logs/update.log
 		COUNTRECV=`expr $COUNTRECV + $INCREMENT`;
 		# echo $1
