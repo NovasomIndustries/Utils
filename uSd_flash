@@ -41,7 +41,7 @@ echo "#####################"
 if [ "$BOARD_NAME" = "NOVAsomU" ]; then 
 	Uinit_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
 else
-	init_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION $SIZE_OF_2ND_PARTTION $DISK $BOARD_NAME
+	init_usd $NUMBER_OF_USR_PARTTIONS $SIZE_OF_FIRST_PARTTION "-" $DISK $BOARD_NAME
 fi
 if ! [ "$?" = "0" ]; then
         echo "init_usd error"

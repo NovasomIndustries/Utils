@@ -1,0 +1,76 @@
+#!/bin/bash
+DISK="/dev/sdb"
+
+cd /Devel/NOVAsom_SDK/Bootloader/u-boot-novasom-2015.04
+
+UBOOT_IMG="NOVAsomS/u-boot.img"
+SPL_FILE="NOVAsomS/SPL"
+[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && return 1
+sudo umount ${DISK}* >/dev/null 2>&1
+echo "Writing NOVAsomS uSD"
+sleep 1
+sudo echo -n "Writing u-boot ... "
+sudo dd if=/dev/zero of=${DISK} bs=4M count=1; sync
+sudo dd if=${SPL_FILE} of=${DISK} bs=1k seek=1; sync
+sync
+
+sudo fdisk ${DISK} << __EOF__
+d
+1
+d
+2
+d
+3
+d
+4
+n
+p
+1
+
++192M
+t
+b
+n
+p
+3
+
++16M
+t
+3
+83
+w
+__EOF__
+
+sync
+sleep 1
+echo y | sudo mkfs.vfat -F 16 ${DISK}1 -n BOOT 
+RET=$?
+echo "mkfs.vfat returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.vfat with error $RET"
+	return 1
+fi
+
+echo y | sudo mkfs.ext3 -t ext3 -L S6Config ${DISK}3
+RET=$?
+echo "mkfs.ext3 returned $RET"
+if ! [ "$?" = "0" ]; then
+	echo "mkfs.ext3 with error $RET"
+	return 1
+fi
+
+sync
+rm -rf tmpmount
+mkdir tmpmount
+sleep 1
+sudo mount ${DISK}1 tmpmount
+[ "$?" != "0" ] && return 1
+sudo rm -rf tmpmount/*
+echo -n "Copying ${UBOOT_IMG} ..."
+sudo cp ${UBOOT_IMG} tmpmount/.
+echo "Done"
+sudo umount tmpmount
+sync
+
+exit 0

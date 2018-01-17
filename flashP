@@ -9,6 +9,7 @@
 [ "${4}" = "" ] && ${4}="/dev/sdb"
 DISK=${4}
 
+echo "flashP"
 echo "Number of user partition is $1"
 echo "Size of first user partition is $2"
 echo "Size of second user partition is $3"

@@ -30,7 +30,7 @@ echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
 echo "The SPL_FILE is ${SPL_FILE}"
 
-[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && echo "${DISK} not found in Uinit_usd"
 [ ! -b ${DISK} ] && return 1
 sudo umount ${DISK}* >/dev/null 2>&1
 echo "Writing ${BOARD_NAME} uSD"
@@ -194,7 +194,7 @@ echo "The device is ${DISK}"
 echo "The BOARD_NAME is ${BOARD_NAME}"
 echo "The SPL_FILE is ${SPL_FILE}"
 
-[ ! -b ${DISK} ] && echo "${DISK} not found"
+[ ! -b ${DISK} ] && echo "${DISK} not found in init_usd"
 [ ! -b ${DISK} ] && return 1
 sudo umount ${DISK}* >/dev/null 2>&1
 echo "Writing ${BOARD_NAME} uSD"
